@@ -60,6 +60,8 @@
         <module>maven-dx-plugin</module>
         <module>maven-par-plugin</module>
         <module>maven-platformtest-plugin</module>
+        <module>masa-toolchains-model</module>
+
     </modules>
     <build>
         <pluginManagement>
