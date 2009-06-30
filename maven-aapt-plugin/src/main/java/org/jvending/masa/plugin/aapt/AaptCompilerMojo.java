@@ -59,14 +59,14 @@ public class AaptCompilerMojo extends AbstractAaptMojo {
             androidManifestFile = new File(resourceDirectory.getParent(), "AndroidManifest.xml");
         }
 
-        String generatedSourceDirectoryName = project.getBuild().getDirectory() + File.separator + "generated-sources"
-                + File.separator + "r";
+        String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
         new File(generatedSourceDirectoryName).mkdirs();
 
         File androidJar = resolveAndroidJar();
 
         List<String> commands = new ArrayList<String>();
         commands.add("package");
+        
         if (createPackageDirectories) {
             commands.add("-m");
         }

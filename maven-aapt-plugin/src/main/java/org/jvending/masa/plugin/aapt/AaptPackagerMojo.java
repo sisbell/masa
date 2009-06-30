@@ -46,6 +46,7 @@ public class AaptPackagerMojo extends AbstractAaptMojo {
 
         List<String> commands = new ArrayList<String>();
         commands.add("package");
+
         commands.add("-f");
         commands.add("-M");
         commands.add(androidManifestFile.getAbsolutePath());

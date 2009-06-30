@@ -74,7 +74,7 @@ public class DxMojo extends AbstractMojo {
         //Unpackage all dependent and main classes
         File outputDirectory = new File(project.getBuild().getDirectory(), "android-classes");
         for (Artifact artifact : (List<Artifact>) project.getCompileArtifacts()) {
-            if (artifact.getGroupId().equals("android")) {
+            if (artifact.getGroupId().equals("com.google.android")) {
                 continue;
             }
             

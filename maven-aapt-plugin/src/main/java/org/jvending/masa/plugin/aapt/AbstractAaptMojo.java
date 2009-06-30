@@ -84,6 +84,7 @@ public abstract class AbstractAaptMojo extends AbstractMojo {
      * @required
      */
     private java.util.List remoteRepositories;
+    
     /**
      * @component
      */
@@ -102,7 +103,7 @@ public abstract class AbstractAaptMojo extends AbstractMojo {
      * @throws MojoExecutionException if the artifact can not be resolved.
      */
     protected File resolveAndroidJar() throws MojoExecutionException {
-        Artifact artifact = artifactFactory.createArtifact("android", "android", androidVersion, "jar", "jar");
+        Artifact artifact = artifactFactory.createArtifact("com.google.android", "android", androidVersion, "jar", "jar");
 
         // resolve the android jar artifact
         final ArtifactsResolver artifactsResolver = new DefaultArtifactsResolver( this.artifactResolver, this.localRepository, this.remoteRepositories, true );
