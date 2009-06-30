@@ -48,7 +48,7 @@ public class PlatformTesterMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
-     * @parameter expression = "${package}
+     * @parameter 
      */
     private String targetPackage;
 
@@ -59,6 +59,7 @@ public class PlatformTesterMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         if(targetPackage == null || testRunnerName == null) {
+            getLog().info("Test Runner not Set: " + targetPackage + ":" + testRunnerName);
             return;
         }
 

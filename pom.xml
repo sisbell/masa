@@ -62,13 +62,6 @@
         <module>maven-platformtest-plugin</module>
     </modules>
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.jvnet.wagon-svn</groupId>
-                <artifactId>wagon-svn</artifactId>
-                <version>1.8</version>
-            </extension>
-        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>
