@@ -104,9 +104,9 @@
     </build>
     <distributionManagement>
         <snapshotRepository>
-            <id>m2-repo.snapshots</id>
-            <name>Maven SNAPSHOT Repository</name>
-            <url>svn:svn+ssh://m2-repo.googlecode.com/svn/snapshot</url>
+            <id>slideme.snapshots</id>
+            <name>SlideME SNAPSHOT Repository</name>
+            <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
         </snapshotRepository>
         <repository>
             <id>m2-repo.release</id>
@@ -116,9 +116,9 @@
     </distributionManagement>
     <repositories>
         <repository>
-            <id>m2-repo.snapshots</id>
-            <name>Maven SNAPSHOT Repository</name>
-            <url>http://m2-repo.googlecode.com/svn/snapshot</url>
+            <id>slideme.snapshots</id>
+            <name>SlideME SNAPSHOT Repository</name>
+            <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>

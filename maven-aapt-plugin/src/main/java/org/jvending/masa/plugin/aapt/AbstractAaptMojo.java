@@ -88,9 +88,10 @@ public abstract class AbstractAaptMojo extends AbstractMojo {
      * @component
      */
     private ArtifactFactory artifactFactory;
+    
     /**
      * @parameter expression="${androidVersion}"
-     *            default-value="1.1_r1"
+     *            default-value="1.5_r1"
      */
     private String androidVersion;
 
