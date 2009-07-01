@@ -50,6 +50,7 @@
         </executions>
         <configuration>
           <version>1.0.0</version>
+          <useJava5>true</useJava5>
           <packageWithVersion>false</packageWithVersion>
           <models>
             <model>src/main/mdo/toolchains.xml</model>
