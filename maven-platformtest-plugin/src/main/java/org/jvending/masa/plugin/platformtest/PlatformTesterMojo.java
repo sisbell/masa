@@ -19,12 +19,14 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -38,14 +40,18 @@ import java.util.List;
  */
 public class PlatformTesterMojo extends AbstractMojo {
 
-    /**
+	/**
      * The maven project.
      *
      * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
-    private MavenProject project;
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;    
 
     /**
      * @parameter 
@@ -75,7 +81,7 @@ public class PlatformTesterMojo extends AbstractMojo {
         
         getLog().info("adb " + commands.toString());
         try {
-            executor.executeCommand("adb", commands, project.getBasedir(), false);
+            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "adb"), commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }

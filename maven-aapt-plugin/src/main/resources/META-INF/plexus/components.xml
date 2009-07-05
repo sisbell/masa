@@ -8,6 +8,9 @@
          </implementation>
          <configuration>
             <phases>
+               <validate>
+                   org.jvending.masa.plugins:maven-toolchains-plugin:toolchain
+               </validate>
                <generate-sources>
                    org.jvending.masa.plugins:maven-aidl-plugin:generate
                </generate-sources>

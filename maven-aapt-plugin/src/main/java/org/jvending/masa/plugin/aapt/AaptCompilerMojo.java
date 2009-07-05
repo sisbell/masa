@@ -15,14 +15,23 @@
  */
 package org.jvending.masa.plugin.aapt;
 
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.toolchain.model.ToolchainModel;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @goal compile
@@ -30,20 +39,43 @@ import java.util.List;
  * @requiresDependencyResolution compile
  * @description
  */
-public class AaptCompilerMojo extends AbstractAaptMojo {
+public class AaptCompilerMojo extends AbstractMojo {
 
     /**
      * @parameter default-value=true
      */
     private boolean createPackageDirectories;
 
-    /**
-     * @parameter default-value=tests
+	/**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
      */
-  //  private File platformUnitTestDirectory;
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;      
+
+    /**
+     * @parameter default-value="res"
+     */
+    public File resourceDirectory;
+
+    /**
+     * @parameter default-value="assets"
+     */
+    public File assetsDirectory;
+
+    /**
+     * @parameter
+     */
+    public File androidManifestFile;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        // System.out.println("RS = " + resourceDirectory.getAbsolutePath());
+   
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
 
@@ -62,7 +94,7 @@ public class AaptCompilerMojo extends AbstractAaptMojo {
         String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
         new File(generatedSourceDirectoryName).mkdirs();
 
-        File androidJar = resolveAndroidJar();
+        File androidJar = MasaUtil.getAndroidJarFile(project);
 
         List<String> commands = new ArrayList<String>();
         commands.add("package");
@@ -84,9 +116,11 @@ public class AaptCompilerMojo extends AbstractAaptMojo {
         }
         commands.add("-I");
         commands.add(androidJar.getAbsolutePath());
-        getLog().info("aapt " + commands.toString());
+        
+        String apptCommand = MasaUtil.getToolnameWithPath(session, project, "aapt");
+        getLog().info(apptCommand + ":" + commands.toString());
         try {
-            executor.executeCommand("aapt", commands, project.getBasedir(), false);
+            executor.executeCommand(apptCommand, commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
@@ -98,4 +132,6 @@ public class AaptCompilerMojo extends AbstractAaptMojo {
 //            project.addCompileSourceRoot(platformUnitTestDirectory.getAbsolutePath());
 //        }
     }
+
+
 }

@@ -51,6 +51,12 @@
             </roles>
         </developer>
     </developers>
+    <properties>
+    	<maven.version>2.0.10</maven.version>
+    	<plexus.version>1.0.0</plexus.version>
+     	<plexus.utils.version>1.5.9</plexus.utils.version>   
+     	<plexus.archiver.version>1.0-alpha-12</plexus.archiver.version>   	
+    </properties>
     <modules>
         <module>maven-aapt-plugin</module>
         <module>maven-apkbuilder-plugin</module>
@@ -61,14 +67,69 @@
         <module>maven-par-plugin</module>
         <module>maven-platformtest-plugin</module>
         <module>masa-toolchains-model</module>
-
+        <module>maven-toolchains-plugin</module>
     </modules>
+    <dependencyManagement>
+    	<dependencies>
+	        <dependency>
+	            <groupId>org.codehaus.plexus</groupId>
+	            <artifactId>plexus-utils</artifactId>
+	            <version>${plexus.utils.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.codehaus.plexus</groupId>
+	            <artifactId>plexus-container-default</artifactId>
+	            <version>${plexus.version}</version>
+	        </dependency>        
+	        <dependency>
+	            <groupId>org.apache.maven</groupId>
+	            <artifactId>maven-plugin-api</artifactId>
+	            <version>${maven.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.maven</groupId>
+	            <artifactId>maven-toolchain</artifactId>
+	            <version>${maven.version}</version>
+	        </dependency> 
+	        <dependency>
+	            <groupId>org.apache.maven</groupId>
+	            <artifactId>maven-project</artifactId>
+	            <version>${maven.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.maven</groupId>
+	            <artifactId>maven-artifact</artifactId>
+	            <version>${maven.version}</version>
+	        </dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-model</artifactId>
+				<version>${maven.version}</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.apache.maven</groupId>
+		      <artifactId>maven-plugin-descriptor</artifactId>
+		      <version>${maven.version}</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.apache.maven</groupId>
+		      <artifactId>maven-core</artifactId>
+		      <version>${maven.version}</version>
+		    </dependency>		    		    
+	        <dependency>
+	            <groupId>org.codehaus.plexus</groupId>
+	            <artifactId>plexus-archiver</artifactId>
+	            <version>${plexus.archiver.version}</version>
+	        </dependency>		    
+    	</dependencies>
+    </dependencyManagement>	
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0-beta-9</version>
                     <configuration>
                         <tagBase>https://masa.googlecode.com/svn/tags</tagBase>
                         <useReleaseProfile>false</useReleaseProfile>
@@ -81,6 +142,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.1</version>
                     <configuration>
                         <archive>
                             <manifestEntries>
@@ -89,14 +151,19 @@
                             </manifestEntries>
                         </archive>
                     </configuration>
-                    <version>2.1</version>
                 </plugin>
+				<plugin>
+					<groupId>org.codehaus.modello</groupId>
+					<artifactId>modello-maven-plugin</artifactId>
+					<version>1.0.1</version>
+				</plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
@@ -111,11 +178,12 @@
             <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>m2-repo.release</id>
-            <name>Maven Release Repository</name>
-            <url>svn:svn+ssh://m2-repo.googlecode.com/svn/release</url>
+            <id>slideme.releases</id>
+            <name>SlideME Release Repository</name>
+            <url>http://repository.slideme.org/nexus/content/groups/public</url>
         </repository>
     </distributionManagement>
+    <!-- 
     <repositories>
         <repository>
             <id>slideme.snapshots</id>
@@ -129,9 +197,9 @@
             </releases>
         </repository>
         <repository>
-            <id>m2-repo.release</id>
+            <id>slideme.releases</id>
             <name>Maven Release Repository</name>
-            <url>http://m2-repo.googlecode.com/svn/release</url>
+            <url>http://repository.slideme.org/nexus/content/groups/public</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -140,6 +208,7 @@
             </releases>
         </repository>
     </repositories>
+    -->
     <profiles>
         <profile>
             <id>release</id>

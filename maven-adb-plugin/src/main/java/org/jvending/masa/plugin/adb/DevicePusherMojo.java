@@ -15,11 +15,14 @@
  */
 package org.jvending.masa.plugin.adb;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,8 +33,21 @@ import java.util.List;
  * @requiresProject false
  * @description
  */
-public class DevicePusherMojo extends AbstractMojo {
+public final class DevicePusherMojo extends AbstractMojo {
 
+	/**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     */
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;      
+ 
     /**
      * @parameter expression="${source}"
      * @required
@@ -55,7 +71,7 @@ public class DevicePusherMojo extends AbstractMojo {
 
         getLog().info("adb " + commands.toString());
         try {
-            executor.executeCommand("adb", commands);
+            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "aapt"), commands);
         } catch (ExecutionException e) {
         }
     }

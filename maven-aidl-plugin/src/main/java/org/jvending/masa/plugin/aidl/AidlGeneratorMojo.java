@@ -15,6 +15,7 @@
  */
 package org.jvending.masa.plugin.aidl;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -22,6 +23,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,14 +36,18 @@ import java.util.List;
  */
 public class AidlGeneratorMojo extends AbstractMojo {
 
-    /**
+	/**
      * The maven project.
      *
      * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
-    private MavenProject project;
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;    
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         DirectoryScanner directoryScanner = new DirectoryScanner();
@@ -85,7 +91,7 @@ public class AidlGeneratorMojo extends AbstractMojo {
             commands.add((new File(project.getBuild().getSourceDirectory(), file).getAbsolutePath()));
             commands.add(new File(targetDirectory , fileName.substring(0, fileName.lastIndexOf(".")) + ".java").getAbsolutePath());
             try {
-                executor.executeCommand("aidl", commands, project.getBasedir(), false);
+                executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "aidl"), commands, project.getBasedir(), false);
             } catch (ExecutionException e) {
                 throw new MojoExecutionException("", e);
             }

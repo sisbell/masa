@@ -15,10 +15,14 @@
  */
 package org.jvending.masa.plugin.aapt;
 
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,19 +33,46 @@ import java.util.List;
  * @phase package
  * @description
  */
-public class AaptPackagerMojo extends AbstractAaptMojo {
+public final class AaptPackagerMojo extends AbstractMojo {
 
+	/**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     */
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;      
+
+    /**
+     * @parameter default-value="res"
+     */
+    public File resourceDirectory;
+
+    /**
+     * @parameter default-value="assets"
+     */
+    public File assetsDirectory;
+
+    /**
+     * @parameter
+     */
+    public File androidManifestFile;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
+        executor.setLogger(getLog());
 
         if (androidManifestFile == null) {
             androidManifestFile = new File(resourceDirectory.getParent(), "AndroidManifest.xml");
         }
 
-        File androidJar = resolveAndroidJar();
+        File androidJar = MasaUtil.getAndroidJarFile(project);
         File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + ".ap_");
 
         List<String> commands = new ArrayList<String>();
@@ -62,60 +93,13 @@ public class AaptPackagerMojo extends AbstractAaptMojo {
         commands.add(androidJar.getAbsolutePath());
         commands.add("-F");
         commands.add(outputFile.getAbsolutePath());
-        getLog().info("aapt " + commands.toString());
+        
+        String aaptCommand = MasaUtil.getToolnameWithPath(session, project, "aapt");
+        getLog().info(aaptCommand + " "  + commands.toString());
         try {
-            executor.executeCommand("aapt", commands, project.getBasedir(), false);
+            executor.executeCommand(aaptCommand, commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }
-        /*
-        File dexClassesFile = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".classes-dex");
-
-        ZipOutputStream os = null;
-        InputStream is = null;
-
-        try {
-            ZipFile zipFile = new ZipFile(tmpOutputFile);
-            os = new ZipOutputStream(new FileOutputStream(outputFile));
-
-            for (ZipEntry entry : (List<ZipEntry>) Collections.list(zipFile.entries())) {
-                os.putNextEntry(new ZipEntry(entry.getName()));
-                is = zipFile.getInputStream(entry);
-                byte[] buffer = new byte[1024];
-                int i;
-                while ((i = is.read(buffer)) > 0) {
-                    os.write(buffer, 0, i);
-                }
-                is.close();
-            }
-            os.putNextEntry(new ZipEntry("classes.dex"));
-            is = new FileInputStream(dexClassesFile);
-            byte[] buffer = new byte[1024];
-            int i;
-            while ((i = is.read(buffer)) > 0) {
-                os.write(buffer, 0, i);
-            }
-            is.close();
-            os.close();
-        } catch (IOException e) {
-            throw new MojoExecutionException("", e);
-        }
-        finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-
-                }
-            }
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                }
-            }
-        }
-        */
-       // project.getArtifact().setFile(outputFile);
     }
 }

@@ -22,7 +22,7 @@
         <version>1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jvending.masa.toolchains.model</groupId>
+    <groupId>org.jvending.masa</groupId>
     <artifactId>masa-toolchains-model</artifactId>
     <name>JVending Masa: masa-toolchains-model</name>
     <description>Masa Toolchains Model</description>
@@ -30,7 +30,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.5.8</version>
     </dependency>
   </dependencies>
    <build>
@@ -38,7 +37,6 @@
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0.1</version>
         <executions>
           <execution>
             <goals>

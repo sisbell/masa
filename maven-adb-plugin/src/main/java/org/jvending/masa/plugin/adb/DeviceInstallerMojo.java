@@ -15,33 +15,38 @@
  */
 package org.jvending.masa.plugin.adb;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @goal install
  * @phase install
  * @description
  */
-public class DeviceInstallerMojo extends AbstractMojo {
+public final class DeviceInstallerMojo extends AbstractMojo {
 
-    /**
+	/**
      * The maven project.
      *
      * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
-    private MavenProject project;
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;      
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         if(System.getProperty("masa.debug") == null) {
@@ -56,9 +61,10 @@ public class DeviceInstallerMojo extends AbstractMojo {
         commands.add("install");
         commands.add("-r");
         commands.add(inputFile.getAbsolutePath());
-        getLog().info("adb " + commands.toString());
+        String c = MasaUtil.getToolnameWithPath(session, project, "adb");
+        getLog().info(c + ":" + commands.toString());
         try {
-            executor.executeCommand("adb", commands);
+            executor.executeCommand(c, commands);
         } catch (ExecutionException e) {
         }
     }

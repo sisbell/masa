@@ -8,7 +8,7 @@
 	<defaults>
 		<default>
 			<key>package</key>
-			<value>org.apache.maven.toolchain.model</value>
+			<value>org.jvending.masa.toolchains.model</value>
 		</default>
 	</defaults>
 	<classes>
@@ -36,14 +36,6 @@
 					<type>String</type>
 				</field>
 				<field>
-					<name>requirements</name>
-					<version>1.0.0+</version>
-					<association xml.mapStyle="inline">
-						<type>Requirements</type>
-						<multiplicity>*</multiplicity>
-					</association>
-				</field>
-				<field>
 					<name>toolPaths</name>
 					<version>1.0.0+</version>
 					<association xml.mapStyle="inline">
@@ -53,17 +45,6 @@
 				</field>
 			</fields>
 		</class>		
-		<class>
-			<name>Requirements</name>
-			<version>1.0.0+</version>
-			<fields>
-				<field>
-					<name>androidVersion</name>
-					<version>1.0.0+</version>
-					<type>String</type>
-				</field>
-			</fields>
-		</class>
 		<class>
 			<name>ToolPaths</name>
 			<version>1.0.0+</version>

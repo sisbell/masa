@@ -16,6 +16,7 @@
 package org.jvending.masa.plugin.dx;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -24,6 +25,7 @@ import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.IOUtil;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
+import org.jvending.masa.MasaUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,14 +43,18 @@ import java.util.jar.JarFile;
  */
 public class DxMojo extends AbstractMojo {
 
-    /**
+	/**
      * The maven project.
      *
      * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
-    private MavenProject project;
+    public MavenProject project;
+    
+    /**
+    *
+    * @parameter expression="${session}"
+    */
+    public MavenSession session;    
 
     /**
      * @component
@@ -112,7 +118,7 @@ public class DxMojo extends AbstractMojo {
         commands.add(outputDirectory.getAbsolutePath());
         getLog().info("dx " + commands.toString());
         try {
-            executor.executeCommand("dx", commands, project.getBasedir(), false);
+            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "dx"), commands, project.getBasedir(), false);
         } catch (ExecutionException e) {
             throw new MojoExecutionException("", e);
         }

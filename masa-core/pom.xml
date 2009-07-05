@@ -24,18 +24,23 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jvending.masa</groupId>
     <artifactId>masa-core</artifactId>
-    <version>1.1-SNAPSHOT</version>
     <name>JVending Masa: masa-core</name>
     <dependencies>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>1.4.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-container-default</artifactId>
+        </dependency>        
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>2.0.8</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-toolchain</artifactId>
+        </dependency>        
     </dependencies>
 </project>
