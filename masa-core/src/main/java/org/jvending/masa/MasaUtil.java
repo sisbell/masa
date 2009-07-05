@@ -1,7 +1,6 @@
 package org.jvending.masa;
 
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -27,9 +26,10 @@ public class MasaUtil {
 			return toolname;
 		}
 		String command = toolname;
+
 		Xpp3Dom dom = (Xpp3Dom) model.getConfiguration();
 		for (Xpp3Dom d : dom.getChild("toolPaths").getChildren()) {
-			if (new File(d.getValue(), command).exists()) {
+			if (new File(d.getValue(), command).exists() || new File(d.getValue(), command + ".exe").exists() ) {
 				command = new File(d.getValue(), command).getAbsolutePath();
 				break;
 			}

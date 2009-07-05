@@ -60,6 +60,11 @@ public class ToolchainMojo
     		toolchainsFile  = new File(new File(session.getLocalRepository().getBasedir()).getParentFile(), "toolchains.xml"); 
     	}
     	
+    	if(!toolchainsFile.exists())
+    	{
+    		this.getLog().info("Not toolchains.xml file found.");
+    	}
+    	
     	PersistedToolchains toolchainModels = null;
         Reader in = null;
         try
