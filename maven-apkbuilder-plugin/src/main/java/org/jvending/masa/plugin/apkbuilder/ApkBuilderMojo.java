@@ -16,9 +16,6 @@
 package org.jvending.masa.plugin.apkbuilder;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,11 +28,7 @@ import org.jvending.masa.MasaUtil;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @goal build
@@ -65,24 +58,16 @@ public class ApkBuilderMojo extends AbstractMojo {
      */
     private MavenProjectHelper projectHelper;
 
-    /**
-     * @parameter default-value = "false"
-     */
-    private boolean isDelaySigned;
-
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-
-        File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + ".apk");
+        
+        File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + "-unsigned.apk");
 
         List<String> commands = new ArrayList<String>();
         commands.add(outputFile.getAbsolutePath());
-
-        if(isDelaySigned) {
-            commands.add("-u");
-        }
+        commands.add("-u");
         
         commands.add("-z");
         commands.add(new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + ".ap_").getAbsolutePath());
@@ -98,6 +83,6 @@ public class ApkBuilderMojo extends AbstractMojo {
             throw new MojoExecutionException("", e);
         }
 
-        projectHelper.attachArtifact(project, "apk", outputFile);
+        projectHelper.attachArtifact(project, "apk", "unsigned", outputFile);
     }
 }

@@ -21,6 +21,7 @@
                </compile>
                <process-classes>
                    org.apache.maven.plugins:maven-jar-plugin:jar,
+                   com.pyx4me:proguard-maven-plugin:proguard,
                    org.jvending.masa.plugins:maven-dx-plugin:dx
                </process-classes>
                <process-test-resources>
@@ -28,9 +29,10 @@
                </process-test-resources>
                <test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
                <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
-               <package>
-                  org.jvending.masa.plugins:maven-aapt-plugin:package,
-                  org.jvending.masa.plugins:maven-apkbuilder-plugin:build
+               <package>       	  
+                  org.jvending.masa.plugins:maven-aapt-plugin:package,  
+                  org.jvending.masa.plugins:maven-apkbuilder-plugin:build,
+                  org.jvending.masa.plugins:maven-jarsigner-plugin:sign
                </package>
                <integration-test>org.jvending.masa.plugins:maven-adb-plugin:install</integration-test>
                <install>

@@ -55,7 +55,7 @@ public final class DeviceInstallerMojo extends AbstractMojo {
         }
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger(this.getLog());
-        File inputFile = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".apk");
+        File inputFile = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed.apk");
 
         List<String> commands = new ArrayList<String>();
         commands.add("install");
