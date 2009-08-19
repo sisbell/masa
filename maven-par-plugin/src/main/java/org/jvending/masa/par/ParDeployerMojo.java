@@ -31,11 +31,13 @@ import java.io.*;
  * @requiresProject true
  * @description
  */
-public class ParDeployerMojo extends AbstractMojo {
+public class ParDeployerMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -48,62 +50,88 @@ public class ParDeployerMojo extends AbstractMojo {
      */
     private String serverUri;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
         URL url;
-        try {
-            url = new URL(serverUri);
-        } catch (MalformedURLException e) {
-            throw new MojoExecutionException(e.getMessage());
+        try
+        {
+            url = new URL( serverUri );
         }
-        File parFile = new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".par");
+        catch ( MalformedURLException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        File parFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".par" );
         OutputStream os;
         HttpURLConnection connection;
-        try {
+        try
+        {
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Encoding", "multipart/form-data");
-            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=parfile");
+            connection.setDoOutput( true );
+            connection.setRequestMethod( "POST" );
+            connection.setRequestProperty( "Content-Encoding", "multipart/form-data" );
+            connection.setRequestProperty( "Content-Type", "multipart/form-data; boundary=parfile" );
             os = connection.getOutputStream();
-            os.write("--parfile\r\n".getBytes());
-            os.write("Content-Disposition: form-data; name=\"parfile\"; filename=\"".getBytes());
-            os.write(parFile.getAbsolutePath().getBytes());
-            os.write("\"\r\n".getBytes());
-            os.write("Content-Type: application/x-zip-compressed\r\n\r\n".getBytes());
+            os.write( "--parfile\r\n".getBytes() );
+            os.write( "Content-Disposition: form-data; name=\"parfile\"; filename=\"".getBytes() );
+            os.write( parFile.getAbsolutePath().getBytes() );
+            os.write( "\"\r\n".getBytes() );
+            os.write( "Content-Type: application/x-zip-compressed\r\n\r\n".getBytes() );
 
-        } catch (IOException e) {
-            throw new MojoExecutionException("Failed to connect to server: " + e.getMessage());
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Failed to connect to server: " + e.getMessage() );
         }
         FileInputStream fis;
-        try {
-            fis = new FileInputStream(parFile);
-        } catch (FileNotFoundException e) {
-            try {
-                if (os != null) os.close();
-            } catch (IOException e1) {
+        try
+        {
+            fis = new FileInputStream( parFile );
+        }
+        catch ( FileNotFoundException e )
+        {
+            try
+            {
+                if ( os != null )
+                    os.close();
+            }
+            catch ( IOException e1 )
+            {
 
             }
-            throw new MojoExecutionException("Could not find provisioning archive: " + e.getMessage());
+            throw new MojoExecutionException( "Could not find provisioning archive: " + e.getMessage() );
         }
 
-        try {
-            IOUtil.copy(fis, os);
-            os.write("\r\n--parfile--".getBytes());
-        } catch (IOException e) {
-            throw new MojoExecutionException("Unable to upload provisioning archive" + e.getMessage());
+        try
+        {
+            IOUtil.copy( fis, os );
+            os.write( "\r\n--parfile--".getBytes() );
         }
-        finally {
-            try {
-                if (os != null) os.close();
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to upload provisioning archive" + e.getMessage() );
+        }
+        finally
+        {
+            try
+            {
+                if ( os != null )
+                    os.close();
                 fis.close();
-            } catch (IOException e) {
+            }
+            catch ( IOException e )
+            {
 
             }
         }
 
-        try {
-            getLog().info("HTTP Response: " + connection.getResponseCode());
-        } catch (IOException e) {
+        try
+        {
+            getLog().info( "HTTP Response: " + connection.getResponseCode() );
+        }
+        catch ( IOException e )
+        {
 
         }
     }

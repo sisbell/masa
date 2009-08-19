@@ -41,20 +41,21 @@ import java.util.jar.JarFile;
  * @phase process-classes
  * @description
  */
-public class DxMojo extends AbstractMojo {
+public class DxMojo
+    extends AbstractMojo
+{
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
+
     /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;    
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
 
     /**
      * @component
@@ -63,78 +64,104 @@ public class DxMojo extends AbstractMojo {
 
     /**
      * Extra JVM Arguments
-     *
+     * 
      * @parameter
      * @optional
      */
     private String[] jvmArguments;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
+        executor.setLogger( this.getLog() );
 
-        File outputFile = new File(project.getBuild().getDirectory() + File.separator + "classes.dex");
-        File inputFile  = new File(project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar");
+        File outputFile = new File( project.getBuild().getDirectory() + File.separator + "classes.dex" );
+        File inputFile =
+            new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
 
-        //Unpackage all dependent and main classes
-        File outputDirectory = new File(project.getBuild().getDirectory(), "android-classes");
-        for (Artifact artifact : (List<Artifact>) project.getCompileArtifacts()) {
-            if (artifact.getGroupId().equals("com.google.android")) {
+        // Unpackage all dependent and main classes
+        File outputDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
+        for ( Artifact artifact : (List<Artifact>) project.getCompileArtifacts() )
+        {
+            if ( artifact.getGroupId().equals( "com.google.android" ) )
+            {
                 continue;
             }
-            
-            if(artifact.getFile().isDirectory())  {
-                throw new MojoExecutionException("Dependent artifact is directory: Directory = "
-                        + artifact.getFile().getAbsolutePath());
+
+            if ( artifact.getFile().isDirectory() )
+            {
+                throw new MojoExecutionException( "Dependent artifact is directory: Directory = "
+                    + artifact.getFile().getAbsolutePath() );
             }
 
-            try {
-                unjar(new JarFile(artifact.getFile()), outputDirectory);
-            } catch (IOException e) {
-                throw new MojoExecutionException("Unable to jar file: File = " + artifact.getFile().getAbsolutePath(), e);
+            try
+            {
+                unjar( new JarFile( artifact.getFile() ), outputDirectory );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Unable to jar file: File = " + artifact.getFile().getAbsolutePath(),
+                                                  e );
             }
         }
 
-        try {
-            unjar(new JarFile(inputFile), outputDirectory);
-        } catch (IOException e) {
-            throw new MojoExecutionException("", e);
+        try
+        {
+            unjar( new JarFile( inputFile ), outputDirectory );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
 
         List<String> commands = new ArrayList<String>();
-        if (jvmArguments != null){
-            for (String jvmArgument : jvmArguments) {
-                if (jvmArgument != null){
-                    if (jvmArgument.startsWith("-")){
-                        jvmArgument = jvmArgument.substring(1);
+        if ( jvmArguments != null )
+        {
+            for ( String jvmArgument : jvmArguments )
+            {
+                if ( jvmArgument != null )
+                {
+                    if ( jvmArgument.startsWith( "-" ) )
+                    {
+                        jvmArgument = jvmArgument.substring( 1 );
                     }
-                    commands.add("-J" + jvmArgument);
+                    commands.add( "-J" + jvmArgument );
                 }
             }
         }
-        commands.add("--dex");
-        commands.add("--output=" + outputFile.getAbsolutePath());
-        commands.add(outputDirectory.getAbsolutePath());
-        getLog().info("dx " + commands.toString());
-        try {
-            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "dx"), commands, project.getBasedir(), false);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("", e);
+        commands.add( "--dex" );
+        commands.add( "--output=" + outputFile.getAbsolutePath() );
+        commands.add( outputDirectory.getAbsolutePath() );
+        getLog().info( "dx " + commands.toString() );
+        try
+        {
+            executor.executeCommand( MasaUtil.getToolnameWithPath( session, project, "dx" ), commands,
+                                     project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
 
-        mavenProjectHelper.attachArtifact(project, "jar", project.getArtifact().getClassifier(), inputFile);
+        mavenProjectHelper.attachArtifact( project, "jar", project.getArtifact().getClassifier(), inputFile );
     }
 
-    private static void unjar(JarFile jarFile, File outputDirectory) throws IOException {
-        for (Enumeration en = jarFile.entries(); en.hasMoreElements();) {
+    private static void unjar( JarFile jarFile, File outputDirectory )
+        throws IOException
+    {
+        for ( Enumeration en = jarFile.entries(); en.hasMoreElements(); )
+        {
             JarEntry entry = (JarEntry) en.nextElement();
-            File entryFile = new File(outputDirectory, entry.getName());
-            if (!entryFile.getParentFile().exists() && !entry.getName().startsWith("META-INF")) {
+            File entryFile = new File( outputDirectory, entry.getName() );
+            if ( !entryFile.getParentFile().exists() && !entry.getName().startsWith( "META-INF" ) )
+            {
                 entryFile.getParentFile().mkdirs();
             }
-            if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
-                IOUtil.copy(jarFile.getInputStream(entry), new FileOutputStream(entryFile));
+            if ( !entry.isDirectory() && entry.getName().endsWith( ".class" ) )
+            {
+                IOUtil.copy( jarFile.getInputStream( entry ), new FileOutputStream( entryFile ) );
             }
         }
     }

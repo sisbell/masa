@@ -28,7 +28,6 @@ public class ToolchainMojo
 {
 
     /**
-     *
      * @parameter expression="${session}"
      * @required
      * @readonly
@@ -40,32 +39,32 @@ public class ToolchainMojo
      * @required
      */
     private Toolchains toolchains;
-    
+
     /**
      * @parameter expression="${project}"
      */
-    private MavenProject project;    
- 
+    private MavenProject project;
+
     /**
      * @parameter
-     */    
+     */
     private File toolchainsFile;
-    
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-    	if(toolchainsFile == null)
-    	{
-    		toolchainsFile  = new File(new File(session.getLocalRepository().getBasedir()).getParentFile(), "toolchains.xml"); 
-    	}
-    	
-    	if(!toolchainsFile.exists())
-    	{
-    		this.getLog().info("Not toolchains.xml file found.");
-    	}
-    	
-    	PersistedToolchains toolchainModels = null;
+        if ( toolchainsFile == null )
+        {
+            toolchainsFile =
+                new File( new File( session.getLocalRepository().getBasedir() ).getParentFile(), "toolchains.xml" );
+        }
+
+        if ( !toolchainsFile.exists() )
+        {
+            this.getLog().info( "Not toolchains.xml file found." );
+        }
+
+        PersistedToolchains toolchainModels = null;
         Reader in = null;
         try
         {
@@ -74,7 +73,7 @@ public class ToolchainMojo
         }
         catch ( Exception e )
         {
-        	return;
+            return;
         }
         finally
         {
@@ -82,44 +81,44 @@ public class ToolchainMojo
         }
 
         Map<String, ToolchainModel> models = new HashMap<String, ToolchainModel>();
-        
-        //Capabilities
-        List<List<Capability>> m = new ArrayList<List<Capability>>();
-        for(ToolchainModel model : (List<ToolchainModel>) toolchainModels.getToolchains() )
-        {
-        	if(!model.getType().equals("android"))
-        	{
-        		continue;
-        	}
-        	        	
-        	List<Capability> c = new ArrayList<Capability>();      	
-            Xpp3Dom dom = (Xpp3Dom) model.getProvides();
-            for(Xpp3Dom child : dom.getChildren())
-            {
-            	if(child.getName().equals("id"))
-            	{
-            		models.put(child.getValue(), model);
-            	}
-            	c.add(new Capability(child.getName(), child.getValue()));
-            }
-            m.add(c);
-        }
-        Matcher matcher = new Matcher(m);
-        
-        //Requirements from pom
-        String capabilityId = matcher.findMatchIdFor(toolchains.android);   
 
-        if(capabilityId == null)
+        // Capabilities
+        List<List<Capability>> m = new ArrayList<List<Capability>>();
+        for ( ToolchainModel model : (List<ToolchainModel>) toolchainModels.getToolchains() )
         {
-        	throw new MojoExecutionException("Could not match capability to toolchain requirements");
+            if ( !model.getType().equals( "android" ) )
+            {
+                continue;
+            }
+
+            List<Capability> c = new ArrayList<Capability>();
+            Xpp3Dom dom = (Xpp3Dom) model.getProvides();
+            for ( Xpp3Dom child : dom.getChildren() )
+            {
+                if ( child.getName().equals( "id" ) )
+                {
+                    models.put( child.getValue(), model );
+                }
+                c.add( new Capability( child.getName(), child.getValue() ) );
+            }
+            m.add( c );
         }
-        
+        Matcher matcher = new Matcher( m );
+
+        // Requirements from pom
+        String capabilityId = matcher.findMatchIdFor( toolchains.android );
+
+        if ( capabilityId == null )
+        {
+            throw new MojoExecutionException( "Could not match capability to toolchain requirements" );
+        }
+
         PluginDescriptor pluginDescriptor = new PluginDescriptor();
-        pluginDescriptor.setGroupId( "org.jvending.masa.plugins");
+        pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
-        session.getPluginContext(pluginDescriptor, project).put("toolchain", models.get(capabilityId));
-        System.out.println("ID=" + capabilityId + ":" + models.get(capabilityId).getType());
-        
+        session.getPluginContext( pluginDescriptor, project ).put( "toolchain", models.get( capabilityId ) );
+        System.out.println( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
+
     }
 
 }

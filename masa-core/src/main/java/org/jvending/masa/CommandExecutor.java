@@ -29,31 +29,31 @@ public interface CommandExecutor
 {
     /**
      * Sets the plexus logger.
-     *
+     * 
      * @param logger the plexus logger
      */
     void setLogger( Log logger );
 
     /**
      * Executes the command for the specified executable and list of command options.
-     *
+     * 
      * @param executable the name of the executable (csc, xsd, etc).
-     * @param commands   the command options for the compiler/executable
-     * @throws ExecutionException if compiler or executable writes anything to the standard error stream or if the process
-     *                            returns a process result != 0.
+     * @param commands the command options for the compiler/executable
+     * @throws ExecutionException if compiler or executable writes anything to the standard error stream or if the
+     *             process returns a process result != 0.
      */
     void executeCommand( String executable, List<String> commands )
         throws ExecutionException;
 
     /**
      * Executes the command for the specified executable and list of command options.
-     *
-     * @param executable         the name of the executable (csc, xsd, etc).
-     * @param commands           the commands options for the compiler/executable
+     * 
+     * @param executable the name of the executable (csc, xsd, etc).
+     * @param commands the commands options for the compiler/executable
      * @param failsOnErrorOutput if true, throws an <code>ExecutionException</code> if there the compiler or executable
-     *                           writes anything to the error output stream. By default, this value is true
+     *            writes anything to the error output stream. By default, this value is true
      * @throws ExecutionException if compiler or executable writes anything to the standard error stream (provided the
-     *                            failsOnErrorOutput is not false) or if the process returns a process result != 0.
+     *             failsOnErrorOutput is not false) or if the process returns a process result != 0.
      */
     void executeCommand( String executable, List<String> commands, boolean failsOnErrorOutput )
         throws ExecutionException;
@@ -62,12 +62,12 @@ public interface CommandExecutor
      * Executes the command for the specified executable and list of command options. If the compiler or executable is
      * not within the environmental path, you should use this method to specify the working directory. Always use this
      * method for executables located within the local maven repository.
-     *
-     * @param executable       the name of the executable (csc, xsd, etc).
-     * @param commands         the command options for the compiler/executable
+     * 
+     * @param executable the name of the executable (csc, xsd, etc).
+     * @param commands the command options for the compiler/executable
      * @param workingDirectory the directory where the command will be executed
      * @throws ExecutionException if compiler or executable writes anything to the standard error stream (provided the
-     *                            failsOnErrorOutput is not false) or if the process returns a process result != 0.
+     *             failsOnErrorOutput is not false) or if the process returns a process result != 0.
      */
     void executeCommand( String executable, List<String> commands, File workingDirectory, boolean failsOnErrorOutput )
         throws ExecutionException;
@@ -75,21 +75,21 @@ public interface CommandExecutor
     /**
      * Returns the process result of executing the command. Typically a value of 0 means that the process executed
      * successfully.
-     *
+     * 
      * @return the process result of executing the command
      */
     int getResult();
 
     /**
      * Returns the standard output from executing the command.
-     *
+     * 
      * @return the standard output from executing the command
      */
     String getStandardOut();
 
     /**
      * Returns the standard error from executing the command.
-     *
+     * 
      * @return the standard error from executing the command
      */
     String getStandardError();
@@ -109,7 +109,7 @@ public interface CommandExecutor
 
         /**
          * Returns a default instance of the command executor
-         *
+         * 
          * @return a default instance of the command executor
          */
         public static CommandExecutor createDefaultCommmandExecutor()
@@ -141,7 +141,6 @@ public interface CommandExecutor
                     this.logger = logger;
                 }
 
-
                 public void executeCommand( String executable, List<String> commands )
                     throws ExecutionException
                 {
@@ -167,7 +166,7 @@ public interface CommandExecutor
 
                     Commandline commandline = new Commandline();
                     commandline.setExecutable( executable );
-                    commandline.addArguments( commands.toArray( new String[commands.size()]));
+                    commandline.addArguments( commands.toArray( new String[commands.size()] ) );
                     if ( workingDirectory != null && workingDirectory.exists() )
                     {
                         commandline.setWorkingDirectory( workingDirectory.getAbsolutePath() );
@@ -177,24 +176,24 @@ public interface CommandExecutor
                         result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
                         if ( logger != null )
                         {
-                            logger.debug( "ANDROID-040-000: Executed command: Commandline = " + commandline +
-                                ", Result = " + result );
+                            logger.debug( "ANDROID-040-000: Executed command: Commandline = " + commandline
+                                + ", Result = " + result );
                         }
                         else
                         {
-                            System.out.println( "ANDROID-040-000: Executed command: Commandline = " + commandline +
-                                ", Result = " + result );
+                            System.out.println( "ANDROID-040-000: Executed command: Commandline = " + commandline
+                                + ", Result = " + result );
                         }
                         if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
                         {
-                            throw new ExecutionException( "ANDROID-040-001: Could not execute: Command = " +
-                                commandline.toString() + ", Result = " + result );
+                            throw new ExecutionException( "ANDROID-040-001: Could not execute: Command = "
+                                + commandline.toString() + ", Result = " + result );
                         }
                     }
                     catch ( CommandLineException e )
                     {
-                        throw new ExecutionException(
-                            "ANDROID-040-002: Could not execute: Command = " + commandline.toString() );
+                        throw new ExecutionException( "ANDROID-040-002: Could not execute: Command = "
+                            + commandline.toString() );
                     }
                 }
 
@@ -214,9 +213,9 @@ public interface CommandExecutor
                 }
 
                 /**
-                 * Provides behavior for determining whether the command utility wrote anything to the Standard Error Stream.
-                 * NOTE: I am using this to decide whether to fail the NMaven build. If the compiler implementation chooses
-                 * to write warnings to the error stream, then the build will fail on warnings!!!
+                 * Provides behavior for determining whether the command utility wrote anything to the Standard Error
+                 * Stream. NOTE: I am using this to decide whether to fail the NMaven build. If the compiler
+                 * implementation chooses to write warnings to the error stream, then the build will fail on warnings!!!
                  */
                 class ErrorStreamConsumer
                     implements StreamConsumer
@@ -253,7 +252,7 @@ public interface CommandExecutor
 
                     /**
                      * Returns false if the command utility wrote to the Standard Error Stream, otherwise returns true.
-                     *
+                     * 
                      * @return false if the command utility wrote to the Standard Error Stream, otherwise returns true.
                      */
                     public boolean hasError()
@@ -263,7 +262,7 @@ public interface CommandExecutor
 
                     /**
                      * Returns the error stream
-                     *
+                     * 
                      * @return error stream
                      */
                     public String toString()
@@ -299,7 +298,7 @@ public interface CommandExecutor
 
                     /**
                      * Returns the stream
-                     *
+                     * 
                      * @return the stream
                      */
                     public String toString()

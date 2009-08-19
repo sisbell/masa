@@ -39,28 +39,29 @@ import java.util.Map;
  * @requiresDependencyResolution compile
  * @description
  */
-public class AaptCompilerMojo extends AbstractMojo {
+public class AaptCompilerMojo
+    extends AbstractMojo
+{
 
     /**
      * @parameter default-value=true
      */
     private boolean createPackageDirectories;
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
-    /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;      
 
     /**
-     * @parameter default-value="res"
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
+
+    /**
+     * @parameter default-value="${project.build.directory}/processed-resources"
      */
     public File resourceDirectory;
 
@@ -74,64 +75,74 @@ public class AaptCompilerMojo extends AbstractMojo {
      */
     public File androidManifestFile;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-   
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
+
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
+        executor.setLogger( this.getLog() );
 
-        //Get rid of this annoying Thumbs.db problem on windows
+        // Get rid of this annoying Thumbs.db problem on windows
 
-        File thumbs = new File(resourceDirectory, "drawable/Thumbs.db");
-        if (thumbs.exists()) {
-            getLog().info("Deleting thumbs.db from resource directory");
+        File thumbs = new File( resourceDirectory, "drawable/Thumbs.db" );
+        if ( thumbs.exists() )
+        {
+            getLog().info( "Deleting thumbs.db from resource directory" );
             thumbs.delete();
         }
-        
-        if (androidManifestFile == null) {
-            androidManifestFile = new File(resourceDirectory.getParent(), "AndroidManifest.xml");
+
+        if ( androidManifestFile == null )
+        {
+            androidManifestFile = new File( resourceDirectory.getParent(), "AndroidManifest.xml" );
         }
 
         String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
-        new File(generatedSourceDirectoryName).mkdirs();
+        new File( generatedSourceDirectoryName ).mkdirs();
 
-        File androidJar = MasaUtil.getAndroidJarFile(project);
+        File androidJar = MasaUtil.getAndroidJarFile( project );
 
         List<String> commands = new ArrayList<String>();
-        commands.add("package");
-        
-        if (createPackageDirectories) {
-            commands.add("-m");
+        commands.add( "package" );
+
+        if ( createPackageDirectories )
+        {
+            commands.add( "-m" );
         }
-        commands.add("-J");
-        commands.add(generatedSourceDirectoryName);
-        commands.add("-M");
-        commands.add(androidManifestFile.getAbsolutePath());
-        if (resourceDirectory.exists()) {
-            commands.add("-S");
-            commands.add(resourceDirectory.getAbsolutePath());
+        commands.add( "-J" );
+        commands.add( generatedSourceDirectoryName );
+        commands.add( "-M" );
+        commands.add( androidManifestFile.getAbsolutePath() );
+        if ( resourceDirectory.exists() )
+        {
+            commands.add( "-S" );
+            commands.add( resourceDirectory.getAbsolutePath() );
         }
-        if (assetsDirectory.exists()) {
-            commands.add("-A");
-            commands.add(assetsDirectory.getAbsolutePath());
+        if ( assetsDirectory.exists() )
+        {
+            commands.add( "-A" );
+            commands.add( assetsDirectory.getAbsolutePath() );
         }
-        commands.add("-I");
-        commands.add(androidJar.getAbsolutePath());
-        
-        String apptCommand = MasaUtil.getToolnameWithPath(session, project, "aapt");
-        getLog().info(apptCommand + ":" + commands.toString());
-        try {
-            executor.executeCommand(apptCommand, commands, project.getBasedir(), false);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("", e);
+        commands.add( "-I" );
+        commands.add( androidJar.getAbsolutePath() );
+
+        String apptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
+        getLog().info( apptCommand + ":" + commands.toString() );
+        try
+        {
+            executor.executeCommand( apptCommand, commands, project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
 
-        project.addCompileSourceRoot(generatedSourceDirectoryName);
+        project.addCompileSourceRoot( generatedSourceDirectoryName );
 
-//        if(System.getProperty("masa.debug") != null && platformUnitTestDirectory.exists())
-//        {
-//            project.addCompileSourceRoot(platformUnitTestDirectory.getAbsolutePath());
-//        }
+        // if(System.getProperty("masa.debug") != null &&
+        // platformUnitTestDirectory.exists())
+        // {
+        // project.addCompileSourceRoot(platformUnitTestDirectory.getAbsolutePath());
+        // }
     }
-
 
 }

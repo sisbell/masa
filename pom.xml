@@ -1,239 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright (C) 2007-2008 JVending Masa
+	<!--
+		Copyright (C) 2007-2008 JVending Masa Licensed under the Apache
+		License, Version 2.0 (the "License"); you may not use this file except
+		in compliance with the License. You may obtain a copy of the License
+		at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jvending.masa</groupId>
+	<artifactId>masa-project</artifactId>
+	<version>1.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>JVending Masa: masa-project</name>
+	<description>Maven Plugins Project for Android</description>
+	<url>http://code.google.com/p/masa</url>
+	<inceptionYear>2008</inceptionYear>
+	<scm>
+		<url>http://masa.googlecode.com/svn/trunk</url>
+		<connection>scm:svn:http://masa.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://masa.googlecode.com/svn/trunk</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>Issue Tracking</system>
+		<url>http://code.google.com/p/masa/issues/list</url>
+	</issueManagement>
+	<licenses>
+		<license>
+			<name>Apache 2.0</name>
+			<url>LICENSE.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Shane Isbell</name>
+			<id>sisbell</id>
+			<email>shane.isbell@gmail.com</email>
+			<url>http://jroller.com/page/random7</url>
+			<roles>
+				<role>committer</role>
+			</roles>
+		</developer>
+	</developers>
+	<properties>
+		<maven.version>2.0.10</maven.version>
+		<plexus.version>1.0.0</plexus.version>
+		<plexus.utils.version>1.5.9</plexus.utils.version>
+		<plexus.archiver.version>1.0-alpha-12</plexus.archiver.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>maven-aapt-plugin</module>
+		<module>maven-apkbuilder-plugin</module>
+		<module>maven-adb-plugin</module>
+		<module>maven-aidl-plugin</module>
+		<module>masa-core</module>
+		<module>maven-dx-plugin</module>
+		<module>maven-par-plugin</module>
+		<module>maven-platformtest-plugin</module>
+		<module>masa-toolchains-model</module>
+		<module>maven-toolchains-plugin</module>
+		<module>maven-jarsigner-plugin</module>
+		<module>maven-po-plugin</module>
+	</modules>
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jvending.masa</groupId>
-    <artifactId>masa-project</artifactId>
-    <version>1.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>JVending Masa: masa-project</name>
-    <description>Maven Plugins Project for Android</description>
-    <url>http://code.google.com/p/masa</url>
-    <inceptionYear>2008</inceptionYear>
-    <scm>
-        <url>http://masa.googlecode.com/svn/trunk</url>
-        <connection>scm:svn:http://masa.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://masa.googlecode.com/svn/trunk</developerConnection>
-    </scm>
-    <issueManagement>
-        <system>Issue Tracking</system>
-        <url>http://code.google.com/p/masa/issues/list</url>
-    </issueManagement>
-    <licenses>
-        <license>
-            <name>Apache 2.0</name>
-            <url>LICENSE.txt</url>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <name>Shane Isbell</name>
-            <id>sisbell</id>
-            <email>shane.isbell@gmail.com</email>
-            <url>http://jroller.com/page/random7</url>
-            <roles>
-                <role>committer</role>
-            </roles>
-        </developer>
-    </developers>
-    <properties>
-    	<maven.version>2.0.10</maven.version>
-    	<plexus.version>1.0.0</plexus.version>
-     	<plexus.utils.version>1.5.9</plexus.utils.version>   
-     	<plexus.archiver.version>1.0-alpha-12</plexus.archiver.version>   	
-    </properties>
-    <modules>
-    <module>maven-aapt-plugin</module>
-    <module>maven-apkbuilder-plugin</module>
-    <module>maven-adb-plugin</module>
-    <module>maven-aidl-plugin</module>
-    <module>masa-core</module>
-    <module>maven-dx-plugin</module>
-    <module>maven-par-plugin</module>
-    <module>maven-platformtest-plugin</module>
-    <module>masa-toolchains-model</module>
-    <module>maven-toolchains-plugin</module>
-    <module>maven-jarsigner-plugin</module>
-  </modules>
-    <dependencyManagement>
-    	<dependencies>
-	        <dependency>
-	            <groupId>org.codehaus.plexus</groupId>
-	            <artifactId>plexus-utils</artifactId>
-	            <version>${plexus.utils.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>org.codehaus.plexus</groupId>
-	            <artifactId>plexus-container-default</artifactId>
-	            <version>${plexus.version}</version>
-	        </dependency>        
-	        <dependency>
-	            <groupId>org.apache.maven</groupId>
-	            <artifactId>maven-plugin-api</artifactId>
-	            <version>${maven.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>org.apache.maven</groupId>
-	            <artifactId>maven-toolchain</artifactId>
-	            <version>${maven.version}</version>
-	        </dependency> 
-	        <dependency>
-	            <groupId>org.apache.maven</groupId>
-	            <artifactId>maven-project</artifactId>
-	            <version>${maven.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>org.apache.maven</groupId>
-	            <artifactId>maven-artifact</artifactId>
-	            <version>${maven.version}</version>
-	        </dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-utils</artifactId>
+				<version>${plexus.utils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-container-default</artifactId>
+				<version>${plexus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-toolchain</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-project</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-artifact</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-model</artifactId>
 				<version>${maven.version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.apache.maven</groupId>
-		      <artifactId>maven-plugin-descriptor</artifactId>
-		      <version>${maven.version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.apache.maven</groupId>
-		      <artifactId>maven-core</artifactId>
-		      <version>${maven.version}</version>
-		    </dependency>		    		    
-	        <dependency>
-	            <groupId>org.codehaus.plexus</groupId>
-	            <artifactId>plexus-archiver</artifactId>
-	            <version>${plexus.archiver.version}</version>
-	        </dependency>		    
-    	</dependencies>
-    </dependencyManagement>	
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.0-beta-9</version>
-                    <configuration>
-                        <tagBase>https://masa.googlecode.com/svn/tags</tagBase>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <preparationGoals>clean install</preparationGoals>
-                        <goals>deploy</goals>
-                        <arguments>-Prelease,deploy</arguments>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.1</version>
-                    <configuration>
-                        <archive>
-                            <manifestEntries>
-                                <Build-Source-Version>1.5</Build-Source-Version>
-                                <Build-Target-Version>1.5</Build-Target-Version>
-                            </manifestEntries>
-                        </archive>
-                    </configuration>
-                </plugin>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-descriptor</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-core</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-archiver</artifactId>
+				<version>${plexus.archiver.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.0-beta-9</version>
+					<configuration>
+						<tagBase>https://masa.googlecode.com/svn/tags</tagBase>
+						<useReleaseProfile>false</useReleaseProfile>
+						<preparationGoals>clean install</preparationGoals>
+						<goals>deploy</goals>
+						<arguments>-Prelease,deploy</arguments>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.1</version>
+					<configuration>
+						<archive>
+							<manifestEntries>
+								<Build-Source-Version>1.5</Build-Source-Version>
+								<Build-Target-Version>1.5</Build-Target-Version>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.codehaus.modello</groupId>
 					<artifactId>modello-maven-plugin</artifactId>
 					<version>1.0.1</version>
 				</plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>slideme.snapshots</id>
-            <name>SlideME SNAPSHOT Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>slideme.releases</id>
-            <name>SlideME Release Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public</url>
-        </repository>
-    </distributionManagement>
-    <!-- 
-    <repositories>
-        <repository>
-            <id>slideme.snapshots</id>
-            <name>SlideME SNAPSHOT Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>slideme.releases</id>
-            <name>Maven Release Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    -->
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/src.xml</descriptor>
-                            </descriptors>
-                            <tarLongFileMode>gnu</tarLongFileMode>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>make-assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>slideme.snapshots</id>
+			<name>SlideME SNAPSHOT Repository</name>
+			<url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>slideme.releases</id>
+			<name>SlideME Release Repository</name>
+			<url>http://repository.slideme.org/nexus/content/groups/public</url>
+		</repository>
+	</distributionManagement>
+	<!--
+		<repositories> <repository> <id>slideme.snapshots</id> <name>SlideME
+		SNAPSHOT Repository</name>
+		<url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
+		<snapshots> <enabled>true</enabled> </snapshots> <releases>
+		<enabled>false</enabled> </releases> </repository> <repository>
+		<id>slideme.releases</id> <name>Maven Release Repository</name>
+		<url>http://repository.slideme.org/nexus/content/groups/public</url>
+		<snapshots> <enabled>false</enabled> </snapshots> <releases>
+		<enabled>true</enabled> </releases> </repository> </repositories>
+	-->
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<inherited>false</inherited>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/src.xml</descriptor>
+							</descriptors>
+							<tarLongFileMode>gnu</tarLongFileMode>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

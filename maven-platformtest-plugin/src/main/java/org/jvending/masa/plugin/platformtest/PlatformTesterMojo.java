@@ -38,23 +38,24 @@ import java.util.List;
  * @phase integration-test
  * @description
  */
-public class PlatformTesterMojo extends AbstractMojo {
+public class PlatformTesterMojo
+    extends AbstractMojo
+{
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
-    /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;    
 
     /**
-     * @parameter 
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
+
+    /**
+     * @parameter
      */
     private String targetPackage;
 
@@ -63,27 +64,34 @@ public class PlatformTesterMojo extends AbstractMojo {
      */
     private String testRunnerName;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if(targetPackage == null || testRunnerName == null) {
-            getLog().info("Test Runner not Set: " + targetPackage + ":" + testRunnerName);
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
+        if ( targetPackage == null || testRunnerName == null )
+        {
+            getLog().info( "Test Runner not Set: " + targetPackage + ":" + testRunnerName );
             return;
         }
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
+        executor.setLogger( this.getLog() );
 
         List<String> commands = new ArrayList<String>();
-        commands.add("shell");
-        commands.add("am");
-        commands.add("instrument");
-        commands.add( "-w");
-        commands.add( targetPackage + "/" + testRunnerName);
-        
-        getLog().info("adb " + commands.toString());
-        try {
-            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "adb"), commands, project.getBasedir(), false);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("", e);
+        commands.add( "shell" );
+        commands.add( "am" );
+        commands.add( "instrument" );
+        commands.add( "-w" );
+        commands.add( targetPackage + "/" + testRunnerName );
+
+        getLog().info( "adb " + commands.toString() );
+        try
+        {
+            executor.executeCommand( MasaUtil.getToolnameWithPath( session, project, "adb" ), commands,
+                                     project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
     }
 }

@@ -9,7 +9,7 @@
 	<groupId>org.jvending.masa.plugins</groupId>
 	<artifactId>maven-jarsigner-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>maven-jarsigner-plugin Maven Mojo</name>
+	<name>JVending Masa: maven-jarsigner-plugin</name>
 	<version>1.1-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>

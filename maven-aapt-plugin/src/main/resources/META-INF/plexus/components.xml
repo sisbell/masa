@@ -14,7 +14,10 @@
                <generate-sources>
                    org.jvending.masa.plugins:maven-aidl-plugin:generate
                </generate-sources>
-               <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+               <process-resources>
+               		org.jvending.masa.plugins:maven-resources-plugin:localize,
+               		org.apache.maven.plugins:maven-resources-plugin:resources,               		
+               </process-resources>
                <compile>
                   org.jvending.masa.plugins:maven-aapt-plugin:compile,
                   org.apache.maven.plugins:maven-compiler-plugin:compile
@@ -88,6 +91,25 @@
          </configuration>
       </component>
       <component>
+         <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+         <role-hint>android:po</role-hint>
+         <implementation>
+            org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+         </implementation>                                                
+         <configuration>
+            <phases>
+               <process-resources>org.jvending.masa.plugins:maven-po-plugin:resources</process-resources>
+               <package>
+                  org.jvending.masa.plugins:maven-po-plugin:package
+               </package>
+               <install>
+                  org.apache.maven.plugins:maven-install-plugin:install
+               </install>
+               <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+            </phases>
+         </configuration>
+      </component>      
+      <component>
          <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
          <role-hint>android:dex</role-hint>
          <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
@@ -114,5 +136,14 @@
             <type>android:par</type>
          </configuration>
       </component>
+      <component>
+         <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+         <role-hint>android:po</role-hint>
+         <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+         <configuration>
+            <extension>po</extension>
+            <type>android:po</type>
+         </configuration>
+      </component>      
    </components>
 </component-set>

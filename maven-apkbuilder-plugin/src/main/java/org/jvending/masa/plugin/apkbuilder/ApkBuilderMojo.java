@@ -35,20 +35,21 @@ import java.util.List;
  * @phase package
  * @description
  */
-public class ApkBuilderMojo extends AbstractMojo {
+public class ApkBuilderMojo
+    extends AbstractMojo
+{
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
+
     /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;    
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
 
     /**
      * Maven ProjectHelper.
@@ -58,31 +59,38 @@ public class ApkBuilderMojo extends AbstractMojo {
      */
     private MavenProjectHelper projectHelper;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
-        
-        File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + "-unsigned.apk");
+        executor.setLogger( this.getLog() );
+
+        File outputFile =
+            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-unsigned.apk" );
 
         List<String> commands = new ArrayList<String>();
-        commands.add(outputFile.getAbsolutePath());
-        commands.add("-u");
-        
-        commands.add("-z");
-        commands.add(new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + ".ap_").getAbsolutePath());
-        commands.add("-f");
-        commands.add( new File(project.getBuild().getDirectory(),  "classes.dex").getAbsolutePath());
-        commands.add("-rf");
-        commands.add(new File(project.getBuild().getSourceDirectory()).getAbsolutePath());
-        
-        getLog().info("apkbuilder " + commands.toString());
-        try {
-            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "apkbuilder"), commands, project.getBasedir(), false);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("", e);
+        commands.add( outputFile.getAbsolutePath() );
+        commands.add( "-u" );
+
+        commands.add( "-z" );
+        commands.add( new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" ).getAbsolutePath() );
+        commands.add( "-f" );
+        commands.add( new File( project.getBuild().getDirectory(), "classes.dex" ).getAbsolutePath() );
+        commands.add( "-rf" );
+        commands.add( new File( project.getBuild().getSourceDirectory() ).getAbsolutePath() );
+
+        getLog().info( "apkbuilder " + commands.toString() );
+        try
+        {
+            executor.executeCommand( MasaUtil.getToolnameWithPath( session, project, "apkbuilder" ), commands,
+                                     project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
 
-        projectHelper.attachArtifact(project, "apk", "unsigned", outputFile);
+        projectHelper.attachArtifact( project, "apk", "unsigned", outputFile );
     }
 }

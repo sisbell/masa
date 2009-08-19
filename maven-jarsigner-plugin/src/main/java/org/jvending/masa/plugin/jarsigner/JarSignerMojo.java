@@ -32,119 +32,127 @@ import org.jvending.masa.ExecutionException;
  * @goal sign
  * @phase package
  */
-public class JarSignerMojo extends AbstractMojo {
+public class JarSignerMojo
+    extends AbstractMojo
+{
 
-	/**
-	 * The maven project.
-	 * 
-	 * @parameter expression="${project}"
-	 */
-	public MavenProject project;
-	
+    /**
+     * The maven project.
+     * 
+     * @parameter expression="${project}"
+     */
+    public MavenProject project;
+
     /**
      * Maven ProjectHelper.
      * 
      * @component
      * @readonly
      */
-    private MavenProjectHelper projectHelper;	
+    private MavenProjectHelper projectHelper;
 
-	/**
-	 * 
-	 * @parameter expression="${keystore}"
-	 */
-	public String keystore;
+    /**
+     * @parameter expression="${keystore}"
+     */
+    public String keystore;
 
-	/**
-	 * 
-	 * @parameter expression="${alias}" default-value="androiddebugkey"
-	 */
-	public String alias;
+    /**
+     * @parameter expression="${alias}" default-value="androiddebugkey"
+     */
+    public String alias;
 
-	/**
-	 * 
-	 * @parameter expression="${storepass}" default-value="android"
-	 */
-	public String storepass;
+    /**
+     * @parameter expression="${storepass}" default-value="android"
+     */
+    public String storepass;
 
-	/**
-	 * 
-	 * @parameter expression="${keypass}" default-value="android"
-	 */
-	public String keypass;
+    /**
+     * @parameter expression="${keypass}" default-value="android"
+     */
+    public String keypass;
 
-	/**
-	 * 
-	 * @parameter expression="${disableStorePass}" default-value="false"
-	 */
-	public boolean disableStorePass;
-	
-	/**
-	 * 
-	 * @parameter expression="${disableKeypass}" default-value="false"
-	 */
-	public boolean disableKeypass;	
+    /**
+     * @parameter expression="${disableStorePass}" default-value="false"
+     */
+    public boolean disableStorePass;
 
-	public void execute() throws MojoExecutionException {
-		CommandExecutor executor = CommandExecutor.Factory
-				.createDefaultCommmandExecutor();
-		executor.setLogger(this.getLog());
+    /**
+     * @parameter expression="${disableKeypass}" default-value="false"
+     */
+    public boolean disableKeypass;
 
-		if (keystore == null) {
-			String home = System.getProperty("user.home");
-			File f = new File(home, ".android/debug.keystore");
-			if (f.exists()) {
-				keystore = f.getAbsolutePath();
-			} else {
-				f = new File(home,
-						"Local Settings\\Application Data\\Android\\debug.keystore");
-				if (!f.exists()) {
-					throw new MojoExecutionException(
-							"Keystore not specificed and could not locate default debug.keystore");
-				}
-			}
-		}
-		List<String> commands = new ArrayList<String>();
-		// commands.add("-verbose");
-		if (!disableKeypass) {
-			commands.add("-keystore");
-			commands.add(keystore);
-		}
-		
-		if(!disableStorePass)
-		{
-			commands.add("-storepass");
-			commands.add(storepass);
-		}
-		
-		commands.add("-keypass");
-		commands.add(keypass);
-		String apk = null;
-		for (Artifact a : (List<Artifact>) project.getAttachedArtifacts()) {
-			if (a.getType().equals("apk")) {
-				apk = a.getFile().getAbsolutePath();
-				break;
-			}
-		}
-		if (apk == null) {
-			throw new MojoExecutionException("Could not find source apk");
-		}
-		File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + "-signed.apk");
-		commands.add("-signedjar");
-		commands.add(outputFile.getAbsolutePath());
-		
-		commands.add(apk);
-		commands.add(alias);
+    public void execute()
+        throws MojoExecutionException
+    {
+        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        executor.setLogger( this.getLog() );
 
-		this.getLog().info("jarsigner" + commands.toString());
+        if ( keystore == null )
+        {
+            String home = System.getProperty( "user.home" );
+            File f = new File( home, ".android/debug.keystore" );
+            if ( f.exists() )
+            {
+                keystore = f.getAbsolutePath();
+            }
+            else
+            {
+                f = new File( home, "Local Settings\\Application Data\\Android\\debug.keystore" );
+                if ( !f.exists() )
+                {
+                    throw new MojoExecutionException(
+                                                      "Keystore not specificed and could not locate default debug.keystore" );
+                }
+            }
+        }
+        List<String> commands = new ArrayList<String>();
+        // commands.add("-verbose");
+        if ( !disableKeypass )
+        {
+            commands.add( "-keystore" );
+            commands.add( keystore );
+        }
 
-		try {
-			executor.executeCommand("jarsigner", commands,
-					project.getBasedir(), false);
-		} catch (ExecutionException e) {
-			throw new MojoExecutionException("", e);
-		}
-		
-		projectHelper.attachArtifact(project, "apk", "signed", outputFile);
-	}
+        if ( !disableStorePass )
+        {
+            commands.add( "-storepass" );
+            commands.add( storepass );
+        }
+
+        commands.add( "-keypass" );
+        commands.add( keypass );
+        String apk = null;
+        for ( Artifact a : (List<Artifact>) project.getAttachedArtifacts() )
+        {
+            if ( a.getType().equals( "apk" ) )
+            {
+                apk = a.getFile().getAbsolutePath();
+                break;
+            }
+        }
+        if ( apk == null )
+        {
+            throw new MojoExecutionException( "Could not find source apk" );
+        }
+        File outputFile =
+            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed.apk" );
+        commands.add( "-signedjar" );
+        commands.add( outputFile.getAbsolutePath() );
+
+        commands.add( apk );
+        commands.add( alias );
+
+        this.getLog().info( "jarsigner" + commands.toString() );
+
+        try
+        {
+            executor.executeCommand( "jarsigner", commands, project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+
+        projectHelper.attachArtifact( project, "apk", "signed", outputFile );
+    }
 }

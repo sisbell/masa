@@ -31,11 +31,13 @@ import java.io.IOException;
  * @requiresDependencyResolution runtime
  * @description
  */
-public class ParPackagerMojo extends AbstractMojo {
+public class ParPackagerMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -44,24 +46,31 @@ public class ParPackagerMojo extends AbstractMojo {
 
     /**
      * Input directory
-     *
+     * 
      * @parameter expression = "${inputDirectory}" default-value="${project.build.directory}/par-archive"
      * @required
      */
     private File inputDir;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
         ZipArchiver archiver = new ZipArchiver();
-        archiver.setForced(true);
-        archiver.setDestFile(new File(project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".par"));
+        archiver.setForced( true );
+        archiver.setDestFile( new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".par" ) );
 
-        try {
-            archiver.addDirectory(inputDir);
+        try
+        {
+            archiver.addDirectory( inputDir );
             archiver.createArchive();
-        } catch (ArchiverException e) {
-            throw new MojoExecutionException("", e);
-        } catch (IOException e) {
-            throw new MojoExecutionException("", e);
+        }
+        catch ( ArchiverException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
     }
 }

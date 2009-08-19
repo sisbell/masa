@@ -1,0 +1,6 @@
+# masa header
+#
+msgctxt "all"
+msgid "aaa"
+msgstr "123\n"
+"adb"

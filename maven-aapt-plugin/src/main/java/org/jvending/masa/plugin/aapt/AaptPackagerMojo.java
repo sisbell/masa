@@ -33,23 +33,24 @@ import java.util.List;
  * @phase package
  * @description
  */
-public final class AaptPackagerMojo extends AbstractMojo {
+public final class AaptPackagerMojo
+    extends AbstractMojo
+{
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
-    /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;      
 
     /**
-     * @parameter default-value="res"
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
+
+    /**
+     * @parameter default-value="${project.build.directory}/processed-resources"
      */
     public File resourceDirectory;
 
@@ -63,43 +64,51 @@ public final class AaptPackagerMojo extends AbstractMojo {
      */
     public File androidManifestFile;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
 
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(getLog());
+        executor.setLogger( getLog() );
 
-        if (androidManifestFile == null) {
-            androidManifestFile = new File(resourceDirectory.getParent(), "AndroidManifest.xml");
+        if ( androidManifestFile == null )
+        {
+            androidManifestFile = new File( resourceDirectory.getParent(), "AndroidManifest.xml" );
         }
 
-        File androidJar = MasaUtil.getAndroidJarFile(project);
-        File outputFile = new File(project.getBuild().getDirectory(),  project.getBuild().getFinalName() + ".ap_");
+        File androidJar = MasaUtil.getAndroidJarFile( project );
+        File outputFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
 
         List<String> commands = new ArrayList<String>();
-        commands.add("package");
+        commands.add( "package" );
 
-        commands.add("-f");
-        commands.add("-M");
-        commands.add(androidManifestFile.getAbsolutePath());
-        if (resourceDirectory.exists()) {
-            commands.add("-S");
-            commands.add(resourceDirectory.getAbsolutePath());
+        commands.add( "-f" );
+        commands.add( "-M" );
+        commands.add( androidManifestFile.getAbsolutePath() );
+        if ( resourceDirectory.exists() )
+        {
+            commands.add( "-S" );
+            commands.add( resourceDirectory.getAbsolutePath() );
         }
-        if (assetsDirectory.exists()) {
-            commands.add("-A");
-            commands.add(assetsDirectory.getAbsolutePath());
+        if ( assetsDirectory.exists() )
+        {
+            commands.add( "-A" );
+            commands.add( assetsDirectory.getAbsolutePath() );
         }
-        commands.add("-I");
-        commands.add(androidJar.getAbsolutePath());
-        commands.add("-F");
-        commands.add(outputFile.getAbsolutePath());
-        
-        String aaptCommand = MasaUtil.getToolnameWithPath(session, project, "aapt");
-        getLog().info(aaptCommand + " "  + commands.toString());
-        try {
-            executor.executeCommand(aaptCommand, commands, project.getBasedir(), false);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("", e);
+        commands.add( "-I" );
+        commands.add( androidJar.getAbsolutePath() );
+        commands.add( "-F" );
+        commands.add( outputFile.getAbsolutePath() );
+
+        String aaptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
+        getLog().info( aaptCommand + " " + commands.toString() );
+        try
+        {
+            executor.executeCommand( aaptCommand, commands, project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
     }
 }

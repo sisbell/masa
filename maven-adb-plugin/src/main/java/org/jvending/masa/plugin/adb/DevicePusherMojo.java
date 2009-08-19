@@ -33,21 +33,22 @@ import java.util.List;
  * @requiresProject false
  * @description
  */
-public final class DevicePusherMojo extends AbstractMojo {
+public final class DevicePusherMojo
+    extends AbstractMojo
+{
 
-	/**
+    /**
      * The maven project.
-     *
+     * 
      * @parameter expression="${project}"
      */
     public MavenProject project;
-    
+
     /**
-    *
-    * @parameter expression="${session}"
-    */
-    public MavenSession session;      
- 
+     * @parameter expression="${session}"
+     */
+    public MavenSession session;
+
     /**
      * @parameter expression="${source}"
      * @required
@@ -60,19 +61,24 @@ public final class DevicePusherMojo extends AbstractMojo {
      */
     private File destinationFileOrDirectory;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger(this.getLog());
+        executor.setLogger( this.getLog() );
 
         List<String> commands = new ArrayList<String>();
-        commands.add("push");
-        commands.add(sourceFileOrDirectory.getAbsolutePath());
-        commands.add(destinationFileOrDirectory.getAbsolutePath());
+        commands.add( "push" );
+        commands.add( sourceFileOrDirectory.getAbsolutePath() );
+        commands.add( destinationFileOrDirectory.getAbsolutePath() );
 
-        getLog().info("adb " + commands.toString());
-        try {
-            executor.executeCommand(MasaUtil.getToolnameWithPath(session, project, "aapt"), commands);
-        } catch (ExecutionException e) {
+        getLog().info( "adb " + commands.toString() );
+        try
+        {
+            executor.executeCommand( MasaUtil.getToolnameWithPath( session, project, "aapt" ), commands );
+        }
+        catch ( ExecutionException e )
+        {
         }
     }
 }
