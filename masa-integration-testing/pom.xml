@@ -36,12 +36,7 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<!-- The original Maven distribution to test. -->
 		<mavenHome>${maven.home}</mavenHome>
-		<!--
-			The (possibly instrumented copy of the) Maven distribution we
-			actually use for the tests.
-		-->
 		<preparedMavenHome>${mavenHome}</preparedMavenHome>
 	</properties>
 	<build>
