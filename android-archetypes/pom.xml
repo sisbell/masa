@@ -9,5 +9,6 @@
   <url>http://maven.apache.org</url>
   <modules>
   	<module>android-archetype-quickstart</module>
+    <module>android-archetype-po</module>
   </modules>
 </project>

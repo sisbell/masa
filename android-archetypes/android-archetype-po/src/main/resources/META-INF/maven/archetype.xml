@@ -1,0 +1,6 @@
+<archetype>
+	<id>android-archetype-po</id>
+	<resources>
+		<resource>po/strings.xml</resource>
+	</resources>
+</archetype>

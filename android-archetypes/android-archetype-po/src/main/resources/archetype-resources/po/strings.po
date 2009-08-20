@@ -1,0 +1,5 @@
+# masa header
+#
+msgctxt "all"
+msgid "aaa"
+msgstr "123"
