@@ -36,7 +36,6 @@ public class ToolchainMojo
 
     /**
      * @parameter
-     * @required
      */
     private Toolchains toolchains;
 
@@ -53,6 +52,11 @@ public class ToolchainMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        if(toolchains == null)
+        {
+            return;
+        }
+        
         if ( toolchainsFile == null )
         {
             toolchainsFile =

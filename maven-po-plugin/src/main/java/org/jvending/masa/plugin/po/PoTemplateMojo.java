@@ -39,18 +39,16 @@ public class PoTemplateMojo
      */
     private File outputFile;
 
-    /**
-     * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-
+        try
+        {
+            PoTransformer.createTemplateFromStringsXml( inputFile, outputFile );
+        }
+        catch ( IOException e )
+        {
+           throw new MojoExecutionException("", e);
+        }
     }
 }

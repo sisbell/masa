@@ -1,4 +1,5 @@
 <component-set>
+<!-- com.pyx4me:proguard-maven-plugin:proguard, -->
    <components>
       <component>
          <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
@@ -16,15 +17,14 @@
                </generate-sources>
                <process-resources>
                		org.jvending.masa.plugins:maven-resources-plugin:localize,
-               		org.apache.maven.plugins:maven-resources-plugin:resources,               		
+               		org.apache.maven.plugins:maven-resources-plugin:resources              		
                </process-resources>
                <compile>
                   org.jvending.masa.plugins:maven-aapt-plugin:compile,
                   org.apache.maven.plugins:maven-compiler-plugin:compile
                </compile>
                <process-classes>
-                   org.apache.maven.plugins:maven-jar-plugin:jar,
-                   com.pyx4me:proguard-maven-plugin:proguard,
+                   org.apache.maven.plugins:maven-jar-plugin:jar,                
                    org.jvending.masa.plugins:maven-dx-plugin:dx
                </process-classes>
                <process-test-resources>

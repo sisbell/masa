@@ -53,6 +53,12 @@ public class AidlGeneratorMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        File sourceDir = new File(project.getBuild().getSourceDirectory());
+        if(!sourceDir.exists())
+        {
+            return;
+        }
+        
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( project.getBuild().getSourceDirectory() );
 

@@ -73,6 +73,7 @@
 		<module>maven-toolchains-plugin</module>
 		<module>maven-jarsigner-plugin</module>
 		<module>maven-po-plugin</module>
+		<module>android-archetypes</module>
 	</modules>
 
 	<dependencyManagement>

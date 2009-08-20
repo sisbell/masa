@@ -1,0 +1,23 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jvending.masa.it.masa000
+	</groupId>
+	<artifactId>artifact</artifactId>
+	<version>1.0</version>
+	<packaging>android:po</packaging>
+
+	<name>Masa Integration Test :: MASA-29a</name>
+	<description>
+
+	</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jvending.masa.plugins
+				</groupId>
+				<artifactId>maven-aapt-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

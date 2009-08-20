@@ -1,0 +1,9 @@
+<archetype>
+  <id>android-archetype-quickstart</id>
+  <resources>
+    <resource>src/App.java</resource>
+  	<resource>res/layout/main.xml</resource>
+  	<resource>res/values/strings.xml</resource>
+  	<resource>AndroidManifest.xml</resource>
+  </resources>
+</archetype>

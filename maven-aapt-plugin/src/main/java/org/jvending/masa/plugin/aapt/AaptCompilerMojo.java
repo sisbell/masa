@@ -93,14 +93,24 @@ public class AaptCompilerMojo
 
         if ( androidManifestFile == null )
         {
-            androidManifestFile = new File( resourceDirectory.getParent(), "AndroidManifest.xml" );
+            androidManifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
         }
-
+        
+        if ( !androidManifestFile.exists() )
+        {
+            throw new MojoExecutionException( "Android manifest file not found: File = "
+                + androidManifestFile.getAbsolutePath() );
+        }
+        
         String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
         new File( generatedSourceDirectoryName ).mkdirs();
 
         File androidJar = MasaUtil.getAndroidJarFile( project );
-
+        if ( !androidJar.exists() )
+        {
+            throw new MojoExecutionException( "Android jar file not found: File = " + androidJar.getAbsolutePath() );
+        }
+        
         List<String> commands = new ArrayList<String>();
         commands.add( "package" );
 

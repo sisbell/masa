@@ -21,6 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-core</artifactId>
+	<version>1.1-SNAPSHOT</version>
 	<name>JVending Masa: masa-core</name>
 	<dependencies>
 		<dependency>

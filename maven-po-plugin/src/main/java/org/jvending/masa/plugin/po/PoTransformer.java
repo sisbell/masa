@@ -101,7 +101,6 @@ public class PoTransformer
 
                             // String c = new String(xmlStreamReader.getElementText());
                             String s = xmlStreamReader.getText();
-                            System.out.println( "FOLLOW: " + s );
                             /*
                              * if(s == null || s.trim().length() == 0)//contains html { s = c;
                              * System.out.println("FOLLOW: " + s); }

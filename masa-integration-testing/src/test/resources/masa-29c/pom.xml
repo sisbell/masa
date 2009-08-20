@@ -1,0 +1,36 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jvending.masa.it.masa29c
+	</groupId>
+	<artifactId>artifact</artifactId>
+	<version>1.0</version>
+	<packaging>android:apk</packaging>
+
+	<name>Masa Integration Test :: MASA-29c</name>
+	<description>
+
+	</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>1.5_r2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>res</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.jvending.masa.plugins
+				</groupId>
+				<artifactId>maven-aapt-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

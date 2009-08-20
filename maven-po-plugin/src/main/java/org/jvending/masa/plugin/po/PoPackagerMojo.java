@@ -36,10 +36,25 @@ public class PoPackagerMojo
      */
     private File inputDir;
 
+    /**
+     * Classifier
+     * 
+     * @parameter expression = "${classifier}" 
+     */
+    private String classifier;    
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        File file = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".po" );
+        if(!inputDir.exists())
+        {
+            getLog().info( "No po resource files to package."  );
+            return;
+        }
+              
+        File file = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName()
+                              + ((classifier != null) ? "-" + classifier : "") + ".pozip" );
+        
         ZipArchiver archiver = new ZipArchiver();
         archiver.setForced( true );
         archiver.setDestFile( file );
