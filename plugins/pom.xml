@@ -67,13 +67,10 @@
 		<module>maven-aidl-plugin</module>
 		<module>masa-core</module>
 		<module>maven-dx-plugin</module>
-		<module>maven-par-plugin</module>
 		<module>maven-platformtest-plugin</module>
-		<module>masa-toolchains-model</module>
 		<module>maven-toolchains-plugin</module>
 		<module>maven-jarsigner-plugin</module>
 		<module>maven-po-plugin</module>
-		<module>android-archetypes</module>
 	</modules>
 
 	<dependencyManagement>
