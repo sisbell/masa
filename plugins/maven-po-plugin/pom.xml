@@ -10,18 +10,18 @@
 		the specific language governing permissions and limitations under the
 		License.
 	-->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-plugins</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa.plugins</groupId>
 	<artifactId>maven-po-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-po-plugin</name>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
