@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1</version>
 	</parent>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-plugins</artifactId>
@@ -24,34 +24,11 @@
 	<packaging>pom</packaging>
 	<name>JVending Masa: masa-plugins</name>
 	<description>Maven Plugins Project for Android</description>
-	<url>http://code.google.com/p/masa</url>
-	<inceptionYear>2008</inceptionYear>
 	<scm>
-		<url>http://masa.googlecode.com/svn/trunk</url>
-		<connection>scm:svn:http://masa.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:https://masa.googlecode.com/svn/trunk</developerConnection>
+		<url>http://masa.googlecode.com/svn/trunk/plugins</url>
+		<connection>scm:svn:http://masa.googlecode.com/svn/trunk/plugins</connection>
+		<developerConnection>scm:svn:https://masa.googlecode.com/svn/trunk/plugins</developerConnection>
 	</scm>
-	<issueManagement>
-		<system>Issue Tracking</system>
-		<url>http://code.google.com/p/masa/issues/list</url>
-	</issueManagement>
-	<licenses>
-		<license>
-			<name>Apache 2.0</name>
-			<url>LICENSE.txt</url>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<name>Shane Isbell</name>
-			<id>sisbell</id>
-			<email>shane.isbell@gmail.com</email>
-			<url>http://jroller.com/page/random7</url>
-			<roles>
-				<role>committer</role>
-			</roles>
-		</developer>
-	</developers>
 	<properties>
 		<maven.version>2.0.10</maven.version>
 		<plexus.version>1.0.0</plexus.version>
@@ -140,7 +117,7 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.0-beta-9</version>
 					<configuration>
-						<tagBase>https://masa.googlecode.com/svn/tags</tagBase>
+						<tagBase>https://masa.googlecode.com/svn/tags/plugins</tagBase>
 						<useReleaseProfile>false</useReleaseProfile>
 						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
@@ -192,17 +169,6 @@
 			<url>http://repository.slideme.org/nexus/content/groups/public</url>
 		</repository>
 	</distributionManagement>
-	<!--
-		<repositories> <repository> <id>slideme.snapshots</id> <name>SlideME
-		SNAPSHOT Repository</name>
-		<url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
-		<snapshots> <enabled>true</enabled> </snapshots> <releases>
-		<enabled>false</enabled> </releases> </repository> <repository>
-		<id>slideme.releases</id> <name>Maven Release Repository</name>
-		<url>http://repository.slideme.org/nexus/content/groups/public</url>
-		<snapshots> <enabled>false</enabled> </snapshots> <releases>
-		<enabled>true</enabled> </releases> </repository> </repositories>
-	-->
 	<profiles>
 		<profile>
 			<id>release</id>

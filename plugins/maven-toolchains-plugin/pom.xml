@@ -12,8 +12,8 @@
 	-->
 <project>
 	<parent>
-		<artifactId>masa-project</artifactId>
 		<groupId>org.jvending.masa</groupId>
+		<artifactId>masa-plugins</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>

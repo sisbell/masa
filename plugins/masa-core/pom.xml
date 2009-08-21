@@ -15,7 +15,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.jvending.masa</groupId>
-		<artifactId>masa-project</artifactId>
+		<artifactId>masa-plugins</artifactId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
