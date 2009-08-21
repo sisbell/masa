@@ -11,13 +11,17 @@
 		License.
 	-->
 <project>
+	<parent>
+		<groupId>org.jvending.masa</groupId>
+		<artifactId>masa-parent</artifactId>
+		<version>1</version>
+	</parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jvending.masa</groupId>
   <artifactId>android-archetypes</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>android-archetypes Multi Project</name>
-  <url>http://maven.apache.org</url>
+  <name>JVending Masa: android-archetypes</name>
   <modules>
   	<module>android-archetype-quickstart</module>
     <module>android-archetype-po</module>
