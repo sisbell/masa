@@ -19,14 +19,14 @@
 	</parent>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-plugins</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JVending Masa: masa-plugins</name>
 	<description>Maven Plugins Project for Android</description>
 	<scm>
-		<url>http://masa.googlecode.com/svn/tags/plugins/masa-plugins-1.1</url>
-		<connection>scm:svn:http://masa.googlecode.com/svn/tags/plugins/masa-plugins-1.1</connection>
-		<developerConnection>scm:svn:https://masa.googlecode.com/svn/tags/plugins/masa-plugins-1.1</developerConnection>
+		<url>http://masa.googlecode.com/svn/trunk/plugins</url>
+		<connection>scm:svn:http://masa.googlecode.com/svn/trunk/plugins</connection>
+		<developerConnection>scm:svn:https://masa.googlecode.com/svn/trunk/plugins</developerConnection>
 	</scm>
 	<properties>
 		<maven.version>2.0.10</maven.version>
