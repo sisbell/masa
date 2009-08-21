@@ -19,17 +19,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>android-archetypes</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JVending Masa: android-archetypes</name>
 	<scm>
-		<url>scm:svn:https://masa.googlecode.com/svn/tags/android-archetypes/android-archetypes-1.0
+		<url>http://masa.googlecode.com/svn/trunk
 		</url>
 		<connection>
-			scm:svn:http://masa.googlecode.com/svn/tags/android-archetypes/android-archetypes-1.0
+			scm:svn:http://masa.googlecode.com/svn/trunk/android-archetypes
 		</connection>
 		<developerConnection>
-			scm:svn:https://masa.googlecode.com/svn/tags/android-archetypes/android-archetypes-1.0
+			scm:svn:https://masa.googlecode.com/svn/trunk/android-archetypes
 		</developerConnection>
 	</scm>
 	<build>
