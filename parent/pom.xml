@@ -15,7 +15,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-parent</artifactId>
-	<version>1-SNAPHOT</version>
+	<version>1</version>
 	<packaging>pom</packaging>
 	<name>JVending Masa: masa-parent</name>
 	<description>Maven Project for Android</description>
