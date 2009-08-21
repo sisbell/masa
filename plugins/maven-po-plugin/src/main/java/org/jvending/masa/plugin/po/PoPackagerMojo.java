@@ -7,6 +7,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 
@@ -43,6 +44,11 @@ public class PoPackagerMojo
      */
     private String classifier;    
     
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;    
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -72,7 +78,14 @@ public class PoPackagerMojo
         {
             throw new MojoExecutionException( "", e );
         }
-
-        project.getArtifact().setFile( file );
+        
+        if ( classifier != null )
+        {
+            projectHelper.attachArtifact( project, "android:po", classifier, file );
+        }
+        else
+        {
+            project.getArtifact().setFile( file );
+        }
     }
 }

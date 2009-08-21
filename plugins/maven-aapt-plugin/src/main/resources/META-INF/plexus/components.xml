@@ -6,7 +6,7 @@
          <role-hint>android:apk</role-hint>
          <implementation>
             org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-         </implementation>
+         </implementation> 
          <configuration>
             <phases>
                <validate>
@@ -75,22 +75,6 @@
       </component>
       <component>
          <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-         <role-hint>android:par</role-hint>
-         <implementation>
-            org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-         </implementation>                                                
-         <configuration>
-            <phases>
-               <process-resources>org.jvending.masa.plugins:maven-par-plugin:resources</process-resources>
-               <package>
-                  org.jvending.masa.plugins:maven-par-plugin:package
-               </package>
-                <deploy>org.jvending.masa.plugins:maven-par-plugin:deploy</deploy>
-            </phases>
-         </configuration>
-      </component>
-      <component>
-         <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
          <role-hint>android:po</role-hint>
          <implementation>
             org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
@@ -128,19 +112,10 @@
       </component>
       <component>
          <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-         <role-hint>android:par</role-hint>
-         <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-         <configuration>
-            <extension>par</extension>
-            <type>android:par</type>
-         </configuration>
-      </component>
-      <component>
-         <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
          <role-hint>android:po</role-hint>
          <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
          <configuration>
-            <extension>po</extension>
+            <extension>pozip</extension>
             <type>android:po</type>
          </configuration>
       </component>      

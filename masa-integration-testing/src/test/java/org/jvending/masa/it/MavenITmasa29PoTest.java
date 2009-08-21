@@ -48,10 +48,10 @@ public class MavenITmasa29PoTest
         Verifier verifier = new Verifier( testDir.getAbsolutePath() );
         verifier.setAutoclean( false );
         verifier.deleteDirectory( "target" );
-        verifier.executeGoal( "package" );
+        verifier.executeGoal( "install" );
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
-        verifier.assertFilePresent( "target/artifact-1.0-en.pozip" );
+        verifier.assertFilePresent( "target/masa29b-1.0-en.pozip" );
     }   
     
     /**

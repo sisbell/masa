@@ -1,11 +1,10 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jvending.masa.it.masa29b
+	<groupId>org.jvending.masa.it.masa
 	</groupId>
-	<artifactId>artifact</artifactId>
+	<artifactId>masa29b</artifactId>
 	<version>1.0</version>
 	<packaging>android:po</packaging>
-
 	<name>Masa Integration Test :: MASA-29b</name>
 	<description>
 
@@ -25,7 +24,7 @@
 				<configuration>
 					<classifier>en</classifier>
 				</configuration>
-			</plugin>			
+			</plugin>				
 		</plugins>
 	</build>
 </project>
