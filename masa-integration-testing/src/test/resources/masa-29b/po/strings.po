@@ -1,5 +1,5 @@
 # masa header
 #
-msgctxt "all"
-msgid "aaa"
-msgstr "123"
+msgctxt "app_name"
+msgid "Application"
+msgstr "App"

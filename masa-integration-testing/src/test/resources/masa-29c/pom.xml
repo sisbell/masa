@@ -18,6 +18,7 @@
 			<artifactId>masa29b</artifactId>
 			<version>1.0</version>
 			<classifier>en</classifier>
+			<type>android:po</type>
 		</dependency>		
 	</dependencies>
 	<build>
@@ -35,6 +36,14 @@
 				<artifactId>maven-aapt-plugin</artifactId>
 				<extensions>true</extensions>
 			</plugin>
+			<plugin>
+				<groupId>org.jvending.masa.plugins
+				</groupId>
+				<artifactId>maven-po-plugin</artifactId>
+				<configuration>
+					<defaultResource>en</defaultResource>
+				</configuration>
+			</plugin>				
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<configuration>

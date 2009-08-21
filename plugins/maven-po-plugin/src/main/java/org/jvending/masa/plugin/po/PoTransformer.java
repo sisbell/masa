@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
@@ -21,42 +22,48 @@ import org.jvending.masa.plugin.po.parser.PoParser;
 public class PoTransformer
 {
 
+    public static void transformToStrings( InputStream inputStream, File outputFile )
+    throws IOException
+{
+    if ( inputStream == null )
+    {
+        throw new IllegalArgumentException( "inputFile: null" );
+    }
+
+    if ( outputFile == null )
+    {
+        throw new IllegalArgumentException( "outputFile: null" );
+    }
+
+    List<PoEntry> entries = PoParser.readEntries( inputStream );
+    XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+    try
+    {
+        XMLStreamWriter writer = xmlOutputFactory.createXMLStreamWriter( new FileOutputStream( outputFile ) );
+        writer.writeStartDocument( "1.1" );
+        writer.writeStartElement( "resources" );
+        for ( PoEntry entry : entries )
+        {
+            writer.writeStartElement( "string" );
+            writer.writeAttribute( "name", entry.message.messageContext );
+            writer.writeCharacters( entry.message.messageString );
+            writer.writeEndElement();
+        }
+
+        writer.writeEndElement();
+        writer.writeEndDocument();
+
+    }
+    catch ( XMLStreamException e )
+    {
+        throw new IOException( e.getMessage() );
+    }
+}
+    
     public static void transformToStrings( File inputFile, File outputFile )
         throws IOException
     {
-        if ( inputFile == null )
-        {
-            throw new IllegalArgumentException( "inputFile: null" );
-        }
-
-        if ( outputFile == null )
-        {
-            throw new IllegalArgumentException( "outputFile: null" );
-        }
-
-        List<PoEntry> entries = PoParser.readEntries( new FileInputStream( inputFile ) );
-        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-        try
-        {
-            XMLStreamWriter writer = xmlOutputFactory.createXMLStreamWriter( new FileOutputStream( outputFile ) );
-            writer.writeStartDocument( "1.1" );
-            writer.writeStartElement( "resources" );
-            for ( PoEntry entry : entries )
-            {
-                writer.writeStartElement( "string" );
-                writer.writeAttribute( "name", entry.message.messageContext );
-                writer.writeCharacters( entry.message.messageString );
-                writer.writeEndElement();
-            }
-
-            writer.writeEndElement();
-            writer.writeEndDocument();
-
-        }
-        catch ( XMLStreamException e )
-        {
-            throw new IOException( e.getMessage() );
-        }
+        transformToStrings(new FileInputStream(inputFile), outputFile);
     }
 
     public static void createTemplateFromStringsXml( File inputFile, File outputFile )

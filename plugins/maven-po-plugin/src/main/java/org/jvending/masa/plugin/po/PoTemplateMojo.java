@@ -48,7 +48,7 @@ public class PoTemplateMojo
         }
         catch ( IOException e )
         {
-           throw new MojoExecutionException("", e);
+            throw new MojoExecutionException( "", e );
         }
     }
 }

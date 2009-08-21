@@ -40,27 +40,28 @@ public class PoPackagerMojo
     /**
      * Classifier
      * 
-     * @parameter expression = "${classifier}" 
+     * @parameter expression = "${classifier}"
      */
-    private String classifier;    
-    
+    private String classifier;
+
     /**
      * @component
      */
-    private MavenProjectHelper projectHelper;    
-    
+    private MavenProjectHelper projectHelper;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if(!inputDir.exists())
+        if ( !inputDir.exists() )
         {
-            getLog().info( "No po resource files to package."  );
+            getLog().info( "No po resource files to package." );
             return;
         }
-              
-        File file = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName()
-                              + ((classifier != null) ? "-" + classifier : "") + ".pozip" );
-        
+
+        File file =
+            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName()
+                + ( ( classifier != null ) ? "-" + classifier : "" ) + ".pozip" );
+
         ZipArchiver archiver = new ZipArchiver();
         archiver.setForced( true );
         archiver.setDestFile( file );
@@ -78,7 +79,7 @@ public class PoPackagerMojo
         {
             throw new MojoExecutionException( "", e );
         }
-        
+
         if ( classifier != null )
         {
             projectHelper.attachArtifact( project, "android:po", classifier, file );
