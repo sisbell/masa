@@ -27,9 +27,12 @@ import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -148,7 +151,7 @@ public class DxMojo
         mavenProjectHelper.attachArtifact( project, "jar", project.getArtifact().getClassifier(), inputFile );
     }
 
-    private static void unjar( JarFile jarFile, File outputDirectory )
+    private void unjar( JarFile jarFile, File outputDirectory )
         throws IOException
     {
         for ( Enumeration en = jarFile.entries(); en.hasMoreElements(); )
@@ -161,8 +164,38 @@ public class DxMojo
             }
             if ( !entry.isDirectory() && entry.getName().endsWith( ".class" ) )
             {
-                IOUtil.copy( jarFile.getInputStream( entry ), new FileOutputStream( entryFile ) );
+                final InputStream in = jarFile.getInputStream( entry );
+                try
+                {
+                    final OutputStream out = new FileOutputStream( entryFile );
+                    try
+                    {
+
+                        IOUtil.copy( in, out );
+                    }
+                    finally
+                    {
+                        closeQuietly( out );
+                    }
+                }
+                finally
+                {
+                    closeQuietly( in );
+                }
+
             }
+        }
+    }
+
+    private void closeQuietly( final Closeable c )
+    {
+        try
+        {
+            c.close();
+        }
+        catch ( Exception ex )
+        {
+            getLog().warn( "Failed to close closeable " + c, ex );
         }
     }
 }
