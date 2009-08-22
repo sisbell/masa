@@ -22,8 +22,6 @@ public class IntegrationTestSuite extends TestCase
             verifier = new Verifier( "" );
             String mavenVersion = verifier.getMavenVersion();
 
-            String executable = verifier.getExecutable();
-
             out.println( "Running integration tests for Masa with Maven Version: " + mavenVersion);
 
             System.setProperty( "maven.version", mavenVersion );
@@ -38,6 +36,7 @@ public class IntegrationTestSuite extends TestCase
 
         TestSuite suite = new TestSuite();
 
+        suite.addTestSuite( MavenITmasa30LocalizedResourcesTest.class );
         suite.addTestSuite( MavenITmasa29PoTest.class );
 
         /*
