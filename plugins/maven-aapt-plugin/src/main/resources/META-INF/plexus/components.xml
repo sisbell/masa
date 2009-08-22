@@ -16,6 +16,7 @@
                    org.jvending.masa.plugins:maven-aidl-plugin:generate
                </generate-sources>
                <process-resources>
+              		org.jvending.masa.plugins:maven-localization-plugin:copy,    
                		org.apache.maven.plugins:maven-resources-plugin:resources,
                		org.jvending.masa.plugins:maven-po-plugin:transform              		
                </process-resources>
