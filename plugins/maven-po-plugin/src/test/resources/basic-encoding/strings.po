@@ -1,0 +1,343 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Shane Isbell <shane.isbell@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "update_dialog_name"
+msgid "Nouvelle version"
+msgstr ""
+
+msgctxt "update_dialog_text"
+msgid "La nouvelle version de SAM est disponible. Voulez-vous l’installer ?  "
+msgstr ""
+
+msgctxt "new_version_start_download"
+msgid "Le téléchargement a commencé"
+msgstr ""
+
+msgctxt "new_version_download_fail"
+msgid "Le téléchargement a échoué"
+msgstr ""
+
+msgctxt "new_version_download_success"
+msgid "La nouvelle version de  SAM  a été téléchargée"
+msgstr ""
+
+msgctxt "new_version_install_start"
+msgid "Le processus d’installation a démarré"
+msgstr ""
+
+msgctxt "new_version_install_finish"
+msgid "Le processus d’installation est terminé"
+msgstr ""
+
+msgctxt "agreement_dialog_name"
+msgid "Accord d’utilisateur final pour l’application SlideME"
+msgstr ""
+
+msgctxt "notification_display_name"
+msgid "Notification SAM "
+msgstr ""
+
+msgctxt "wait_download"
+msgid "Veuillez attendre pendant le téléchargement du contenu..."
+msgstr ""
+
+msgctxt "menu_categories"
+msgid "Accueil"
+msgstr ""
+
+msgctxt "menu_manage_apps"
+msgid "Gérer les applications"
+msgstr ""
+
+msgctxt "menu_refresh_catalog"
+msgid "Rafraîchir le catalogue"
+msgstr ""
+
+msgctxt "menu_help"
+msgid "Aide"
+msgstr ""
+
+msgctxt "terms_unspecified"
+msgid "Conditions non spécifiées par le développeur"
+msgstr ""
+
+msgctxt "terms_application_free"
+msgid "L’application est téléchargeable gratuitement à partir de  SlideME"
+msgstr ""
+
+msgctxt "terms_price"
+msgid "L’application coûte"
+msgstr ""
+
+msgctxt "terms_and_download"
+msgid "Conditions & téléchargement"
+msgstr ""
+
+msgctxt "terms_and_conditions"
+msgid "Conditions générales"
+msgstr ""
+
+msgctxt "terms_install"
+msgid "Installer"
+msgstr ""
+
+msgctxt "terms_cancel"
+msgid "Effacer"
+msgstr ""
+
+msgctxt "price"
+msgid "Prix"
+msgstr ""
+
+msgctxt "device_id_missing"
+msgid "L’ID de l’appareil n’a pas été trouvé. Vous ne pouvez pas acheter cette application."
+msgstr ""
+
+msgctxt "begin_download"
+msgid "Commencez à télécharger l’application"
+msgstr ""
+
+msgctxt "check_notification"
+msgid "Veuillez vérifier la notification quand vous avez terminé."
+msgstr ""
+
+msgctxt "attempt_purchase"
+msgid "Veuillez patienter quand vous essayez d’acheter l’application..."
+msgstr ""
+
+msgctxt "purchase_successful"
+msgid "L’achat de l’application a réussi"
+msgstr ""
+
+msgctxt "purchase_pending"
+msgid "Achat de l’application en cours"
+msgstr ""
+
+msgctxt "purchase_failed"
+msgid "L’achat a échoué"
+msgstr ""
+
+msgctxt "please_register"
+msgid "     Veuillez vous enregistrer et/ou sélectionner l’option 'Facturation & Paiements' pour devenir un utilisateur valide dans votre profil utilisateur."
+msgstr ""
+
+msgctxt "downloading"
+msgid "Téléchargement"
+msgstr ""
+
+msgctxt "check_notification2"
+msgid "Veuillez vérifier la notification pour terminer la transaction."
+msgstr ""
+
+msgctxt "invalid_id"
+msgid "ID invalide pour cette application. Essayez plus tard."
+msgstr ""
+
+msgctxt "out_of_stock"
+msgid "Application en rupture de stock."
+msgstr ""
+
+msgctxt "already_installed"
+msgid "Vous avez déjà téléchargé cette  application"
+msgstr ""
+
+msgctxt "price_change"
+msgid "Le prix de cette application a été modifié. Veuillez réessayer plus tard."
+msgstr ""
+
+msgctxt "terms_agree"
+msgid "Veuillez cliquer sur installer si vous acceptez ces conditions générales"
+msgstr ""
+
+msgctxt "agreement"
+msgid "Accord"
+msgstr ""
+
+msgctxt "login_name"
+msgid "Identifiant"
+msgstr ""
+
+msgctxt "login_password"
+msgid "Mot de passe"
+msgstr ""
+
+msgctxt "logging_in"
+msgid "Connexion en cours..."
+msgstr ""
+
+msgctxt "login_success"
+msgid "Vous avez réussi à vous connecter comme"
+msgstr ""
+
+msgctxt "login_success2"
+msgid "Connexion réussie"
+msgstr ""
+
+msgctxt "login_wait"
+msgid "Veuillez attendre la fin de la connexion..."
+msgstr ""
+
+msgctxt "install_success"
+msgid "Installation de l’application réussie"
+msgstr ""
+
+msgctxt "install_failure"
+msgid "Cette transaction ne sera pas facturée. L’installation de l’application a échoué, a été annulée ou était déjà installée."
+msgstr ""
+
+msgctxt "loading_catalog"
+msgid "Chargement du catalogue..."
+msgstr ""
+
+msgctxt "yes"
+msgid "Oui"
+msgstr ""
+
+msgctxt "no"
+msgid "Non"
+msgstr ""
+
+msgctxt "search_label"
+msgid "Chercher la Place de marché  SlideME"
+msgstr ""
+
+msgctxt "category_communications"
+msgid "Communications"
+msgstr ""
+
+msgctxt "category_collaboration"
+msgid "Collaboration"
+msgstr ""
+
+msgctxt "category_developer"
+msgid " Développeur / Programmeur"
+msgstr ""
+
+msgctxt "category_education"
+msgid "Éducationnel / Référence"
+msgstr ""
+
+msgctxt "category_enterprise"
+msgid "Entreprise"
+msgstr ""
+
+msgctxt "category_entertainment"
+msgid "Divertissement "
+msgstr ""
+
+msgctxt "category_fun"
+msgid "Attraction & Jeux"
+msgstr ""
+
+msgctxt "category_health"
+msgid "Santé & Fitness"
+msgstr ""
+
+msgctxt "category_home"
+msgid "Maison & Loisirs"
+msgstr ""
+
+msgctxt "category_lifestyle"
+msgid "Style de vie"
+msgstr ""
+
+msgctxt "category_location"
+msgid "Lieux & cartes"
+msgstr ""
+
+msgctxt "category_music"
+msgid "Musique"
+msgstr ""
+
+msgctxt "category_other"
+msgid "Autres"
+msgstr ""
+
+msgctxt "category_productivity"
+msgid "Productivité"
+msgstr ""
+
+msgctxt "category_social"
+msgid "Responsabilité sociale"
+msgstr ""
+
+msgctxt "category_travel"
+msgid "Voyages"
+msgstr ""
+
+msgctxt "category_utilities"
+msgid "Charges"
+msgstr ""
+
+msgctxt "application_manager"
+msgid "SlideME Gestionnaire d’application "
+msgstr ""
+
+msgctxt "screenshots"
+msgid "Capture d’écran"
+msgstr ""
+
+msgctxt "download_featured"
+msgid "Téléchargement du contenu présenté"
+msgstr ""
+
+msgctxt "search"
+msgid "Rechercher"
+msgstr ""
+
+msgctxt "categories"
+msgid "Catégories"
+msgstr ""
+
+msgctxt "application_downloaded"
+msgid "L'application a été téléchargée"
+msgstr ""
+
+msgctxt "application_downloaded_failed"
+msgid "Le téléchargement de l'application n'a pas réussi"
+msgstr ""
+
+msgctxt "free"
+msgid "Gratuit"
+msgstr ""
+
+msgctxt "agree"
+msgid "Accepte"
+msgstr ""
+
+msgctxt "disagree"
+msgid "N'accepte pas"
+msgstr ""
+
+msgctxt "top_applications"
+msgid "Top Applications"
+msgstr ""
+
+msgctxt "updates"
+msgid "Mises à jour"
+msgstr ""
+
+msgctxt "installed"
+msgid "Installé"
+msgstr ""
+
+msgctxt "application_downloading"
+msgid "Téléchargement de l'application..."
+msgstr ""
+
+msgctxt "search_results"
+msgid "Résultats de la recherche"
+msgstr ""
+
+msgctxt "date_format"
+msgid "dd MMM yy"
+msgstr ""
+

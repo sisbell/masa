@@ -15,8 +15,13 @@
  */
 package org.jvending.masa.plugin.po;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -26,6 +31,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.jvending.masa.plugin.po.parser.PoEntry;
 
 /**
  * @goal transform
@@ -76,11 +82,35 @@ public class PoUnpackagerMojo
                 }
 
                 ZipFile zip = null;
+                String encoding = null;
                 try
-                {
+                {   //READ meta-data for encoding
                     zip = new ZipFile( artifact.getFile() );
-                    PoTransformer.transformToStrings( zip.getInputStream( zip.getEntry( "strings.po" ) ),
-                                                      new File( valuesDir, "strings.xml" ) );
+                    
+                    BufferedReader in = new BufferedReader(new InputStreamReader( zip.getInputStream( zip.getEntry( "strings.po" ) )));
+                    String line = in.readLine();
+
+                    while(line != null)
+                    {
+                    	if(line.startsWith("\"Content-Type:"))
+                    	{
+                    		int i = line.indexOf("charset=");
+                    		try {
+								encoding = line.substring(i + 8, line.length()).split(" ")[0];
+								this.getLog().info("Encoding found: " + encoding);
+							} catch (Exception e) {
+							}
+							break;
+                    	}
+                    	line = in.readLine();
+                    }
+                    
+                    if(encoding == null)
+                    {
+                    	encoding = System.getProperty("file.encoding");
+                    }
+                    
+                    PoTransformer.transformToStrings(  new ZipFile( artifact.getFile() ).getInputStream( zip.getEntry( "strings.po" ) ) , new File( valuesDir, "strings.xml" ), encoding);
                 }
                 catch ( ZipException e )
                 {

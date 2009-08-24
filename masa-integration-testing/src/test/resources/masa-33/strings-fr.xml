@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+
+    <string name="help_page">
+
+        <b>ENREGISTREMENT</b>       
+
+ \n\nEn tant qu’un membre enregistré de  SlideME, vous devez vous connecter pour effectuer le paiement d’une commande. Une fois que vous êtes connecté, et si vous aviez auparavant enregistré vos méthodes de paiement, la Place de marché SlideME traitera votre commande sans que vous n’envoyiez des informations personnelles à partir de votre combiné sans fil.
+
+ \n\nnSi vous n’avez ni un identifiant de connexion ni un mot de passe pour vous connecter ou bien si vous n’avez pas enregistré vos modes de paiement, nous vous recommandons de vous inscrire/enregistrer sur SlideME à partir de votre PC. Si vous voulez vous enregistrer à partir de combiné sans fil, allez surhttps://slideme.org/user/register pour obtenir un identifiant.
+
+\n\nAprès votre enregistrement, connectez-vous.À partir de « Mon Compte », cliquez sur l’onglet « Facturation &amp; Paiements » pour enregistrer une méthode de paiement. Vous pouvez effectuer d’autres commandes à partir de  SAM sans devoir dorénavant donner d’autres informations personnelles lors d’un achat.
+
+    </string>
+
+
+
+    <string name="update_dialog_name">Nouvelle version</string>
+
+    <string name="update_dialog_text">La nouvelle version de SAM est disponible. Voulez-vous l’installer ?  </string>
+
+    <string name="new_version_start_download">Le téléchargement a commencé</string>
+
+    <string name="new_version_download_fail">Le téléchargement a échoué</string>
+
+    <string name="new_version_download_success">La nouvelle version de  SAM  a été téléchargée</string>
+
+    <string name="new_version_install_start">Le processus d’installation a démarré</string>
+
+    <string name="new_version_install_finish">Le processus d’installation est terminé</string>
+
+    <string name="agreement_dialog_name">Accord d’utilisateur final pour l’application SlideME</string>
+
+    <string name="agreement_dialog_text">
+
+<p>VEUILLEZ LIRE ATTENTIVEMENT LES CONDITIONS GÉNÉRALESSUIVANTES AVANT DE TÉLÉCHARGEROU D’UTILISER L’APPLICATION  Slideme (“<b><i>sam</i></b>”) et/ou applications rendu disponible par SlideME (« Applications ») (“<b><i>Applications</i></b>”)
+
+Via la place de marché d’application Slideme (la
+
+“<b><i>Place de marché</i></b>”). CE CONTRAT RÉGIT VOTRE UTILISATION  DU sam et de toute applicationmise à votre disposition via la place du marché.
+
+\n</p>
+
+        \n\n SlideME souhaite ne vous donner une licence sam et des applications qu’à la condition que vous acceptiez les conditions stipulées dans ce Contrat. En téléchargeant, affichant ou UTILISANT  le SAM et/ou des  applications, vous signifiez que vous avez lu et compris ce Contrat et accepté toutes ses conditions sans aucune limitation.  Si vous n’acceptez pas toutes les conditions de ce Contrat vous ne serez pas AUTORISÉ à télécharger, afficher OU UTILISER le  SAM et/ou les applications.
+
+
+
+        \n\n <b>Licence et achat.</b>
+
+
+
+        \n\n (a)    <u>Garantie</u>.  Selon les conditions de ce Contrat, SlideME vous garantit une licence non exclusive et non transférable pour télécharger et utiliser le SAM, aux fins d’(i) accéder et d’afficher la place du marché de SlideME et le catalogue d’Applications, ainsi que (ii) le téléchargement et la gestion des Applications achetées via la place du marché de  SlideME.  SlideME et ses concédants se réservent tous les droits dans le SAM qui ne sont pas garantis expressément dans ce Contrat. Vous garantissez aussi à SlideME de lui présenter le contenu sommaire que ce soit une application, une image, un lien ou un logo sous forme de publicité. Il se peut que les conditions ci-dessous n’existent pas encore dans votre langue. Si vous acceptez ce contrat tel quel, vous accepterez aussi les autres conditions décrites ci-dessous même si elles sont écrites en anglais.
+
+
+
+ </string>
+
+    
+
+    <string name = "agreement_copyright">
+
+     \n\n <b><small>Copyright (c) 2009 SlideME LLC,WA,USA EULA v102FR.090517</small></b>
+
+    </string> 
+
+
+
+
+
+    <string name="notification_display_name">Notification SAM </string>
+
+    <string name="wait_download">Veuillez attendre pendant le téléchargement du contenu...</string>
+
+    <string name="login_description">
+
+    Si vous êtes un membre inscrit de SlideME, connectez-vous pour effectuer le paiement de cette commande.
+
+        La commande sera passée sans que vous n’envoyiez des informations personnelles à partir de votre
+
+    combiné sans fil. \n\nSi vous n’avez pas d’identifiant de connexion ou si vous n’avez pas enregistré vos méthodes de paiement,
+
+    connectez-vous/enregistrez-vous soit à partir de votre  PC (de préférence) soit de votre mobile:        \n\nhttps://slideme.org/user/register
+
+    </string>
+
+   
+
+    <!-- Base Menus -->
+
+     <string name="menu_categories">Accueil</string>
+
+     <string name="menu_manage_apps">Gérer les applications</string>
+
+     <string name="menu_refresh_catalog">Rafraîchir le catalogue</string>     
+
+     <string name="menu_help">Aide</string>   
+
+     
+
+     <!-- Terms -->
+
+     <string name="terms_unspecified">Conditions non spécifiées par le développeur</string>     
+
+     <string name="terms_application_free">L’application est téléchargeable gratuitement à partir de  SlideME</string>
+
+     <string name="terms_price">L’application coûte</string>
+
+     <string name="terms_and_download">Conditions &amp; téléchargement</string>
+
+     <string name="terms_and_conditions">Conditions générales</string>
+
+     <string name="terms_install">Installer</string>
+
+     <string name="terms_cancel">Effacer</string>      
+
+     <string name="price">Prix</string>
+
+     
+
+     <!-- Download and Purchase -->
+
+     <string name="device_id_missing">L’ID de l’appareil n’a pas été trouvé. Vous ne pouvez pas acheter cette application.</string>
+
+     <string name="begin_download">Commencez à télécharger l’application</string>
+
+     <string name="check_notification">Veuillez vérifier la notification quand vous avez terminé.</string>
+
+     <string name="attempt_purchase">Veuillez patienter quand vous essayez d’acheter l’application...</string>      
+
+     <string name="purchase_successful">L’achat de l’application a réussi</string>
+
+     <string name="purchase_pending">Achat de l’application en cours</string>
+
+     <string name="purchase_failed">L’achat a échoué</string>
+
+     <string name="please_register">     Veuillez vous enregistrer et/ou sélectionner l’option 'Facturation &amp; Paiements' pour devenir un utilisateur valide dans votre profil utilisateur.</string>
+
+     <string name="downloading">Téléchargement</string>
+
+     <string name="check_notification2">Veuillez vérifier la notification pour terminer la transaction.</string>
+
+     <string name="invalid_id">ID invalide pour cette application. Essayez plus tard.</string>
+
+     <string name="out_of_stock">Application en rupture de stock.</string>
+
+     <string name="already_installed">Vous avez déjà téléchargé cette  application</string>
+
+     <string name="price_change">Le prix de cette application a été modifié. Veuillez réessayer plus tard.</string>
+
+                         
+
+     <string name="terms_agree">Veuillez cliquer sur installer si vous acceptez ces conditions générales</string>
+
+     
+
+     <!-- Agreement -->
+
+     <string name="agreement">Accord</string>   
+
+     
+
+     <!-- Login -->
+
+     <string name="login_name">Identifiant</string>     
+
+     <string name="login_password">Mot de passe</string>            
+
+     <string name="logging_in">Connexion en cours...</string>   
+
+     <string name="login_success">Vous avez réussi à vous connecter comme</string>   
+
+     <string name="login_success2">Connexion réussie</string>   
+
+     <string name="login_wait">Veuillez attendre la fin de la connexion...</string>     
+
+     
+
+     <!-- Install -->
+
+     <string name="install_success">Installation de l’application réussie</string>     
+
+     <string name="install_failure">Cette transaction ne sera pas facturée. L’installation de l’application a échoué, a été annulée ou était déjà installée.</string>             
+
+     
+
+     <!-- Other  -->
+
+     <string name="loading_catalog">Chargement du catalogue...</string>           
+
+     <string name="yes">Oui</string>
+
+     <string name="no">Non</string>   
+
+     
+
+     <!-- Search -->
+
+     <string name="search_label">Chercher la Place de marché  SlideME</string>
+
+     
+
+	<string name="category_communications">Communications</string>
+
+	<string name="category_collaboration">Collaboration</string>
+
+	<string name="category_developer"> Développeur / Programmeur</string>
+
+	<string name="category_education">Éducationnel / Référence</string>
+
+	<string name="category_enterprise">Entreprise</string>
+
+	<string name="category_entertainment">Divertissement </string>
+
+	<string name="category_fun">Attraction &amp; Jeux</string>
+
+	<string name="category_health">Santé &amp; Fitness</string>
+
+	<string name="category_home">Maison &amp; Loisirs</string>
+
+	<string name="category_lifestyle">Style de vie</string>
+
+	<string name="category_location">Lieux &amp; cartes</string>
+
+	<string name="category_music">Musique</string>
+
+	<string name="category_other">Autres</string>
+
+	<string name="category_productivity">Productivité</string>
+
+	<string name="category_social">Responsabilité sociale</string>
+
+	<string name="category_travel">Voyages</string>	
+
+	<string name="category_utilities">Charges</string>	  
+
+	
+
+	<!-- Misc -->
+
+    <string name="application_manager">SlideME Gestionnaire d’application </string>    
+
+    <string name="screenshots">Capture d’écran</string>   
+
+    <string name="download_featured">Téléchargement du contenu présenté</string>   
+
+    <string name="search">Rechercher</string>   
+
+    <string name="categories">Catégories</string>  	 
+
+    <string name="application_downloaded">L'application a été téléchargée</string>      
+
+    <string name="application_downloaded_failed">Le téléchargement de l'application n'a pas réussi</string>        
+
+    <string name="free">Gratuit</string>
+
+    <string name="agree">Accepte</string>
+
+    <string name="disagree">N'accepte pas</string>             
+
+    <string name="top_applications">Top Applications</string>   
+
+    <string name="updates">Mises à jour</string>     
+
+    <string name="installed">Installé</string> 
+
+    <string name="application_downloading">Téléchargement de l'application...</string>
+
+    <string name="search_results">Résultats de la recherche</string>                            
+
+	<string name="date_format">dd MMM yy</string>
+</resources>

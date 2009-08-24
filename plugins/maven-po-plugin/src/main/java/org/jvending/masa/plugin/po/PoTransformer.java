@@ -23,6 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
@@ -32,57 +35,105 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.maven.project.MavenProject;
 import org.jvending.masa.plugin.po.parser.PoEntry;
 import org.jvending.masa.plugin.po.parser.PoParser;
 
 public class PoTransformer
 {
-
-    public static void transformToStrings( InputStream inputStream, File outputFile )
-    throws IOException
-{
-    if ( inputStream == null )
-    {
-        throw new IllegalArgumentException( "inputFile: null" );
-    }
-
-    if ( outputFile == null )
-    {
-        throw new IllegalArgumentException( "outputFile: null" );
-    }
-
-    List<PoEntry> entries = PoParser.readEntries( inputStream );
-    XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-    try
-    {
-        XMLStreamWriter writer = xmlOutputFactory.createXMLStreamWriter( new FileOutputStream( outputFile ) );
-        writer.writeStartDocument( "1.1" );
-        writer.writeStartElement( "resources" );
-        for ( PoEntry entry : entries )
-        {
-            writer.writeStartElement( "string" );
-            writer.writeAttribute( "name", entry.message.messageContext );
-            writer.writeCharacters( entry.message.messageString );
-            writer.writeEndElement();
-        }
-
-        writer.writeEndElement();
-        writer.writeEndDocument();
-
-    }
-    catch ( XMLStreamException e )
-    {
-        throw new IOException( e.getMessage() );
-    }
-}
+	public static void writeEntriesToStringsFile(List<PoEntry> entries, File outputFile)
+		throws IOException
+	{
+	    XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+	    try
+	    {
+	        XMLStreamWriter writer = xmlOutputFactory.createXMLStreamWriter( new FileOutputStream( outputFile ) );
+	        writer.writeStartDocument( "1.1" );
+	        writer.writeStartElement( "resources" );
+	        for ( PoEntry entry : entries )
+	        {
+	        	if(entry.message.messageContext == null)
+	        	{
+	        		continue;
+	        	}
+	            writer.writeStartElement( "string" );
+	            writer.writeAttribute( "name", entry.message.messageContext );
+	            if(entry.message.messageString != null) 
+	            {
+	            	writer.writeCharacters( entry.message.messageString ); 
+	            }
+	            else 
+	            {
+	            	writer.writeCharacters( "");
+	            }
+	            writer.writeEndElement();
+	        }
+	
+	        writer.writeEndElement();
+	        writer.writeEndDocument();
+	
+	    }
+	    catch ( XMLStreamException e )
+	    {
+	        throw new IOException( e.getMessage() );
+	    }
+	}
+	
+    public static void transformToStrings( InputStream inputStream, File outputFile, String encoding )
+    	throws IOException
+	{
+	    if ( inputStream == null )
+	    {
+	        throw new IllegalArgumentException( "inputStream: null" );
+	    }
+	
+	    if ( outputFile == null )
+	    {
+	        throw new IllegalArgumentException( "outputFile: null" );
+	    }
+	
+	    List<PoEntry> entries = PoParser.readEntries( inputStream, encoding );
+	    writeEntriesToStringsFile(entries, outputFile);
+	}
     
-    public static void transformToStrings( File inputFile, File outputFile )
+    public static void transformToStrings( File inputFile, File outputFile, String encoding )
         throws IOException
     {
-        transformToStrings(new FileInputStream(inputFile), outputFile);
+        transformToStrings(new FileInputStream(inputFile), outputFile, encoding);
+    }
+    
+    public static void writePoFile(List<PoEntry> entries, File outputFile, String encoding)
+    	throws IOException 
+    {
+    	BufferedWriter bos = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( outputFile ), encoding) );
+    	
+    	for(PoEntry po : entries)
+    	{
+    		if(po.message.messageContext != null)
+    		{
+                bos.write( "msgctxt \"" );
+                bos.write( po.message.messageContext );
+                bos.write( "\"\n" );   			
+    		}
+
+            bos.write( "msgid \"" );
+            if( po.message.messageId != null) 
+            {
+            	bos.write( po.message.messageId );
+            }
+            bos.write( "\"\n" );
+
+            bos.write( "msgstr \"" ); 
+            if(po.message.messageString != null)
+            	bos.write( po.message.messageString );
+            bos.write( "\"\n" );
+            
+            bos.write( "\n" );
+    	}
+    	bos.close();
     }
 
-    public static void createTemplateFromStringsXml( File inputFile, File outputFile )
+    public static String createTemplateFromStringsXml( File inputFile, File outputFile, MavenProject project )
         throws IOException
     {
         if ( inputFile == null )
@@ -94,7 +145,7 @@ public class PoTransformer
         {
             throw new IllegalArgumentException( "outputFile: null" );
         }
-        BufferedWriter bos = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( outputFile ) ) );
+        BufferedWriter bos = null;
 
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty( XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE );
@@ -104,7 +155,22 @@ public class PoTransformer
         try
         {
             xmlStreamReader = xmlInputFactory.createXMLStreamReader( new FileInputStream( inputFile ) );
-
+            
+        	String encoding = xmlStreamReader.getEncoding();
+            bos = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( outputFile ), encoding) );
+            //Headers
+            bos.write( "msgid \"\"\n" );
+            bos.write( "msgstr \"\"\n" );
+            if(project != null)
+            {
+            	bos.write("\"Project-Id-Version:" + project.getArtifactId() + "-" + project.getVersion() +"\"\n");	
+            	Calendar c = Calendar.getInstance();
+            	c.setTimeInMillis(System.currentTimeMillis());
+            	bos.write("\"PO-Revision-Date:" + DateFormat.getDateInstance().format(c.getTime()) +"\"\n");	
+            }
+            bos.write("\"Content-Type: text/plain; charset=" + encoding +"\"\n");
+            bos.write( "\n" );
+            
             for ( ;; xmlStreamReader.next() )
             {
                 int type = xmlStreamReader.getEventType();
@@ -139,7 +205,7 @@ public class PoTransformer
                     }
                     case XMLStreamConstants.END_DOCUMENT:
                     {
-                        return;
+                        return encoding;
                     }
                 }
             }

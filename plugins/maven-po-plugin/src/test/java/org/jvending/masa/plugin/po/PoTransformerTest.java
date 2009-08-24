@@ -74,7 +74,7 @@ public class PoTransformerTest
         File input = new File( resourceDir, filePath + "/file.po" );
         File output = File.createTempFile( String.valueOf( Math.random() ), ".tmp" );
 
-        PoTransformer.transformToStrings( input, output );
+        PoTransformer.transformToStrings( input, output, "UTF-8" );
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -90,7 +90,7 @@ public class PoTransformerTest
         File output = File.createTempFile( String.valueOf( Math.random() ), ".tmp" );
         System.out.println( "-----------------" + output.getAbsolutePath() );
 
-        PoTransformer.createTemplateFromStringsXml( input, output );
+        PoTransformer.createTemplateFromStringsXml( input, output, null );
         /*
          * DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); DocumentBuilder builder =
          * factory.newDocumentBuilder(); Document document = builder.parse(output); Node node =

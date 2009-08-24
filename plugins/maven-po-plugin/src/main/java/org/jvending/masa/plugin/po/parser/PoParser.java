@@ -16,30 +16,38 @@
 package org.jvending.masa.plugin.po.parser;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PoParser
 {
 
-    public static List<PoEntry> readEntries( InputStream input )
+    public static List<PoEntry> readEntries( InputStream input, String encoding )
         throws IOException
     {
         List<PoEntry> entries = new ArrayList<PoEntry>();
-
-        BufferedReader in = new BufferedReader( new InputStreamReader( input ) );
+        InputStreamReader isr = new InputStreamReader( input, encoding );
+        
+        BufferedReader in = new BufferedReader(isr);
         String line = in.readLine();
-
+        
         while ( line != null )
-        {
+        {	
             if ( line.trim().length() == 0 || line.trim().equals( "#" ) )
             {
                 PoEntry e = readEntry( in );
                 if ( e != null )
                 {
+                	try {
+					} catch (Exception e1) {
+
+					}
                     entries.add( e );
                 }
                 else
@@ -62,17 +70,20 @@ public class PoParser
         throws IOException
     {
         String line = reader.readLine();
+
         if ( line == null )
         {
             return null;
         }
+
         PoEntry entry = new PoEntry();
         PoMessage msg = new PoMessage();
         entry.message = msg;
 
+
         int flag = -1;
         while ( line != null )
-        {
+        {          
             if ( line.startsWith( "#" ) )// TODO: Handle headers
             {
                 flag = -1;
@@ -104,6 +115,9 @@ public class PoParser
                         break;
                 }
             }
+            else {
+            	break;
+            }
             line = reader.readLine();
 
         }
@@ -112,6 +126,11 @@ public class PoParser
 
     private static String getContextBetweenQuotes( String line )
     {
-        return line.substring( line.indexOf( "\"" ) + 1, line.lastIndexOf( "\"" ) );
+        try {
+			return line.substring( line.indexOf( "\"" ) + 1, line.lastIndexOf( "\"" ) );
+		} catch (Exception e) {
+			System.out.println("Unable to process line: " + line);
+		}
+		return "";
     }
 }
