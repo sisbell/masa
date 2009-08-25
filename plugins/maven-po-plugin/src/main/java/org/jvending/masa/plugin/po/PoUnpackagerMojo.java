@@ -29,10 +29,12 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 import org.jvending.masa.plugin.po.parser.PoEntry;
 
 /**
@@ -76,14 +78,17 @@ public class PoUnpackagerMojo
                 {
                     throw new MojoExecutionException( "android:po artifacts must have a classifier" );
                 }
-
-                File valuesDir = (defaultResources.contains(classifier ) ) ? new File( resourceDirectory, "values" ) :
+                boolean isClassifier = defaultResources.contains(classifier );
+                File valuesDir = (isClassifier) ? new File( resourceDirectory, "values" ) :
                                 new File( resourceDirectory, "values-" + classifier );
                 if ( !valuesDir.exists() )
                 {
                     valuesDir.mkdirs();
                 }
-
+                
+                List<Resource> resources = project.getBuild().getResources();
+                String resourceDir = (resources.isEmpty()) ? "res" : resources.get(0).getDirectory();
+                
                 ZipFile zip = null;
                 try
                 { 
@@ -93,7 +98,7 @@ public class PoUnpackagerMojo
                     {
                     	ZipEntry entry  = en.nextElement();
                     	if(entry.getName().endsWith(".po")){
-                    		writeWithCorrectEncoding(artifact.getFile(), entry.getName(), valuesDir);
+                    		writeWithCorrectEncoding(artifact.getFile(), entry.getName(), valuesDir, resourceDir, isClassifier);
                     	}             	
                     }
                 }
@@ -107,7 +112,7 @@ public class PoUnpackagerMojo
     }
     
     //TODO: Needs optimization
-    private void writeWithCorrectEncoding(File zipFile, String entryName, File valuesDir) throws IOException
+    private void writeWithCorrectEncoding(File zipFile, String entryName, File valuesDir, String resourceDir, boolean isClassifier) throws IOException
     {
     	String encoding =  null;
     	ZipFile zip = new ZipFile( zipFile );
@@ -134,9 +139,17 @@ public class PoUnpackagerMojo
 			{
 				encoding = System.getProperty("file.encoding");
 			}
+			File outputFile = new File( valuesDir, entryName.substring(0, entryName.lastIndexOf(".")) + ".xml" );
 			
 			PoTransformer.transformToStrings(  new ZipFile( zipFile ).getInputStream( zip.getEntry( entryName ) ) , 
-					new File( valuesDir, entryName.substring(0, entryName.lastIndexOf(".")) + ".xml" ), encoding);
+					outputFile, encoding);
+			/**
+			 * We need to copy default resources to main resource directory. Not ideal but it keeps the Android Eclipse plugin working
+			 */
+			if(isClassifier)
+			{
+				FileUtils.copyFileToDirectory(outputFile, new File(resourceDir, "values"));			
+			}
 		} 
         finally
         {
