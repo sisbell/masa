@@ -58,72 +58,7 @@ public class StringsMergerMojo extends AbstractMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-    	File a;
-		File b;
-		try {
-			a = File.createTempFile(String.valueOf(Math.random()), ".po");
-			b = File.createTempFile(String.valueOf(Math.random()), ".po");
-		} catch (IOException e) {
-			throw new MojoExecutionException("", e);
-		}
-
-    	List<PoEntry> entriesA;
-		List<PoEntry> entriesB;
-		try {
-			String encodingA = PoTransformer.createTemplateFromStringsXml(inputFileA, a, project);
-	    	String encodingB = PoTransformer.createTemplateFromStringsXml(inputFileB, b, project);
-
-			entriesA = PoParser.readEntries( new FileInputStream( a ), encodingA);
-			entriesB = PoParser.readEntries( new FileInputStream( b ), encodingB );
-
-	    	merge(entriesA, entriesB);    
-	    	PoTransformer.writePoFile(entriesA, outputFile, encodingB);
-	    	//PoTransformer.writeEntriesToFile(entriesA, outputFile);
-		} catch (IOException e) {
-			throw new MojoExecutionException("", e);
-		}
+    	StringsMerger merger = new StringsMerger(this.getLog());
+    	merger.mergeFiles(inputFileA, inputFileB, outputFile, project);
     }
-    
-    private void merge(List<PoEntry> entriesA, List<PoEntry> entriesB)
-    {
-    	double x =0, y = 0;
-    	for(PoEntry a : entriesA)
-    	{
-    		String messageId = getMessageIdFrom(entriesB, a.message.messageContext);
-    		if(messageId != null)
-    		{
-    			x++;
-    			a.message.messageString = messageId;
-    		}
-    		else
-    		{
-    			y++;
-    			if(a.message.messageContext != null)
-    				this.getLog().info("Missing translation: Context = " + a.message.messageContext);
-    		}
-    	}
-
-    	int total = (int) (x + y);
-    	double p = x/total;
-    	this.getLog().info("Translation: Total =  " + total + ", % Translated = "  + p);
-    }
-    
-    private String getMessageIdFrom(List<PoEntry> entries, String messageContext)
-    {
-    	for(PoEntry po : entries)
-    	{
-    		if(po.message.messageContext == null)
-    		{
-    		//	this.getLog().info("No message context found: ID = " + po.message.messageId);
-    			continue;
-    		}
-    		
-    		if(po.message.messageContext.equals(messageContext))
-    		{
-    			return po.message.messageId;
-    		}
-    	}
-    	return null;
-    }
-
 }
