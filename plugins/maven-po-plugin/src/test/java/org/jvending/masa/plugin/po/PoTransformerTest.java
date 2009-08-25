@@ -31,71 +31,70 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-public class PoTransformerTest
-{
+public class PoTransformerTest {
 
-    private File basedir;
+	private File basedir;
 
-    private File resourceDir;
+	private File resourceDir;
 
-    @Before
-    public void setup()
-    {
-        resourceDir = new File( "src/test/resources" );
-    }
+	@Before
+	public void setup() {
+		resourceDir = new File("src/test/resources");
+	}
 
-    @Test
-    public void transform()
-        throws IOException, ParserConfigurationException, SAXException
-    {
-        JXPathContext ctx = JXPathContext.newContext( getRootNode( "basic" ) );
-        assertEquals( "123", ctx.getValue( "string[1]" ) );
-    }
+	@Test
+	public void transform() throws IOException, ParserConfigurationException,
+			SAXException {
+		JXPathContext ctx = JXPathContext.newContext(getRootNode("basic"));
+		assertEquals("123", ctx.getValue("string[1]"));
+	}
 
-    @Test
-    public void transformMultilineMessageString()
-        throws IOException, ParserConfigurationException, SAXException
-    {
-        JXPathContext ctx = JXPathContext.newContext( getRootNode( "multiline-message-string" ) );
-        assertEquals( "123\\nadb", ctx.getValue( "string[1]" ) );
-    }
+	@Test
+	public void transformMultilineMessageString() throws IOException,
+			ParserConfigurationException, SAXException {
+		JXPathContext ctx = JXPathContext
+				.newContext(getRootNode("multiline-message-string"));
+		assertEquals("123\\nadb", ctx.getValue("string[1]"));
+	}
 
-    @Test
-    public void createTemplate()
-        throws IOException, ParserConfigurationException, SAXException
-    {
-        JXPathContext ctx = JXPathContext.newContext( getRootNodeForTemplate( "strings" ) );
-        // assertEquals("123\\nadb", ctx.getValue("string[1]"));
-    }
+	@Test
+	public void createTemplate() throws IOException,
+			ParserConfigurationException, SAXException {
+		JXPathContext ctx = JXPathContext
+				.newContext(getRootNodeForTemplate("strings"));
+		// assertEquals("123\\nadb", ctx.getValue("string[1]"));
+	}
 
-    private Node getRootNode( String filePath )
-        throws IOException, ParserConfigurationException, SAXException
-    {
-        File input = new File( resourceDir, filePath + "/file.po" );
-        File output = File.createTempFile( String.valueOf( Math.random() ), ".tmp" );
+	private Node getRootNode(String filePath) throws IOException,
+			ParserConfigurationException, SAXException {
+		File input = new File(resourceDir, filePath + "/file.po");
+		File output = File
+				.createTempFile(String.valueOf(Math.random()), ".tmp");
 
-        PoTransformer.transformToStrings( input, output, "UTF-8" );
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		PoTransformer.transformToStrings(input, output, "UTF-8");
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse( output );
-        Node node = document.getFirstChild();
-        return node;
-    }
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = builder.parse(output);
+		Node node = document.getFirstChild();
+		return node;
+	}
 
-    private Node getRootNodeForTemplate( String filePath )
-        throws IOException, ParserConfigurationException, SAXException
-    {
-        File input = new File( resourceDir, filePath + "/strings.xml" );
-        File output = File.createTempFile( String.valueOf( Math.random() ), ".tmp" );
-        System.out.println( "-----------------" + output.getAbsolutePath() );
+	private Node getRootNodeForTemplate(String filePath) throws IOException,
+			ParserConfigurationException, SAXException {
+		File input = new File(resourceDir, filePath + "/strings.xml");
+		File output = File
+				.createTempFile(String.valueOf(Math.random()), ".tmp");
+		System.out.println("-----------------" + output.getAbsolutePath());
 
-        PoTransformer.createTemplateFromStringsXml( input, output, null );
-        /*
-         * DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); DocumentBuilder builder =
-         * factory.newDocumentBuilder(); Document document = builder.parse(output); Node node =
-         * document.getFirstChild(); return node;
-         */
-        return null;
-    }
+		PoTransformer.createTemplateFromStringsXml(input, output, null);
+		/*
+		 * DocumentBuilderFactory factory =
+		 * DocumentBuilderFactory.newInstance(); DocumentBuilder builder =
+		 * factory.newDocumentBuilder(); Document document =
+		 * builder.parse(output); Node node = document.getFirstChild(); return
+		 * node;
+		 */
+		return null;
+	}
 }

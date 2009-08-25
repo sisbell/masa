@@ -35,29 +35,18 @@ public class PoParser
         InputStreamReader isr = new InputStreamReader( input, encoding );
         
         BufferedReader in = new BufferedReader(isr);
-        String line = in.readLine();
-        
-        while ( line != null )
+        while ( true )
         {	
-            if ( line.trim().length() == 0 || line.trim().equals( "#" ) )
-            {
                 PoEntry e = readEntry( in );
                 if ( e != null )
                 {
-                	try {
-					} catch (Exception e1) {
-
-					}
                     entries.add( e );
                 }
                 else
                 {
                     return entries;
                 }
-            }
-            line = in.readLine();
         }
-        return entries;
     }
 
     private static final int ID = 0;
@@ -80,10 +69,9 @@ public class PoParser
         PoMessage msg = new PoMessage();
         entry.message = msg;
 
-
         int flag = -1;
         while ( line != null )
-        {          
+        {        
             if ( line.startsWith( "#" ) )// TODO: Handle headers
             {
                 flag = -1;
@@ -92,6 +80,10 @@ public class PoParser
             {
                 flag = ID;
                 msg.messageId = getContextBetweenQuotes( line );
+                if(msg.messageId.equals("") && msg.messageContext != null)
+                {
+                	System.out.println("[INFO] Primary language string missing: Context = " + msg.messageContext);
+                }
             }
             else if ( line.startsWith( "msgstr" ) )
             {
@@ -102,6 +94,10 @@ public class PoParser
             {
                 flag = CTX;
                 msg.messageContext = getContextBetweenQuotes( line );
+                if(msg.messageContext.equals(""))
+                {
+                	throw new IOException("Message context could not be found for entry");
+                }
             }
             else if ( line.startsWith( "\"" ) )
             {
@@ -129,7 +125,7 @@ public class PoParser
         try {
 			return line.substring( line.indexOf( "\"" ) + 1, line.lastIndexOf( "\"" ) );
 		} catch (Exception e) {
-			System.out.println("Unable to process line: " + line);
+			//System.out.println("Unable to process line: " + line);
 		}
 		return "";
     }

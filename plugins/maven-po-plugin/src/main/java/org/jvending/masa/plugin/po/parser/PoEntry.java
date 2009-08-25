@@ -15,8 +15,7 @@
  */
 package org.jvending.masa.plugin.po.parser;
 
-public class PoEntry
-{
+public class PoEntry {
 
-    public PoMessage message;
+	public PoMessage message;
 }

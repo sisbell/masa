@@ -7,17 +7,15 @@ import org.junit.Test;
 
 public class PoParserTest {
 
-    private File resourceDir;
+	private File resourceDir;
 
-    @Before
-    public void setup()
-    {
-        resourceDir = new File( "src/test/resources" );
-    }
-    
-    @Test
-    public void a()
-    {
-    	
-    }
+	@Before
+	public void setup() {
+		resourceDir = new File("src/test/resources");
+	}
+
+	@Test
+	public void a() {
+
+	}
 }

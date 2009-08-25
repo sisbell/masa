@@ -72,10 +72,10 @@ public class StringsMergerMojo extends AbstractMojo
 		try {
 			String encodingA = PoTransformer.createTemplateFromStringsXml(inputFileA, a, project);
 	    	String encodingB = PoTransformer.createTemplateFromStringsXml(inputFileB, b, project);
-	    	
+
 			entriesA = PoParser.readEntries( new FileInputStream( a ), encodingA);
 			entriesB = PoParser.readEntries( new FileInputStream( b ), encodingB );
-			
+
 	    	merge(entriesA, entriesB);    
 	    	PoTransformer.writePoFile(entriesA, outputFile, encodingB);
 	    	//PoTransformer.writeEntriesToFile(entriesA, outputFile);
@@ -84,24 +84,37 @@ public class StringsMergerMojo extends AbstractMojo
 		}
     }
     
-    private static void merge(List<PoEntry> entriesA, List<PoEntry> entriesB)
+    private void merge(List<PoEntry> entriesA, List<PoEntry> entriesB)
     {
+    	double x =0, y = 0;
     	for(PoEntry a : entriesA)
     	{
     		String messageId = getMessageIdFrom(entriesB, a.message.messageContext);
     		if(messageId != null)
     		{
+    			x++;
     			a.message.messageString = messageId;
     		}
+    		else
+    		{
+    			y++;
+    			if(a.message.messageContext != null)
+    				this.getLog().info("Missing translation: Context = " + a.message.messageContext);
+    		}
     	}
+
+    	int total = (int) (x + y);
+    	double p = x/total;
+    	this.getLog().info("Translation: Count =  " + total + ", % Translated = "  + p);
     }
     
-    private static String getMessageIdFrom(List<PoEntry> entries, String messageContext)
+    private String getMessageIdFrom(List<PoEntry> entries, String messageContext)
     {
     	for(PoEntry po : entries)
     	{
     		if(po.message.messageContext == null)
     		{
+    		//	this.getLog().info("No message context found: ID = " + po.message.messageId);
     			continue;
     		}
     		

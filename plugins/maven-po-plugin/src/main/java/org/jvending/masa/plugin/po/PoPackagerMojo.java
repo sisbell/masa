@@ -31,77 +31,66 @@ import org.codehaus.plexus.archiver.zip.ZipArchiver;
  * @requiresProject true
  * @description
  */
-public class PoPackagerMojo
-    extends AbstractMojo
-{
+public class PoPackagerMojo extends AbstractMojo {
 
-    /**
-     * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
+	/**
+	 * The maven project.
+	 * 
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject project;
 
-    /**
-     * Input directory
-     * 
-     * @parameter expression = "${inputDirectory}" default-value="${project.build.directory}/po"
-     * @required
-     */
-    private File inputDir;
+	/**
+	 * Input directory
+	 * 
+	 * @parameter expression = "${inputDirectory}"
+	 *            default-value="${project.build.directory}/po"
+	 * @required
+	 */
+	private File inputDir;
 
-    /**
-     * Classifier
-     * 
-     * @parameter expression = "${classifier}"
-     */
-    private String classifier;
+	/**
+	 * Classifier
+	 * 
+	 * @parameter expression = "${classifier}"
+	 */
+	private String classifier;
 
-    /**
-     * @component
-     */
-    private MavenProjectHelper projectHelper;
+	/**
+	 * @component
+	 */
+	private MavenProjectHelper projectHelper;
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        if ( !inputDir.exists() )
-        {
-            getLog().info( "No po resource files to package." );
-            return;
-        }
+	public void execute() throws MojoExecutionException, MojoFailureException {
+		if (!inputDir.exists()) {
+			getLog().info("No po resource files to package.");
+			return;
+		}
 
-        File file =
-            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName()
-                + ( ( classifier != null ) ? "-" + classifier : "" ) + ".pozip" );
+		File file = new File(project.getBuild().getDirectory(), project
+				.getBuild().getFinalName()
+				+ ((classifier != null) ? "-" + classifier : "") + ".pozip");
 
-        ZipArchiver archiver = new ZipArchiver();
-        archiver.setForced( true );
-        archiver.setDestFile( file );
+		ZipArchiver archiver = new ZipArchiver();
+		archiver.setForced(true);
+		archiver.setDestFile(file);
 
-        try
-        {
-            archiver.addDirectory( inputDir );
-            archiver.createArchive();
-        }
-        catch ( ArchiverException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
+		try {
+			archiver.addDirectory(inputDir);
+			archiver.createArchive();
+		} catch (ArchiverException e) {
+			throw new MojoExecutionException("", e);
+		} catch (IOException e) {
+			throw new MojoExecutionException("", e);
+		}
 
-        if ( classifier != null )
-        {
-            projectHelper.attachArtifact( project, "android:po", classifier, file );
-        }
-        else
-        {
-            project.getArtifact().setFile( file );
-        }
-    }
+		if (classifier != null) {
+			projectHelper.attachArtifact(project, "android:po", classifier,
+					file);
+		} else {
+			project.getArtifact().setFile(file);
+		}
+	}
 }
