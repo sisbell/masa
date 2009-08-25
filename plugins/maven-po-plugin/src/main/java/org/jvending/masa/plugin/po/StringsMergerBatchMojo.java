@@ -69,6 +69,9 @@ public class StringsMergerBatchMojo extends AbstractMojo {
 				}   	   			
     		}
     	}
+    	//Create master
+		File outputFile = new File(outputDir, inputFile.getName() + ".po");
+		merger.mergeFiles(inputFile, inputFile, outputFile, project);   	
 
     }
 }

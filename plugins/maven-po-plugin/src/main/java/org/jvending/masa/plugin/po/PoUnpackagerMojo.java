@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
@@ -51,14 +53,15 @@ public class PoUnpackagerMojo
     
     /**
      * 
-     * @parameter expression="${defaultResource}"
+     * @parameter expression="${defaultResources}"
      */
-    private String defaultResource;    
+    private ArrayList<String> defaultResources;    
 
     /**
      * @parameter default-value="${project.build.directory}/processed-resources"
      */
     public File resourceDirectory;
+    
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -74,7 +77,7 @@ public class PoUnpackagerMojo
                     throw new MojoExecutionException( "android:po artifacts must have a classifier" );
                 }
 
-                File valuesDir = (defaultResource.equals( classifier ) ) ? new File( resourceDirectory, "values" ) :
+                File valuesDir = (defaultResources.contains(classifier ) ) ? new File( resourceDirectory, "values" ) :
                                 new File( resourceDirectory, "values-" + classifier );
                 if ( !valuesDir.exists() )
                 {
@@ -82,57 +85,74 @@ public class PoUnpackagerMojo
                 }
 
                 ZipFile zip = null;
-                String encoding = null;
                 try
-                {   //READ meta-data for encoding
+                { 
                     zip = new ZipFile( artifact.getFile() );
-                    
-                    BufferedReader in = new BufferedReader(new InputStreamReader( zip.getInputStream( zip.getEntry( "strings.po" ) )));
-                    String line = in.readLine();
-
-                    while(line != null)
+                    Enumeration<? extends ZipEntry> en = zip.entries();
+                    while(en.hasMoreElements())
                     {
-                    	if(line.startsWith("\"Content-Type:"))
-                    	{
-                    		int i = line.indexOf("charset=");
-                    		try {
-								encoding = line.substring(i + 8, line.length()).split(" ")[0];
-								this.getLog().info("Encoding found: " + encoding);
-							} catch (Exception e) {
-							}
-							break;
-                    	}
-                    	line = in.readLine();
+                    	ZipEntry entry  = en.nextElement();
+                    	if(entry.getName().endsWith(".po")){
+                    		writeWithCorrectEncoding(artifact.getFile(), entry.getName(), valuesDir);
+                    	}             	
                     }
-                    
-                    if(encoding == null)
-                    {
-                    	encoding = System.getProperty("file.encoding");
-                    }
-                    
-                    PoTransformer.transformToStrings(  new ZipFile( artifact.getFile() ).getInputStream( zip.getEntry( "strings.po" ) ) , new File( valuesDir, "strings.xml" ), encoding);
-                }
-                catch ( ZipException e )
-                {
-                    throw new MojoExecutionException("", e);  
                 }
                 catch ( IOException e )
                 {
                     throw new MojoExecutionException("", e);
                 }
-                finally
+ 
+            }
+        }
+    }
+    
+    //TODO: Needs optimization
+    private void writeWithCorrectEncoding(File zipFile, String entryName, File valuesDir) throws IOException
+    {
+    	String encoding =  null;
+    	ZipFile zip = new ZipFile( zipFile );
+        BufferedReader in = new BufferedReader(new InputStreamReader( zip.getInputStream( zip.getEntry( entryName) )));
+        try {
+			String line = in.readLine();
+
+			while(line != null)
+			{
+				if(line.startsWith("\"Content-Type:"))
+				{
+					int i = line.indexOf("charset=");
+					try {
+						encoding = line.substring(i + 8, line.length() -1 ).split(" ")[0];
+						this.getLog().info("Encoding found: " + encoding);
+					} catch (Exception e) {
+					}
+					break;
+				}
+				line = in.readLine();
+			}
+			
+			if(encoding == null)
+			{
+				encoding = System.getProperty("file.encoding");
+			}
+			
+			PoTransformer.transformToStrings(  new ZipFile( zipFile ).getInputStream( zip.getEntry( entryName ) ) , 
+					new File( valuesDir, entryName.substring(0, entryName.lastIndexOf(".")) + ".xml" ), encoding);
+		} 
+        finally
+        {
+            if(zip != null)
+            {
+                try
                 {
-                    if(zip != null)
-                    {
-                        try
-                        {
-                            zip.close();
-                        }
-                        catch ( IOException e )
-                        {
-                        }
-                    }
+                    zip.close();
                 }
+                catch ( IOException e )
+                {
+                }
+            }
+            if(in != null)
+            {
+            	in.close();
             }
         }
     }

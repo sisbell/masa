@@ -108,7 +108,6 @@ public class PoTransformer
     {
     	for(String header : headers)
     	{
-    		System.out.println(headers);
     		if(!header.trim().equals(""))
     		{
     			return true;
