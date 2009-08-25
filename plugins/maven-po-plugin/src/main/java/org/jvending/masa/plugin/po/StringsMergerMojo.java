@@ -48,6 +48,12 @@ public class StringsMergerMojo extends AbstractMojo
     private File inputFileB;
     
     /**
+     * 
+     * @parameter expression = "${removeEmptyEntries}" default-value="true"
+     */
+    private boolean removeEmptyEntries;   
+    
+    /**
      * Po output file
      * 
      * @parameter expression = "${outputFile}"
@@ -59,6 +65,6 @@ public class StringsMergerMojo extends AbstractMojo
         throws MojoExecutionException, MojoFailureException
     {
     	StringsMerger merger = new StringsMerger(this.getLog());
-    	merger.mergeFiles(inputFileA, inputFileB, outputFile, project);
+    	merger.mergeFiles(inputFileA, inputFileB, outputFile, project, removeEmptyEntries);
     }
 }

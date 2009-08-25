@@ -116,7 +116,7 @@ public class PoTransformer
     	return false;
     }
     
-    public static void writePoFile(List<PoEntry> entries, File outputFile, String encoding)
+    public static void writePoFile(List<PoEntry> entries, File outputFile, String encoding, boolean removeEmptyValues)
     	throws IOException 
     {
     	BufferedWriter bos = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( outputFile ), encoding) );
@@ -137,6 +137,10 @@ public class PoTransformer
                 }
                 bos.write("\n");
                 continue;
+    		} 
+    		else if(removeEmptyValues && po.message.messageString.trim().equals(""))//Get rid of entries that have no value - won't be of any use for strings.xml file
+    		{
+    			continue;
     		}
     		
     		if(po.message.messageContext != null)

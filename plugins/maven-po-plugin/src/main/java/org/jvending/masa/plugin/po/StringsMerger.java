@@ -21,7 +21,7 @@ public class StringsMerger {
 		this.log = log;
 	}
 	
-    public void mergeFiles(File inputFileA, File inputFileB, File outputFile, MavenProject project )
+    public void mergeFiles(File inputFileA, File inputFileB, File outputFile, MavenProject project, boolean removeEmptyValues )
 	    throws MojoExecutionException, MojoFailureException
 	{
 		File a;
@@ -43,7 +43,7 @@ public class StringsMerger {
 			entriesB = PoParser.readEntries( new FileInputStream( b ), encodingB );
 			log.info("Merging files: A = " +  a.getName() + ", B = " + b.getName() + ", Output = " + outputFile.getName());
 	    	merge(entriesA, entriesB);    
-	    	PoTransformer.writePoFile(entriesA, outputFile, encodingB);
+	    	PoTransformer.writePoFile(entriesA, outputFile, encodingB, true);
 		} catch (IOException e) {
 			throw new MojoExecutionException("", e);
 		}

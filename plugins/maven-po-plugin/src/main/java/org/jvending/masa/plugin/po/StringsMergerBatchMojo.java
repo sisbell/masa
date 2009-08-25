@@ -47,6 +47,12 @@ public class StringsMergerBatchMojo extends AbstractMojo {
      */
     private File outputDir;    
     
+    /**
+     * 
+     * @parameter expression = "${removeEmptyEntries}" default-value="true"
+     */
+    private boolean removeEmptyEntries;      
+    
     public void execute()
     	throws MojoExecutionException, MojoFailureException
     {
@@ -62,7 +68,7 @@ public class StringsMergerBatchMojo extends AbstractMojo {
     		{
         		try {
 					File outputFile = new File(outputDir, inputFileB.getName() + ".po");
-					merger.mergeFiles(inputFile, inputFileB, outputFile, project);
+					merger.mergeFiles(inputFile, inputFileB, outputFile, project, removeEmptyEntries);
 				} catch (Exception e) {
 					this.getLog().info("Unable to process file = " + inputFileB.getAbsolutePath());
 					e.printStackTrace();
@@ -71,7 +77,7 @@ public class StringsMergerBatchMojo extends AbstractMojo {
     	}
     	//Create master
 		File outputFile = new File(outputDir, inputFile.getName() + ".po");
-		merger.mergeFiles(inputFile, inputFile, outputFile, project);   	
+		merger.mergeFiles(inputFile, inputFile, outputFile, project, removeEmptyEntries);   	
 
     }
 }
