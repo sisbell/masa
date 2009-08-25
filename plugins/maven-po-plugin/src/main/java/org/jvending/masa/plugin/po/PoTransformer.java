@@ -16,6 +16,7 @@
  */
 package org.jvending.masa.plugin.po;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -180,29 +182,55 @@ public class PoTransformer
                     {
                         if ( xmlStreamReader.getLocalName().equals( "string" ) )
                         {
-                            String name = xmlStreamReader.getAttributeValue( 0 );
-
                             bos.write( "msgctxt \"" );
-                            bos.write( name );
+                            bos.write( xmlStreamReader.getAttributeValue( 0 ) );
                             bos.write( "\"\n" );
 
                             xmlStreamReader.next();
+                            if(xmlStreamReader.getEventType() == XMLStreamConstants.CHARACTERS)
+                            { 
+                                String s = nodeToString(xmlStreamReader);
 
-                            // String c = new String(xmlStreamReader.getElementText());
-                            String s = xmlStreamReader.getText();
-                            /*
-                             * if(s == null || s.trim().length() == 0)//contains html { s = c;
-                             * System.out.println("FOLLOW: " + s); }
-                             */
-                            bos.write( "msgid \"" );
-                            bos.write( s );
-                            bos.write( "\"\n" );
+                                bos.write( "msgid " );
+                              	BufferedReader reader = new BufferedReader(new StringReader(s));
+                            	String line = reader.readLine();
+                            	while(line != null)
+                            	{
+                            		if(!line.trim().equals(""))
+                            		{
+                                        bos.write( "\"" );
+                                        bos.write( line );
+                                        bos.write( "\"\n" );                       			
+                            		}
 
-                            bos.write( "msgstr \"\"\n\n" );
+                                    line = reader.readLine();
+                            	}
+                                bos.write( "msgstr \"\"\n\n" );    
+                            }
                         }
+                        /*
+                        else
+                        {
+                        	String s = nodeToString(xmlStreamReader);
+                        	System.out.println(s);
+                        	BufferedReader reader = new BufferedReader(new StringReader(s));
+                        	String line = reader.readLine();
+                        	while(line != null)
+                        	{
+                        		if(!line.trim().equals(""))
+                        		{
+                                    bos.write( "\"" );
+                                    bos.write( line );
+                                    bos.write( "\"\n" );                       			
+                        		}
+
+                                line = reader.readLine();
+                        	}
+                        }
+                        */
 
                         break;
-                    }
+                    } 
                     case XMLStreamConstants.END_DOCUMENT:
                     {
                         return encoding;
@@ -232,5 +260,37 @@ public class PoTransformer
                 bos.close();
             }
         }
+    }
+    private static String nodeToString(XMLStreamReader xmlStreamReader) throws XMLStreamException
+    {
+    	StringBuilder b = new StringBuilder();
+    	   for ( ;; xmlStreamReader.next() )
+           {
+               int type = xmlStreamReader.getEventType();
+
+               switch ( type )
+               {
+                   case XMLStreamConstants.START_ELEMENT:
+                   {
+                	   b.append("<").append(xmlStreamReader.getLocalName()).append(">");
+                	   break;
+                   }
+                   case XMLStreamConstants.END_ELEMENT:
+                   {
+                	   if(xmlStreamReader.getLocalName().equals("string")) 
+                	   {
+                		   //System.out.print(b.toString());
+                		   return b.toString();
+                	   }
+                	   b.append("</").append(xmlStreamReader.getLocalName()).append(">");
+                	   break;
+                   }
+                   case XMLStreamConstants.CHARACTERS:
+                   {
+                      b.append(xmlStreamReader.getText());
+                      break;
+                   }                   
+               }
+           }  	   
     }
 }

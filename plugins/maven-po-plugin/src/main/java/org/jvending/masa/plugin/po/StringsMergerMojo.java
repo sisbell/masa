@@ -105,7 +105,7 @@ public class StringsMergerMojo extends AbstractMojo
 
     	int total = (int) (x + y);
     	double p = x/total;
-    	this.getLog().info("Translation: Count =  " + total + ", % Translated = "  + p);
+    	this.getLog().info("Translation: Total =  " + total + ", % Translated = "  + p);
     }
     
     private String getMessageIdFrom(List<PoEntry> entries, String messageContext)
