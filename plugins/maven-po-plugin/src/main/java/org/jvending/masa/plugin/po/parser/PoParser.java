@@ -80,9 +80,27 @@ public class PoParser
             {
                 flag = ID;
                 msg.messageId = getContextBetweenQuotes( line );
-                if(msg.messageId.equals("") && msg.messageContext != null)
+                if(msg.messageId.equals(""))
                 {
-                	System.out.println("[INFO] Primary language string missing: Context = " + msg.messageContext);
+                	if(msg.messageContext != null)
+                	{
+                		System.out.println("[INFO] Primary language string missing: Context = " + msg.messageContext);
+                	}
+                	else //HEADER
+                	{
+                		List<String> headers = new ArrayList<String>();
+                		entry.hasHeaders = true;
+                		entry.headers = headers;
+                		while(line != null && !line.trim().equals(""))
+                		{
+                			if(!line.startsWith("msgid ") && !line.startsWith("msgstr "))
+                			{
+                    			headers.add(line);               				
+                			}
+
+                			line = reader.readLine();
+                		}
+                	}            	
                 }
             }
             else if ( line.startsWith( "msgstr" ) )
@@ -104,10 +122,10 @@ public class PoParser
                 switch ( flag )
                 {
                     case ID:
-                        msg.messageId = msg.messageId + getContextBetweenQuotes( line );
+                        msg.messageId = msg.messageId + " " + getContextBetweenQuotes( line );
                         break;
                     case STR:
-                        msg.messageString = msg.messageString + getContextBetweenQuotes( line );
+                        msg.messageString = msg.messageString + " " + getContextBetweenQuotes( line );
                         break;
                 }
             }

@@ -14,7 +14,7 @@ import org.apache.maven.project.MavenProject;
  * @description
  */
 public class StringsMergerBatchMojo extends AbstractMojo {
-	   /**
+	/**
      * The maven project.
      * 
      * @parameter expression="${project}"
@@ -58,8 +58,16 @@ public class StringsMergerBatchMojo extends AbstractMojo {
     	StringsMerger merger = new StringsMerger(this.getLog());
     	for(File inputFileB : inputDir.listFiles())
     	{
-    		File outputFile = new File(outputDir, inputFileB.getName() + ".po");
-        	merger.mergeFiles(inputFile, inputFileB, outputFile, project);   		
+    		if(inputFileB.isFile())
+    		{
+        		try {
+					File outputFile = new File(outputDir, inputFileB.getName() + ".po");
+					merger.mergeFiles(inputFile, inputFileB, outputFile, project);
+				} catch (Exception e) {
+					this.getLog().info("Unable to process file = " + inputFileB.getAbsolutePath());
+					e.printStackTrace();
+				}   	   			
+    		}
     	}
 
     }

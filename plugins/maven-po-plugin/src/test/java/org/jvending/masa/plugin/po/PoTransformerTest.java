@@ -54,7 +54,7 @@ public class PoTransformerTest {
 			ParserConfigurationException, SAXException {
 		JXPathContext ctx = JXPathContext
 				.newContext(getRootNode("multiline-message-string"));
-		assertEquals("123\\nadb", ctx.getValue("string[1]"));
+		assertEquals("123\\n adb", ctx.getValue("string[1]"));
 	}
 
 	@Test

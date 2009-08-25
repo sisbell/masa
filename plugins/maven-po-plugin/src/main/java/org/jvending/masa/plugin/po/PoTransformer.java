@@ -104,6 +104,19 @@ public class PoTransformer
         transformToStrings(new FileInputStream(inputFile), outputFile, encoding);
     }
     
+    private static boolean verifyHeaders(List<String> headers)
+    {
+    	for(String header : headers)
+    	{
+    		System.out.println(headers);
+    		if(!header.trim().equals(""))
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     public static void writePoFile(List<PoEntry> entries, File outputFile, String encoding)
     	throws IOException 
     {
@@ -111,6 +124,22 @@ public class PoTransformer
     	
     	for(PoEntry po : entries)
     	{
+    		if(po.hasHeaders && verifyHeaders(po.headers))
+    		{
+                bos.write( "msgid \"\"\n" );
+                bos.write( "msgstr \"\"\n" );
+                for(String header : po.headers)
+                {
+                	if(!header.trim().equals(""))
+                	{
+                    	bos.write(header);    
+                    	bos.write("\n");
+                	}
+                }
+                bos.write("\n");
+                continue;
+    		}
+    		
     		if(po.message.messageContext != null)
     		{
                 bos.write( "msgctxt \"" );
@@ -208,27 +237,6 @@ public class PoTransformer
                                 bos.write( "msgstr \"\"\n\n" );    
                             }
                         }
-                        /*
-                        else
-                        {
-                        	String s = nodeToString(xmlStreamReader);
-                        	System.out.println(s);
-                        	BufferedReader reader = new BufferedReader(new StringReader(s));
-                        	String line = reader.readLine();
-                        	while(line != null)
-                        	{
-                        		if(!line.trim().equals(""))
-                        		{
-                                    bos.write( "\"" );
-                                    bos.write( line );
-                                    bos.write( "\"\n" );                       			
-                        		}
-
-                                line = reader.readLine();
-                        	}
-                        }
-                        */
-
                         break;
                     } 
                     case XMLStreamConstants.END_DOCUMENT:
@@ -240,7 +248,7 @@ public class PoTransformer
         }
         catch ( XMLStreamException e )
         {
-            throw new IOException( ":" + e.toString() );
+            throw new IOException("File = " + inputFile.getAbsolutePath() +"\n" + e.toString() );
         }
         finally
         {

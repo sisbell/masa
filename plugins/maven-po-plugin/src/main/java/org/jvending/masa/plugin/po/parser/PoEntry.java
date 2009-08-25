@@ -15,7 +15,13 @@
  */
 package org.jvending.masa.plugin.po.parser;
 
+import java.util.List;
+
 public class PoEntry {
 
 	public PoMessage message;
+	
+	public boolean hasHeaders = false;
+	
+	public List<String> headers;
 }

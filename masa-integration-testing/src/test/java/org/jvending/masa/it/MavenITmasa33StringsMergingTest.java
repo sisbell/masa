@@ -1,10 +1,6 @@
 package org.jvending.masa.it;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.maven.it.AbstractMavenIntegrationTestCase;
 import org.apache.maven.it.Verifier;
