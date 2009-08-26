@@ -140,6 +140,7 @@ public class PoTransformer
     		} 
     		else if(removeEmptyValues && po.message.messageString.trim().equals(""))//Get rid of entries that have no value - won't be of any use for strings.xml file
     		{
+    			System.out.println("Removing entry: " + po.message.messageContext);
     			continue;
     		}
     		
