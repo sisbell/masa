@@ -72,9 +72,9 @@ public class JarSignerMojo
     public String keypass;
 
     /**
-     * @parameter expression="${disableStorePass}" default-value="false"
+     * @parameter expression="${disableStorepass}" default-value="false"
      */
-    public boolean disableStorePass;
+    public boolean disableStorepass; 
 
     /**
      * @parameter expression="${disableKeypass}" default-value="false"
@@ -109,18 +109,19 @@ public class JarSignerMojo
         // commands.add("-verbose");
         if ( !disableKeypass )
         {
-            commands.add( "-keystore" );
-            commands.add( keystore );
+            commands.add( "-keypass" );
+            commands.add( keypass );
         }
 
-        if ( !disableStorePass )
+        if ( !disableStorepass )
         {
             commands.add( "-storepass" );
             commands.add( storepass );
         }
-
-        commands.add( "-keypass" );
-        commands.add( keypass );
+        
+        commands.add( "-keystore" );
+        commands.add( keystore );
+        
         String apk = null;
         for ( Artifact a : (List<Artifact>) project.getAttachedArtifacts() )
         {
