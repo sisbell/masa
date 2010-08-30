@@ -22,6 +22,8 @@
 	<modules>
 		<module>plugins</module>
 		<module>android-archetypes</module>
+<!--
 		<module>masa-integration-testing</module>
+-->
 	</modules>
 </project>
