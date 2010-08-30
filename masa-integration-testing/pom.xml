@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-verifier</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<version>1.3-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -88,9 +88,21 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+		</plugins>        
 	</build>
-
+ <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>sonatype</id>
+      <name>Sonatype Snapshots</name>
+      <url>http://repository.sonatype.org/content/groups/sonatype-public-grid/</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
 	<reporting>
 		<plugins>
 			<plugin>
