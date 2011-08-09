@@ -63,6 +63,11 @@ public final class AaptPackagerMojo
      * @parameter
      */
     public File androidManifestFile;
+ 
+    /**
+     * @parameter
+     */
+    public String renameManifestPackage;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -109,6 +114,12 @@ public final class AaptPackagerMojo
         commands.add( androidJar.getAbsolutePath() );
         commands.add( "-F" );
         commands.add( outputFile.getAbsolutePath() );
+        
+        //    --rename-manifest-package
+        if(renameManifestPackage != null) {
+        	commands.add("--rename-manifest-package");
+        	commands.add(renameManifestPackage);
+        }
 
         String aaptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
         getLog().info( aaptCommand + " " + commands.toString() );

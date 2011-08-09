@@ -1,0 +1,52 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jvending.masa.it.masa
+	</groupId>
+	<artifactId>masa-gh2</artifactId>
+	<version>1.0</version>
+	<packaging>android:apk</packaging>
+
+	<name>Masa Integration Test :: MASA-gh2</name>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>2.2.1</version>
+		</dependency>	
+	</dependencies>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>res</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.jvending.masa.plugins
+				</groupId>
+				<artifactId>maven-aapt-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<renameManifestPackage>org.jvending.masa.rename</renameManifestPackage>
+				</configuration>
+			</plugin>			
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<outputDirectory>./target/processed-resources</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
+</project>
