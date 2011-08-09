@@ -60,7 +60,7 @@ public class MasaUtil
     public static File getAndroidJarFile( MavenProject project )
         throws MojoExecutionException
     {
-        for ( Artifact artifact : (Set<Artifact>) project.getArtifacts() )
+        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
         {
             if ( artifact.getGroupId().equals( "com.google.android" ) && artifact.getArtifactId().equals( "android" ) )
             {
