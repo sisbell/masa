@@ -70,6 +70,7 @@ public class MavenITmasa29PoTest
         verifier.executeGoal( "install" );
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
+       
        // verifier.assertFilePresent( "target/artifact-1.0-en.pozip" );
     }       
 }

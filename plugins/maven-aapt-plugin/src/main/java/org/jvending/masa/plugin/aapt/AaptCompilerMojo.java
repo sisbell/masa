@@ -117,11 +117,15 @@ public class AaptCompilerMojo
         commands.add( generatedSourceDirectoryName );
         commands.add( "-M" );
         commands.add( androidManifestFile.getAbsolutePath() );
+        
+    	commands.add( "-S" );
         if ( resourceDirectory.exists() )
         {
-            commands.add( "-S" );
             commands.add( resourceDirectory.getAbsolutePath() );
+        } else {
+        	commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
         }
+        
         if ( assetsDirectory.exists() )
         {
             commands.add( "-A" );
