@@ -71,12 +71,17 @@ public class ToolchainMojo
         {
             return;
         }
+   
+        if(toolchainsFile == null) {
+        	//Check if toolchains.xml exists within project directory first
+        	toolchainsFile = new File(  project.getBasedir(), "toolchains.xml" );
+        	//Check if toolchains.xml exists within local .m2 directory
+        	if(!toolchainsFile.exists()) {
+        		 toolchainsFile =
+                     new File( new File( session.getLocalRepository().getBasedir() ).getParentFile(), "toolchains.xml" );
         
-        if ( toolchainsFile == null )
-        {
-            toolchainsFile =
-                new File( new File( session.getLocalRepository().getBasedir() ).getParentFile(), "toolchains.xml" );
-        }
+        	}
+        } 
 
         if ( !toolchainsFile.exists() )
         {
