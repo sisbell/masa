@@ -68,6 +68,11 @@ public final class AaptPackagerMojo
      * @parameter
      */
     public String renameManifestPackage;
+    
+    /**
+     * @parameter
+     */
+    public boolean includeVersionCodeInApkFile;    
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -92,6 +97,7 @@ public final class AaptPackagerMojo
         {
             throw new MojoExecutionException( "Android jar file not found: File = " + androidJar.getAbsolutePath() );
         }
+        
         File outputFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
 
         List<String> commands = new ArrayList<String>();
@@ -100,10 +106,12 @@ public final class AaptPackagerMojo
         commands.add( "-f" );
         commands.add( "-M" );
         commands.add( androidManifestFile.getAbsolutePath() );
+    	commands.add( "-S" );
         if ( resourceDirectory.exists() )
         {
-            commands.add( "-S" );
             commands.add( resourceDirectory.getAbsolutePath() );
+        } else {
+        	commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
         }
         if ( assetsDirectory.exists() )
         {
