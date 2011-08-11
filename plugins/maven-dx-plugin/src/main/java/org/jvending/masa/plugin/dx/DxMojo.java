@@ -89,6 +89,55 @@ public class DxMojo
      */   
     private boolean debug;
     
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean noOptimize;    
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean statistics;    
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean noLocales;   
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean verbose;    
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean noStrict;     
+    
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean keepClasses;     
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean noFiles;  
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private boolean coreLibrary;         
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -164,9 +213,56 @@ public class DxMojo
 								+ positions);
 			}
 		}
-		if(debug) {
+		if(debug) 
+		{
 			commands.add( "--debug" );
 		}
+		
+		if(noOptimize) 
+		{
+			commands.add( "--no-optimize" );
+		}
+
+		if(statistics) 
+		{
+			commands.add( "--statistics" );
+		}
+
+		if(noLocales) 
+		{
+			commands.add( "--no-locals" );
+		}
+		
+		if(noOptimize) 
+		{
+			commands.add( "--no-optimize" );
+		}
+
+		if(verbose) 
+		{
+			commands.add( "--verbose" );
+		}
+
+		if(noStrict) 
+		{
+			commands.add( "--no-strict" );
+		}
+
+		if(keepClasses) 
+		{
+			commands.add( "--keep-classes" );
+		}
+
+		if(noFiles) 
+		{
+			commands.add( "--no-files" );
+		}
+
+		if(coreLibrary) 
+		{
+			commands.add( "--core-library" );
+		}
+		
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );
         commands.add( outputDirectory.getAbsolutePath() );
