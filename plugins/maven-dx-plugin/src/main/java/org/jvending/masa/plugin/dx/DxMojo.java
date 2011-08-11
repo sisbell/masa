@@ -80,6 +80,14 @@ public class DxMojo
      * @optional
      */
     private String positions;
+
+    /**
+     * debug
+     * 
+     * @parameter
+     * @optional
+     */   
+    private boolean debug;
     
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -155,6 +163,9 @@ public class DxMojo
 						"Unknown positions parameter (none, important, lines): Value = "
 								+ positions);
 			}
+		}
+		if(debug) {
+			commands.add( "--debug" );
 		}
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );
