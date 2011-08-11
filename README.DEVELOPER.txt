@@ -1,0 +1,1 @@
+Run setup.sh script prior to building masa (create script for windows). 

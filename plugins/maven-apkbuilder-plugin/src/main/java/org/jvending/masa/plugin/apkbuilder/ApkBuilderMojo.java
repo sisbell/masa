@@ -25,6 +25,10 @@ import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
 
+import com.android.sdklib.build.ApkBuilder;
+import com.android.sdklib.build.ApkCreationException;
+import com.android.sdklib.build.SealedApkException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,17 +72,40 @@ public class ApkBuilderMojo
         File outputFile =
             new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-unsigned.apk" );
 
+        File packagedResourceFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
+        File dexFile = new File( project.getBuild().getDirectory(), "classes.dex" );
+        File resourcesDir = new File( project.getBuild().getSourceDirectory() ) ;
+		try {
+			ApkBuilder builder = new ApkBuilder(outputFile.getAbsolutePath(),
+					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
+					null);
+			//builder.
+			//builder.addZipFile(zipFile);
+			builder.sealApk();
+		} catch (ApkCreationException e) {
+			e.printStackTrace();
+			throw new MojoExecutionException( "ApkCreationException", e );
+		} catch (SealedApkException e) {
+			e.printStackTrace();
+			throw new MojoExecutionException( "SealedApkException", e );
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MojoExecutionException( "", e );
+		}
+  
+        /*
         List<String> commands = new ArrayList<String>();
         commands.add( outputFile.getAbsolutePath() );
-        commands.add( "-u" );
+        commands.add( "-u" );//unsigned
 
-        commands.add( "-z" );
+        commands.add( "-z" );//add zip
         commands.add( new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" ).getAbsolutePath() );
-        commands.add( "-f" );
+        commands.add( "-f" );//add dex
         commands.add( new File( project.getBuild().getDirectory(), "classes.dex" ).getAbsolutePath() );
-        commands.add( "-rf" );
+        commands.add( "-rf" );//resources
         commands.add( new File( project.getBuild().getSourceDirectory() ).getAbsolutePath() );
 
+        
         getLog().info( "apkbuilder " + commands.toString() );
         try
         {
@@ -89,7 +116,7 @@ public class ApkBuilderMojo
         {
             throw new MojoExecutionException( "", e );
         }
-
+*/
         projectHelper.attachArtifact( project, "apk", "unsigned", outputFile );
     }
 }

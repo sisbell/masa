@@ -11,6 +11,8 @@ For the latest documentation, go to: http://code.google.com/p/masa/wiki/GettingS
 
   # Add ANDROID_SDK/tools to your path
   # Add ANDROID_SDK/platforms/android-1.[x]/tools to your path
+  
+  Run masa-project/setup.sh script prior to building your project (create script for windows). 
 
 
 or configure Toolchains

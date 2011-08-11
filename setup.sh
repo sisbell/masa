@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=./lib/sdklib.jar -DgroupId=org.jvending.masa.sdklib -DartifactId=sdklib -Dversion=3.2 -Dpackaging=jar
