@@ -72,7 +72,15 @@ public class DxMojo
      * @optional
      */
     private String[] jvmArguments;
-
+    
+    /**
+     * none, important, lines (debug info)
+     * 
+     * @parameter
+     * @optional
+     */
+    private String positions;
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -134,6 +142,20 @@ public class DxMojo
                 }
             }
         }
+		if (positions != null) 
+		{
+			if (positions.equals("none") || positions.equals("important")
+					|| positions.equals("lines")) 
+			{
+				commands.add( "--positions=" + positions);			
+			} 
+			else 
+			{
+				throw new MojoExecutionException(
+						"Unknown positions parameter (none, important, lines): Value = "
+								+ positions);
+			}
+		}
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );
         commands.add( outputDirectory.getAbsolutePath() );
