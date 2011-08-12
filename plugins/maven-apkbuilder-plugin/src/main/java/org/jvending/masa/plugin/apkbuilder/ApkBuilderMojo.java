@@ -21,17 +21,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.jvending.masa.CommandExecutor;
-import org.jvending.masa.ExecutionException;
-import org.jvending.masa.MasaUtil;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.SealedApkException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @goal build
@@ -61,26 +56,49 @@ public class ApkBuilderMojo
      * @readonly
      */
     private MavenProjectHelper projectHelper;
+    
+    /**
+     * Sets the debug mode. In debug mode, when native libraries are present, the packaging
+     * will also include one or more copies of gdbserver in the final APK file.
+     *
+     * These are used for debugging native code, to ensure that gdbserver is accessible to the
+     * application.
+     *
+     * There will be one version of gdbserver for each ABI supported by the application.
+     *
+     * the gbdserver files are placed in the libs/abi/ folders automatically by the NDK.
+     *
+     * @parameter
+     */
+    private boolean debugMode;
+    
+    /*
+     * Root folder containing native libraries to include in the application package.
+     * 
+     * @parameter
+     */
+    private NativeLibraries nativeLibraries;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-
-        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger( this.getLog() );
-
         File outputFile =
             new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-unsigned.apk" );
 
         File packagedResourceFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
         File dexFile = new File( project.getBuild().getDirectory(), "classes.dex" );
-        File resourcesDir = new File( project.getBuild().getSourceDirectory() ) ;
+       // File resourcesDir = new File( project.getBuild().getSourceDirectory() ) ;
 		try {
 			ApkBuilder builder = new ApkBuilder(outputFile.getAbsolutePath(),
 					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
 					null);
-			//builder.
-			//builder.addZipFile(zipFile);
+			if(debugMode) {
+				builder.setDebugMode(true);
+			}	
+			if(nativeLibraries != null) {
+				builder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);
+			}
+			
 			builder.sealApk();
 		} catch (ApkCreationException e) {
 			e.printStackTrace();
@@ -93,30 +111,6 @@ public class ApkBuilderMojo
 			throw new MojoExecutionException( "", e );
 		}
   
-        /*
-        List<String> commands = new ArrayList<String>();
-        commands.add( outputFile.getAbsolutePath() );
-        commands.add( "-u" );//unsigned
-
-        commands.add( "-z" );//add zip
-        commands.add( new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" ).getAbsolutePath() );
-        commands.add( "-f" );//add dex
-        commands.add( new File( project.getBuild().getDirectory(), "classes.dex" ).getAbsolutePath() );
-        commands.add( "-rf" );//resources
-        commands.add( new File( project.getBuild().getSourceDirectory() ).getAbsolutePath() );
-
-        
-        getLog().info( "apkbuilder " + commands.toString() );
-        try
-        {
-            executor.executeCommand( MasaUtil.getToolnameWithPath( session, project, "apkbuilder" ), commands,
-                                     project.getBasedir(), false );
-        }
-        catch ( ExecutionException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
-*/
         projectHelper.attachArtifact( project, "apk", "unsigned", outputFile );
     }
 }
