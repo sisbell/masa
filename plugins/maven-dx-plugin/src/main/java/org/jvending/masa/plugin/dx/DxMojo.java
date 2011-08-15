@@ -150,6 +150,29 @@ public class DxMojo
      */   
     private int dumpWidth;      
     
+    /**
+     * New line separated file 
+     * 
+     * Class name + method names that should be optimized
+     * 
+     * http://www.java2s.com/Open-Source/Android/android-core/platform-dalvik/com/android/dx/dex/cf/OptimizerOptions.java.htm
+     * 
+     * @parameter
+     * @optional
+     */   
+    private File optimizeList;     
+   
+    
+    /**
+     * New line separated file 
+     * 
+     * Class name + method names that should not be optimized
+     * 
+     * @parameter
+     * @optional
+     */   
+    private File noOptimizeList; 
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -295,6 +318,18 @@ public class DxMojo
 			commands.add( "--dump-width" );
 			commands.add( String.valueOf( dumpWidth ) );
 		}
+		
+		if( optimizeList != null ) 
+		{
+			commands.add( "--optimize-list" );
+			commands.add( optimizeList.getAbsolutePath() );			
+		}
+		
+		if( noOptimizeList != null ) 
+		{
+			commands.add( "--no-optimize-list" );
+			commands.add( noOptimizeList.getAbsolutePath() );			
+		}	
 		
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );
