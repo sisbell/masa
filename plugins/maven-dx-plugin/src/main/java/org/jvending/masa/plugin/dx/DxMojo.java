@@ -142,7 +142,13 @@ public class DxMojo
      * @parameter
      * @optional
      */   
-    private File dumpTo;            
+    private File dumpTo;        
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private int dumpWidth;      
     
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -282,6 +288,12 @@ public class DxMojo
 					commands.add( dumpTo.getAbsolutePath() );
 				}
 			}
+		}
+		
+		if( dumpWidth != 0 ) 
+		{
+			commands.add( "--dump-width" );
+			commands.add( String.valueOf( dumpWidth ) );
 		}
 		
         commands.add( "--dex" );
