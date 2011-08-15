@@ -136,7 +136,13 @@ public class DxMojo
      * @parameter
      * @optional
      */   
-    private boolean coreLibrary;         
+    private boolean coreLibrary;  
+    
+    /**
+     * @parameter
+     * @optional
+     */   
+    private File dumpTo;            
     
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -261,6 +267,21 @@ public class DxMojo
 		if(coreLibrary) 
 		{
 			commands.add( "--core-library" );
+		}
+		
+		if(dumpTo != null) 
+		{
+			if(!dumpTo.getParentFile().exists()) 
+			{
+				if(!dumpTo.getParentFile().mkdirs())
+				{
+					throw new MojoExecutionException( "Failed to create dump directory: Directory = "  
+							+ dumpTo.getParentFile().getAbsolutePath() );
+				} else {
+					commands.add( "--dump-to" );
+					commands.add( dumpTo.getAbsolutePath() );
+				}
+			}
 		}
 		
         commands.add( "--dex" );
