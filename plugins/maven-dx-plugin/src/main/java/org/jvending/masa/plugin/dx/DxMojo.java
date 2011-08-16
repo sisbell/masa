@@ -172,6 +172,12 @@ public class DxMojo
      * @optional
      */   
     private File noOptimizeList; 
+
+    /**
+     * @parameter
+     * @optional
+     */   
+    private int numThreads;
     
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -330,6 +336,11 @@ public class DxMojo
 			commands.add( "--no-optimize-list" );
 			commands.add( noOptimizeList.getAbsolutePath() );			
 		}	
+		
+		if(numThreads != 0) {
+			commands.add( "--num-threads" );
+			commands.add( String.valueOf( numThreads ) );			
+		}
 		
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );
