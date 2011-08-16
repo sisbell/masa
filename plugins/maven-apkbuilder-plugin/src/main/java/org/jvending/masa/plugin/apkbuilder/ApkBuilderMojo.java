@@ -78,6 +78,11 @@ public class ApkBuilderMojo
      * @parameter
      */
     private NativeLibraries nativeLibraries;
+    
+    /*
+     * @parameter
+     */
+    private boolean verboseMode;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -87,11 +92,13 @@ public class ApkBuilderMojo
 
         File packagedResourceFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
         File dexFile = new File( project.getBuild().getDirectory(), "classes.dex" );
-       // File resourcesDir = new File( project.getBuild().getSourceDirectory() ) ;
+        
+        ByteArrayOutputStream bais = new ByteArrayOutputStream();   
 		try {
 			ApkBuilder builder = new ApkBuilder(outputFile.getAbsolutePath(),
 					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
-					null);
+					(verboseMode) ? new PrintStream(bais) : null);
+			
 			if(debugMode) {
 				builder.setDebugMode(true);
 			}	
@@ -100,6 +107,12 @@ public class ApkBuilderMojo
 			}
 			
 			builder.sealApk();
+			
+	        if(verboseMode)
+	        {
+	        	//Just write verbose output all out at once 
+	        	getLog().info(new String(bais.toByteArray()));       	
+	        }
 		} catch (ApkCreationException e) {
 			e.printStackTrace();
 			throw new MojoExecutionException( "ApkCreationException", e );
