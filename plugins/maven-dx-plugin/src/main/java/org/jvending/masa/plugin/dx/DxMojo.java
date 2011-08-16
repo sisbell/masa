@@ -179,6 +179,12 @@ public class DxMojo
      */   
     private int numThreads;
     
+    /**
+     * @parameter
+     * @optional
+     */   
+    private File classFile;   
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -187,11 +193,13 @@ public class DxMojo
         executor.setLogger( this.getLog() );
 
         File outputFile = new File( project.getBuild().getDirectory() + File.separator + "classes.dex" );
+        
+        //These classes files go from jar into temp output directory (android-classes)
         File inputFile =
             new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
 
-        // Unpackage all dependent and main classes
-        File outputDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
+        // Unpackage all dependent and main classes into this directory
+        File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
         for ( Artifact artifact : (List<Artifact>) project.getCompileArtifacts() )
         {
             if ( artifact.getGroupId().equals( "com.google.android" ) )
@@ -207,7 +215,7 @@ public class DxMojo
 
             try
             {
-                unjar( new JarFile( artifact.getFile() ), outputDirectory );
+                unjar( new JarFile( artifact.getFile() ), classDirectory );
             }
             catch ( IOException e )
             {
@@ -218,7 +226,7 @@ public class DxMojo
 
         try
         {
-            unjar( new JarFile( inputFile ), outputDirectory );
+            unjar( new JarFile( inputFile ), classDirectory );
         }
         catch ( IOException e )
         {
@@ -343,8 +351,27 @@ public class DxMojo
 		}
 		
         commands.add( "--dex" );
-        commands.add( "--output=" + outputFile.getAbsolutePath() );
-        commands.add( outputDirectory.getAbsolutePath() );
+        commands.add( "--output=" + outputFile.getAbsolutePath() );//classes.dex
+        
+        if(classFile == null) 
+        {
+        	commands.add( classDirectory.getAbsolutePath() );	
+        } 
+        else 
+        {
+        	if( !classFile.exists() )
+        	{
+        		throw new MojoExecutionException( "Class source directory not found: " + classFile.getAbsolutePath() ); 	     
+        	}
+        	String className = classFile.getName();
+        	if(classFile.isDirectory() || className.endsWith(".apk") || className.endsWith(".jar") || className.endsWith(".zip") ) 
+        	{
+        		commands.add( classFile.getAbsolutePath() );
+        	} else {
+        		throw new MojoExecutionException( "Unrecognized class source (apk, zip, jar): " + classFile.getAbsolutePath());
+        	}
+        }
+        
         getLog().info( "dx " + commands.toString() );
         try
         {
