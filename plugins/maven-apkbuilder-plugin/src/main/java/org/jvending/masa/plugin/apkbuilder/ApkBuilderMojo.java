@@ -137,7 +137,7 @@ public class ApkBuilderMojo
 			ApkBuilder signedBuilder =  createBuilder(outputFile,
 					packagedResourceFile, dexFile,signingInfo.key, signingInfo.certificate,
 					printStream);
-						;
+						
 				/*new ApkBuilder(outputFile.getAbsolutePath(),
 					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
 					(verboseMode) ? new PrintStream(bais) : null);

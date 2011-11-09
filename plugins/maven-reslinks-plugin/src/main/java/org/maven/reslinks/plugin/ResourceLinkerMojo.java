@@ -30,7 +30,6 @@ public class ResourceLinkerMojo extends AbstractMojo {
     
     /**
      * @parameter
-     * @required
      */
     public String[] resourceFolders;
     
@@ -39,7 +38,9 @@ public class ResourceLinkerMojo extends AbstractMojo {
     private String baseResourcesDirName;
 	
 	public void execute() throws MojoExecutionException {
-
+		if(resourceFolders == null) {
+			return;
+		}
 		 baseResourcesDirName = new File(  project.getBasedir(), "resources").getAbsolutePath() + File.separator;
 			
 		 mapGenericResourceDirectory();
