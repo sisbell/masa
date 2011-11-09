@@ -26,6 +26,14 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.SealedApkException;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.UnrecoverableEntryException;
+
 import java.io.*;
 
 /**
@@ -83,7 +91,27 @@ public class ApkBuilderMojo
      * @parameter
      */
     private boolean verboseMode;
-
+    
+    /*
+     * @parameter
+     */
+    private String keyStorePath;
+     
+    /*
+     * @parameter
+     */
+    private String keyStoreType;
+    
+    /*
+     * @parameter
+     */
+    private String keyStorePassword;    
+    
+    /*
+     * @parameter
+     */
+    private String keyStoreAlias;       
+    
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -95,18 +123,34 @@ public class ApkBuilderMojo
         
         ByteArrayOutputStream bais = new ByteArrayOutputStream();   
 		try {
-			ApkBuilder builder = new ApkBuilder(outputFile.getAbsolutePath(),
-					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
+			ApkBuilder unsignedBuilder = createBuilder(outputFile,
+					packagedResourceFile, dexFile, null,
 					(verboseMode) ? new PrintStream(bais) : null);
 			
+			//Will be either debug signed or dev signed
+			PrintStream printStream = (verboseMode) ? new PrintStream(bais) : null;
+			SigningInfo signingInfo = (!isDebugBuild()) ? loadKeyEntry(
+					keyStorePath, keyStoreType, keyStorePassword.toCharArray(),
+					keyStoreAlias) : new SigningInfo(ApkBuilder.getDebugKey(
+					keyStorePath, printStream));
+
+			ApkBuilder signedBuilder =  createBuilder(outputFile,
+					packagedResourceFile, dexFile,signingInfo.key, signingInfo.certificate,
+					printStream);
+						;
+				/*new ApkBuilder(outputFile.getAbsolutePath(),
+					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
+					(verboseMode) ? new PrintStream(bais) : null);
+					*/
+			
 			if(debugMode) {
-				builder.setDebugMode(true);
+				signedBuilder.setDebugMode(true);
 			}	
 			if(nativeLibraries != null) {
-				builder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);
+				signedBuilder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);
 			}
 			
-			builder.sealApk();
+			signedBuilder.sealApk();
 			
 	        if(verboseMode)
 	        {
@@ -126,4 +170,56 @@ public class ApkBuilderMojo
   
         projectHelper.attachArtifact( project, "apk", "unsigned", outputFile );
     }
+    
+    private ApkBuilder createBuilder(File apkFile, File resFile, File dexFile, String debugStoreOsPath,
+            final PrintStream verboseStream) {
+    	return null;
+    }
+    
+    private ApkBuilder createBuilder(File apkFile, File resFile, File dexFile, PrivateKey key,
+            X509Certificate certificate, PrintStream verboseStream) {
+    	return null;
+    }
+    
+    private final static class SigningInfo {
+        public final PrivateKey key;
+        public final X509Certificate certificate;
+
+        private SigningInfo(PrivateKey key, X509Certificate certificate) {
+            if (key == null || certificate == null) {
+                throw new IllegalArgumentException("key and certificate cannot be null");
+            }
+            this.key = key;
+            this.certificate = certificate;
+        }
+        
+        private SigningInfo(ApkBuilder.SigningInfo signingInfo) {
+        	this(signingInfo.key, signingInfo.certificate);
+        }
+    }
+    
+	private SigningInfo loadKeyEntry(String osKeyStorePath, String storeType, 
+			char[] password, String alias )
+			throws KeyStoreException, NoSuchAlgorithmException,
+			CertificateException, IOException, UnrecoverableEntryException {
+		try {
+			KeyStore keyStore  = KeyStore
+					.getInstance(storeType != null ? storeType : KeyStore
+							.getDefaultType());
+			FileInputStream fis = new FileInputStream(osKeyStorePath);
+			keyStore.load(fis, password);
+			fis.close();
+			KeyStore.PrivateKeyEntry store = (KeyStore.PrivateKeyEntry) keyStore.getEntry(alias,
+					new KeyStore.PasswordProtection(password));
+			return new SigningInfo(store.getPrivateKey(), (X509Certificate) store.getCertificate());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	private boolean isDebugBuild() {
+		return this.keyStorePath != null;
+	}
 }

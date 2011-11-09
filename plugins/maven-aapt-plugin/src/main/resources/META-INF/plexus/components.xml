@@ -13,6 +13,7 @@
                    org.jvending.masa.plugins:maven-toolchains-plugin:toolchain
                </validate>
                <generate-sources>
+               	   org.jvending.masa.plugins:maven-reslinks-plugin:link,
                    org.jvending.masa.plugins:maven-aidl-plugin:generate
                </generate-sources>
                <process-resources>

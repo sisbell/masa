@@ -35,10 +35,13 @@ public class IntegrationTestSuite extends TestCase
         }
 
         TestSuite suite = new TestSuite();
+        suite.addTestSuite( MavenITmasa24LinkTest.class );
+        /*
         suite.addTestSuite( MavenITmasaGh2RenamePackageTest.class );
         suite.addTestSuite( MavenITmasa33StringsMergingTest.class );
         suite.addTestSuite( MavenITmasa30LocalizedResourcesTest.class );
         suite.addTestSuite( MavenITmasa29PoTest.class );
+        */
         
         /*
          * Add tests in reverse alpha order above.

@@ -1,0 +1,1 @@
+Linking test only works on Unix based systems
