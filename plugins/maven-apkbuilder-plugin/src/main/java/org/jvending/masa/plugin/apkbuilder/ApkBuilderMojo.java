@@ -129,25 +129,28 @@ public class ApkBuilderMojo
 			
 			//Will be either debug signed or dev signed
 			PrintStream printStream = (verboseMode) ? new PrintStream(bais) : null;
+			/*
 			SigningInfo signingInfo = (!isDebugBuild()) ? loadKeyEntry(
 					keyStorePath, keyStoreType, keyStorePassword.toCharArray(),
 					keyStoreAlias) : new SigningInfo(ApkBuilder.getDebugKey(
 					keyStorePath, printStream));
-
+					*/
+/*
 			ApkBuilder signedBuilder =  createBuilder(outputFile,
 					packagedResourceFile, dexFile,signingInfo.key, signingInfo.certificate,
 					printStream);
-						
-				/*new ApkBuilder(outputFile.getAbsolutePath(),
+*/						
+			ApkBuilder signedBuilder =	new ApkBuilder(outputFile.getAbsolutePath(),
 					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
 					(verboseMode) ? new PrintStream(bais) : null);
-					*/
+					
 			
 			if(debugMode) {
 				signedBuilder.setDebugMode(true);
 			}	
 			if(nativeLibraries != null) {
 				signedBuilder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);
+			
 			}
 			
 			signedBuilder.sealApk();
@@ -172,13 +175,13 @@ public class ApkBuilderMojo
     }
     
     private ApkBuilder createBuilder(File apkFile, File resFile, File dexFile, String debugStoreOsPath,
-            final PrintStream verboseStream) {
-    	return null;
+            final PrintStream verboseStream) throws Exception {
+    	return new ApkBuilder(apkFile, resFile, dexFile, debugStoreOsPath, verboseStream);
     }
     
     private ApkBuilder createBuilder(File apkFile, File resFile, File dexFile, PrivateKey key,
-            X509Certificate certificate, PrintStream verboseStream) {
-    	return null;
+            X509Certificate certificate, PrintStream verboseStream) throws Exception {
+    	return new ApkBuilder(apkFile, resFile, dexFile, key, certificate, verboseStream);
     }
     
     private final static class SigningInfo {
