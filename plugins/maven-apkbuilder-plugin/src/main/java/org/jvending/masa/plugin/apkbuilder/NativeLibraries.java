@@ -18,7 +18,13 @@ package org.jvending.masa.plugin.apkbuilder;
 import java.io.File;
 
 public final class NativeLibraries {
+    /**
+     * @parameter
+     */
 	File path;
 	
+    /**
+     * @parameter
+     */
 	String abiFilter;
 }

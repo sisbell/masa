@@ -1,5 +1,0 @@
-# masa header
-#
-msgctxt "app_name"
-msgid "Application"
-msgstr "App"
