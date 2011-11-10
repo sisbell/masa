@@ -36,8 +36,7 @@
                <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
                <package>       	  
                   org.jvending.masa.plugins:maven-aapt-plugin:package,  
-                  org.jvending.masa.plugins:maven-apkbuilder-plugin:build,
-                  org.jvending.masa.plugins:maven-jarsigner-plugin:sign
+                  org.jvending.masa.plugins:maven-apkbuilder-plugin:build
                </package>
                <integration-test>org.jvending.masa.plugins:maven-adb-plugin:install</integration-test>
                <install>

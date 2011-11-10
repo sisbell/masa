@@ -21,12 +21,15 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.util.IOUtil;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
+import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
 
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -95,71 +98,96 @@ public class ApkBuilderMojo
     /*
      * @parameter
      */
-    private String keyStorePath;
-     
-    /*
-     * @parameter
-     */
-    private String keyStoreType;
+    private KeyStoreObject keyStore;
     
     /*
      * @parameter
      */
-    private String keyStorePassword;    
-    
-    /*
-     * @parameter
-     */
-    private String keyStoreAlias;       
+    private X509Cert certificate;
     
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        File outputFile =
+    	//Two build projects: unsigned, signed (debug or developer)
+        File unsignedOutputFile =
             new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-unsigned.apk" );
 
+        File signedOutputFile =
+            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed.apk" );
+
+        File signedDebugOutputFile =
+            new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed-debug.apk" );
+      
         File packagedResourceFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + ".ap_" );
         File dexFile = new File( project.getBuild().getDirectory(), "classes.dex" );
         
         ByteArrayOutputStream bais = new ByteArrayOutputStream();   
 		try {
+			PrintStream printStream = (verboseMode) ? new PrintStream(bais) : null;
+			
+			ApkBuilder signedBuilder = null;
+			if(isDebugBuild())
+			{
+				String keyStorePath = null;
+	            String home = System.getProperty( "user.home" );
+	            File f = new File( home, ".android/debug.keystore" );
+	            if ( f.exists() )
+	            {
+	                keyStorePath = f.getAbsolutePath();
+	            }
+	            else
+	            {
+	                f = new File( home, "Local Settings\\Application Data\\Android\\debug.keystore" );
+	                if ( !f.exists() )
+	                {
+	                    throw new MojoExecutionException(
+	                                                      "Keystore not specificed and could not locate default debug.keystore" );
+	                }
+	            }
+				signedBuilder =	new ApkBuilder(signedDebugOutputFile.getAbsolutePath(),
+						packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), keyStorePath,
+						printStream);	
+				build(signedBuilder);
+				projectHelper.attachArtifact( project, "apk", "signed-debug", signedDebugOutputFile );
+			} 
+			else
+			{
+				SigningInfo signingInfo = (keyStore != null) ? loadKeyEntry(
+						keyStore.path, keyStore.type, keyStore.password.toCharArray(),
+						keyStore.alias) : new SigningInfo(null,getCertFromFile(certificate.file) );		
+				
+				signedBuilder =  createBuilder(signedOutputFile,
+						packagedResourceFile, dexFile, signingInfo.key, signingInfo.certificate,
+						printStream);
+				build(signedBuilder);
+				projectHelper.attachArtifact( project, "apk", "signed", signedOutputFile );
+			}
+			
+			
+			ApkBuilder unsignedBuilder = createBuilder(unsignedOutputFile,
+					packagedResourceFile, dexFile, null,
+					printStream);
+			build(unsignedBuilder);
+			projectHelper.attachArtifact( project, "apk", "unsigned", unsignedOutputFile );
+			/*
 			ApkBuilder unsignedBuilder = createBuilder(outputFile,
 					packagedResourceFile, dexFile, null,
-					(verboseMode) ? new PrintStream(bais) : null);
-			
-			//Will be either debug signed or dev signed
-			PrintStream printStream = (verboseMode) ? new PrintStream(bais) : null;
-			/*
+					printStream);
+
 			SigningInfo signingInfo = (!isDebugBuild()) ? loadKeyEntry(
 					keyStorePath, keyStoreType, keyStorePassword.toCharArray(),
 					keyStoreAlias) : new SigningInfo(ApkBuilder.getDebugKey(
 					keyStorePath, printStream));
+				
 					*/
-/*
-			ApkBuilder signedBuilder =  createBuilder(outputFile,
-					packagedResourceFile, dexFile,signingInfo.key, signingInfo.certificate,
-					printStream);
-*/						
-			ApkBuilder signedBuilder =	new ApkBuilder(outputFile.getAbsolutePath(),
-					packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(), null,
-					(verboseMode) ? new PrintStream(bais) : null);
-					
-			
-			if(debugMode) {
-				signedBuilder.setDebugMode(true);
-			}	
-			if(nativeLibraries != null) {
-				signedBuilder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);
-			
-			}
-			
-			signedBuilder.sealApk();
+
 			
 	        if(verboseMode)
 	        {
 	        	//Just write verbose output all out at once 
 	        	getLog().info(new String(bais.toByteArray()));       	
 	        }
+
 		} catch (ApkCreationException e) {
 			e.printStackTrace();
 			throw new MojoExecutionException( "ApkCreationException", e );
@@ -169,9 +197,26 @@ public class ApkBuilderMojo
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MojoExecutionException( "", e );
+		}     
+    }
+    
+    private void build(ApkBuilder builder) throws DuplicateFileException, ApkCreationException, SealedApkException {
+		if(debugMode) {
+			builder.setDebugMode(true);
+		}	
+		if(nativeLibraries != null) {
+			builder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);			
 		}
-  
-        projectHelper.attachArtifact( project, "apk", "unsigned", outputFile );
+		
+		builder.sealApk();
+    }
+    
+    private static X509Certificate getCertFromFile(File file) throws Exception {
+    	 InputStream inStream = new FileInputStream(file);
+    	 X509Certificate cert = (X509Certificate) CertificateFactory
+    	 	.getInstance("X.509").generateCertificate(inStream);
+    	 inStream.close();
+    	 return cert;
     }
     
     private ApkBuilder createBuilder(File apkFile, File resFile, File dexFile, String debugStoreOsPath,
@@ -189,8 +234,8 @@ public class ApkBuilderMojo
         public final X509Certificate certificate;
 
         private SigningInfo(PrivateKey key, X509Certificate certificate) {
-            if (key == null || certificate == null) {
-                throw new IllegalArgumentException("key and certificate cannot be null");
+            if (key == null && certificate == null) {
+                throw new IllegalArgumentException("key and certificate cannot both be null");
             }
             this.key = key;
             this.certificate = certificate;
@@ -223,6 +268,6 @@ public class ApkBuilderMojo
 	}
 	
 	private boolean isDebugBuild() {
-		return this.keyStorePath != null;
+		return keyStore == null && certificate == null;
 	}
 }
