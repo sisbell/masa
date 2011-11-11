@@ -62,7 +62,7 @@ public class MasaUtil
     {
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
         {
-            if ( artifact.getGroupId().equals( "com.google.android" ) && artifact.getArtifactId().equals( "android" ) )
+            if ( artifact.getGroupId().equals( "com.android" ) && artifact.getArtifactId().equals( "android" ) )
             {
                 return artifact.getFile();
             }
