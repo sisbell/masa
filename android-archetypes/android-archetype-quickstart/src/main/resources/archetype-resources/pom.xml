@@ -7,9 +7,9 @@
 	<packaging>android:apk</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>com.google.android</groupId>
+			<groupId>com.android</groupId>
 			<artifactId>android</artifactId>
-			<version>1.5_r2</version>
+			<version>14</version>
 		</dependency>
 	</dependencies>
 	<build>
