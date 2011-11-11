@@ -30,9 +30,9 @@
     <description>Maven Plugin for APK Builder</description>
     <dependencies>
 		<dependency>
-			<groupId>org.jvending.masa.sdklib</groupId>
+			<groupId>com.android.tools</groupId>
 			<artifactId>sdklib</artifactId>
-			<version>3.2</version>
+			<version>1.0</version>
 		</dependency>	
         <dependency>
             <groupId>org.jvending.masa</groupId>

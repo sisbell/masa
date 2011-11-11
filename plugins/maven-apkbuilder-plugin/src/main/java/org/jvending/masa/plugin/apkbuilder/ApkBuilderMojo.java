@@ -239,7 +239,7 @@ public class ApkBuilderMojo
 			builder.setDebugMode(true);
 		}	
 		if(nativeLibraries != null) {
-			builder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);			
+		//	builder.addNativeLibraries(nativeLibraries.path, nativeLibraries.abiFilter);			
 		}
 		
 		builder.sealApk();
