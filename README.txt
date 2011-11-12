@@ -1,153 +1,96 @@
-For the latest documentation, go to: http://code.google.com/p/masa/wiki/GettingStarted
+### SDK path
 
-==Prerequisites==
-  * JDK 1.5+
-  * Apache Maven 2.0.8+ (2.0.9+ is required if you use toolchains)
-  * Android SDK: http://code.google.com/android/download.html
+You will need to either add both of the following paths to your environment
 
-==Steps to get working==
+    * ${android-sdk-path}/tools
+    * ${android-sdk-path}/platform-tools
 
- First, you need to setup the environment. You can either:
+OR
 
-  # Add ANDROID_SDK/tools to your path
-  # Add ANDROID_SDK/platforms/android-1.[x]/tools to your path
-  
-  Run masa-project/setup.sh script prior to building your project (create script for windows). 
+configure the environment through [Toolchains](https://github.com/sisbell/masa/wiki/toolchains)
 
+### Packaging
+The packaging type should be specified as below:
 
-or configure Toolchains
- 
-  # Create toolchains.xml
-  # Add maven-toolchains-plugin to your pom
+    <project>
+      ....
+      <packaging>android:apk</packaging>
+      ....
+     </project>
 
+### Dependencies
+Add the following dependency to your project to use the Android API. This jar is hosted on Nexus instance at zapvine.org and comes in transitively with the maven-aapt-plugin (this will change later).
 
-See [http://code.google.com/p/masa/wiki/Toolchains Toolchains] for more information
+	<dependencies>
+	  <dependency>
+	    <groupId>com.android</groupId>
+            <artifactId>android</artifactId>
+            <version>14</version>
+          </dependency>	
+	</dependencies>
 
- Next setup your project:
+### Build 
+Make sure to set the resources directory to 'res' so that the maven project is compatible with Eclipse development environment. By setting the filtering option to 'true' you can interpolate Android resources with variables. Keep in mind that while useful for automated builds, adding property placeholders to Android resource files will break the Eclipse development environment.
 
-  # Create an android project: http://developer.android.com/guide/developing/tools/othertools.html#android or use an [http://code.google.com/p/masa/wiki/Archetypes Archetype] 
-  # Create a pom.xml file for the project
+The maven-aapt-plugin is the core masa plugin that you need to add. And don't forget to configure the output directory for processed resources with the maven-resources-plugin.
 
-The primary packaging type is android:apk
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>res</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.jvending.masa.plugins</groupId>
+				<artifactId>maven-aapt-plugin</artifactId>
+				<version>1.2-SNAPSHOT</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<outputDirectory>./target/processed-resources</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-Sample POM
-{{{
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jvending.masa</groupId>
-   <artifactId>maven-test</artifactId>
-   <version>1.0.1-sandbox</version>
-   <packaging>android:apk</packaging>
-   <name>maven-test</name>
-   <description>Maven Plugin for Android DX</description>
-   <dependencies>
-      <dependency>
-         <groupId>com.google.android</groupId>
-         <artifactId>android</artifactId>
-         <version>1.5_r2</version>
-      </dependency>
-   </dependencies>
-   <build>
-      <sourceDirectory>src</sourceDirectory>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <source>1.5</source>
-               <target>1.5</target>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.jvending.masa.plugins</groupId>
-            <artifactId>maven-aapt-plugin</artifactId>
-            <extensions>true</extensions>
-         </plugin>
-      </plugins>
-   </build>
-</project>
-}}}
+### Repository configuration 
+The final step is to add the plugin respositories so you don't have to build masa directly. Currently, the masa plugins are deployed as snapshots (1.2-SNAPSHOT) but you can configure the location by adding the following to your pom.
 
-Next point to the remote repo:
-
-Add the following to your pom or settings.xml file. You can use the Masa snapshots, without having to build from trunk.
-{{{
-    <repositories>
-        <repository>
-            <id>slideme.snapshots</id>
-            <name>SlideME SNAPSHOT Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public-snapshots</url>
+	<pluginRepositories>
+	  <pluginRepository>
+	    <id>zapvine.snapshots</id>
+	    <name>ZapVine SNAPSHOT Repository</name>
+	    <url>http://zapvine.org/content/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>false</enabled>
             </releases>
-        </repository>
-        <repository>
-            <id>slideme.releases</id>
-            <name>Maven Release Repository</name>
-            <url>http://repository.slideme.org/nexus/content/groups/public</url>
+	</pluginRepository>
+	<pluginRepository>
+	    <id>zapvine.public</id>
+	    <name>ZapVine Public Repository</name>
+	    <url>http://zapvine.org/content/repositories/public/</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
             </releases>
-        </repository>
-    </repositories>
-}}}
-
-Now, build project: 'mvn install' or to also deploy to a running emulator: 'mvn install -Dmasa.debug'
-
-For doing platform unit tests, use android:apk:platformTest. Sample pom.xml:
-
-{{{
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jvending.masa</groupId>
-   <artifactId>ApiDemosPlatformTest</artifactId>
-   <version>0.9_beta</version>
-   <packaging>android:apk:platformTest</packaging>
-   <name>maven-test</name>
-   <description>Maven Plugin for Android DX</description>
-   <dependencies>
-      <dependency>
-         <groupId>android</groupId>
-         <artifactId>android</artifactId>
-         <version>0.9_beta</version>
-      </dependency>
-      <dependency>
-         <groupId>org.jvending.masa</groupId>
-         <artifactId>ApiDemos</artifactId>
-         <version>0.9_beta</version>
-         <type>jar</type>
-      </dependency>
-   </dependencies>
-   <build>
-      <sourceDirectory>src</sourceDirectory>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <source>1.5</source>
-               <target>1.5</target>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.jvending.masa.plugins</groupId>
-            <artifactId>maven-dx-plugin</artifactId>
-            <extensions>true</extensions>
-         </plugin>
-      </plugins>
-   </build>
-</project>
-
-}}}
-
-To build and deploy the test apk to the emulator, type: 'maven integration-test -Dmasa.debug'
+	</pluginRepository>		
+    </pluginRepositories>	
