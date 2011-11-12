@@ -57,6 +57,18 @@ public class MasaUtil
         return command;
     }
 
+    public static File getProguardJarFile( MavenProject project )
+    {
+	    for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
+	    {
+	        if ( artifact.getGroupId().equals( "net.sf.proguard" ) && artifact.getArtifactId().equals( "proguard" ) )
+	        {
+	            return artifact.getFile();
+	        }
+	    }
+	    return null;
+    }
+    
     public static File getAndroidJarFile( MavenProject project )
         throws MojoExecutionException
     {

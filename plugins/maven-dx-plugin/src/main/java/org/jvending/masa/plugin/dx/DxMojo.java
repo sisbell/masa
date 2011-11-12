@@ -196,8 +196,12 @@ public class DxMojo
         
         //These classes files go from jar into temp output directory (android-classes)
         File inputFile =
-            new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
-
+            new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + "-small.jar" );
+        if(!inputFile.exists()) {//no proguard 
+        	inputFile =
+                new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
+        }
+        
         // Unpackage all dependent and main classes into this directory
         File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
         for ( Artifact artifact : (List<Artifact>) project.getCompileArtifacts() )

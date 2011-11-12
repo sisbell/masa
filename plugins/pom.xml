@@ -33,6 +33,7 @@
 		<plexus.version>1.0.0</plexus.version>
 		<plexus.utils.version>1.5.9</plexus.utils.version>
 		<plexus.archiver.version>1.0-alpha-12</plexus.archiver.version>
+		<proguard.version>4.4</proguard.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -54,6 +55,7 @@
 		<module>maven-jarsigner-plugin</module>
 		<module>maven-po-plugin</module>
 		<module>maven-reslinks-plugin</module>
+		<module>maven-proguard-plugin</module>
 	</modules>
 
 	<dependencyManagement>
@@ -108,6 +110,11 @@
 				<artifactId>plexus-archiver</artifactId>
 				<version>${plexus.archiver.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.sf.proguard</groupId>
+				<artifactId>proguard</artifactId>
+				<version>${proguard.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -132,8 +139,8 @@
 					<configuration>
 						<archive>
 							<manifestEntries>
-								<Build-Source-Version>1.5</Build-Source-Version>
-								<Build-Target-Version>1.5</Build-Target-Version>
+								<Build-Source-Version>1.6</Build-Source-Version>
+								<Build-Target-Version>1.6</Build-Target-Version>
 							</manifestEntries>
 						</archive>
 					</configuration>
@@ -151,8 +158,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
