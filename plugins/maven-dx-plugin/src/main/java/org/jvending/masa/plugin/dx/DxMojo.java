@@ -202,7 +202,7 @@ public class DxMojo
         File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
         for ( Artifact artifact : (List<Artifact>) project.getCompileArtifacts() )
         {
-            if ( artifact.getGroupId().equals( "com.google.android" ) )
+            if ( artifact.getGroupId().equals( "com.android" ) )
             {
                 continue;
             }
