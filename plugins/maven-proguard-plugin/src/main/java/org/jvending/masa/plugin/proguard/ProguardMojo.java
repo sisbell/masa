@@ -46,10 +46,25 @@ public class ProguardMojo
      * @parameter default-value="${project.basedir}/proguard.cfg";
      */
     private File configFile;
+    
+    /**
+     * @parameter
+     */
+    private boolean skip;
 
     public void execute()
         throws MojoExecutionException
     {
+    	if(skip) {
+    		getLog().info("Plugin configured to skip proguard for this build");
+    		return;
+    	}
+    	
+    	if(isSkip()) {
+    		getLog().info("Property configured to skip proguard for this build");
+    		return;    		
+    	}
+    	
         File inputFile =
             new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
       
@@ -109,10 +124,9 @@ public class ProguardMojo
 		} catch (ExecutionException e) {
 			throw new MojoExecutionException("", e);
 		}
-
-		
-	//	mavenProjectHelper.attachArtifact(project, "jar", project.getArtifact()
-	//			.getClassifier(), outjars);
-
+    }
+    
+    private static boolean isSkip() {
+    	return Boolean.getBoolean("proguard.skip");
     }
 }
