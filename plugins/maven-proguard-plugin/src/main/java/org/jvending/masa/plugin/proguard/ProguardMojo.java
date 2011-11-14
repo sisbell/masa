@@ -60,6 +60,11 @@ public class ProguardMojo
 			return;
 		}
 		
+		File reportDirectory = new File(project.getBasedir(), "proguard");
+		if(!reportDirectory.exists()) {
+			reportDirectory.mkdirs();
+		}
+		
 		CommandExecutor executor = CommandExecutor.Factory
 				.createDefaultCommmandExecutor();
 		executor.setLogger(this.getLog());
@@ -78,6 +83,19 @@ public class ProguardMojo
 
 		commands.add("-include");
 		commands.add(configFile.getAbsolutePath());
+		
+		//Reporting		
+		commands.add("-printseeds");
+		commands.add(new File(reportDirectory, "seeds.txt").getAbsolutePath());
+
+		commands.add("-printmapping");
+		commands.add(new File(reportDirectory, "mapping.txt").getAbsolutePath());
+		
+		commands.add("-printusage");
+		commands.add(new File(reportDirectory, "usage.txt").getAbsolutePath());
+		
+		commands.add("-dump");
+		commands.add(new File(reportDirectory, "dump.txt").getAbsolutePath());
 		
 	    for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
 	    {
