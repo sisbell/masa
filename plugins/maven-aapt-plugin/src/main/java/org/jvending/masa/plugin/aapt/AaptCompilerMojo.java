@@ -68,7 +68,7 @@ public class AaptCompilerMojo
     /**
      * @parameter
      */
-    public File androidManifestFile;
+    public File manifestFile; 
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -86,15 +86,17 @@ public class AaptCompilerMojo
             thumbs.delete();
         }
 
-        if ( androidManifestFile == null )
+        if ( manifestFile == null )
         {
-            androidManifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
-        }
+            manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
+        } 
+       
+        linkManifestFile();
         
-        if ( !androidManifestFile.exists() )
+        if ( !manifestFile.exists() )
         {
             throw new MojoExecutionException( "Android manifest file not found: File = "
-                + androidManifestFile.getAbsolutePath() );
+                + manifestFile.getAbsolutePath() );
         }
         
         String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
@@ -116,7 +118,7 @@ public class AaptCompilerMojo
         commands.add( "-J" );
         commands.add( generatedSourceDirectoryName );
         commands.add( "-M" );
-        commands.add( androidManifestFile.getAbsolutePath() );
+        commands.add( manifestFile.getAbsolutePath() );
         
     	commands.add( "-S" );
         if ( resourceDirectory.exists() )
@@ -152,6 +154,33 @@ public class AaptCompilerMojo
         // {
         // project.addCompileSourceRoot(platformUnitTestDirectory.getAbsolutePath());
         // }
+    }
+    
+    private void linkManifestFile() throws MojoExecutionException {
+    	
+    	 File defaultFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
+    	 if(defaultFile.getAbsolutePath().equals(manifestFile.getAbsolutePath())) {
+    		 return; //nothing to link
+    	 }
+    	 
+    	 defaultFile.delete();
+    	 
+		 CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+	     executor.setLogger( getLog() );
+	     
+		 List<String> commands = new ArrayList<String>();
+		 commands.add("-s");
+		 
+		 commands.add(manifestFile.getAbsolutePath());
+		 commands.add(project.getBasedir().getAbsolutePath());
+		 
+		try {
+			executor.executeCommand("ln", commands, project.getBasedir(), false);
+		} catch (ExecutionException ex) {
+			throw new MojoExecutionException("", ex);
+		}
+		
+//		manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
     }
 
 }

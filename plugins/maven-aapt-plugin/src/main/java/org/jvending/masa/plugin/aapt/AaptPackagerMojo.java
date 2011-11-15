@@ -62,7 +62,7 @@ public final class AaptPackagerMojo
     /**
      * @parameter
      */
-    public File androidManifestFile;
+    public File manifestFile;
  
     /**
      * @parameter
@@ -72,7 +72,18 @@ public final class AaptPackagerMojo
     /**
      * @parameter
      */
-    public boolean includeVersionCodeInApkFile;    
+    public boolean includeVersionCodeInApkFile;   
+    
+    
+    /**
+     * @parameter
+     */
+    public String versionName;
+    
+    /**
+     * @parameter
+     */
+    public String versionCode;   
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -81,15 +92,15 @@ public final class AaptPackagerMojo
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger( getLog() );
 
-        if ( androidManifestFile == null )
+        if ( manifestFile == null )
         {
-            androidManifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
+            manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
         }
 
-        if ( !androidManifestFile.exists() )
+        if ( !manifestFile.exists() )
         {
             throw new MojoExecutionException( "Android manifest file not found: File = "
-                + androidManifestFile.getAbsolutePath() );
+                + manifestFile.getAbsolutePath() );
         }
 
         File androidJar = MasaUtil.getAndroidJarFile( project );
@@ -105,7 +116,8 @@ public final class AaptPackagerMojo
 
         commands.add( "-f" );
         commands.add( "-M" );
-        commands.add( androidManifestFile.getAbsolutePath() );
+        commands.add( manifestFile.getAbsolutePath() );
+        
     	commands.add( "-S" );
         if ( resourceDirectory.exists() )
         {
@@ -127,6 +139,16 @@ public final class AaptPackagerMojo
         if(renameManifestPackage != null) {
         	commands.add("--rename-manifest-package");
         	commands.add(renameManifestPackage);
+        }
+        
+        if(versionName != null) {
+            commands.add( "--version-name" );
+            commands.add( versionName );       	
+        }
+
+        if(versionCode != null ) {
+            commands.add( "--version-code" );
+            commands.add( versionCode.replace("-SNAPSHOT", "") );          	
         }
 
         String aaptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
