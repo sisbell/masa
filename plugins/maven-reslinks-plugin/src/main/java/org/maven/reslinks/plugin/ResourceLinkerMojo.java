@@ -1,6 +1,9 @@
 package org.maven.reslinks.plugin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +39,18 @@ public class ResourceLinkerMojo extends AbstractMojo {
     private HashMap<String, String> fileMap = new HashMap<String, String>();
     
     private String baseResourcesDirName;
+    
+    private FileOutputStream outputReportStream;
 	
 	public void execute() throws MojoExecutionException {
 		if(resourceFolders == null) {
 			return;
 		}
-		 baseResourcesDirName = new File(  project.getBasedir(), "resources").getAbsolutePath() + File.separator;
-			
+		
+		openPropertyFile();
+		
+		baseResourcesDirName = new File(  project.getBasedir(), "resources").getAbsolutePath() + File.separator;
+		 	
 		 mapGenericResourceDirectory();
 		 for(String resourceFolder: resourceFolders) {
 			 File resourceDir = new File(  project.getBasedir(), "resources" + File.separator + resourceFolder );
@@ -65,19 +73,59 @@ public class ResourceLinkerMojo extends AbstractMojo {
 			 
 			 List<String> commands = new ArrayList<String>();
 			 commands.add("-s");
-			 commands.add(new File("resources", e.getValue() + File.separator + e.getKey()).getAbsolutePath());
+			 File sourceFile = new File("resources", e.getValue() + File.separator + e.getKey());;
+			 commands.add(sourceFile.getAbsolutePath());
 			 commands.add(targetDir.getAbsolutePath());
-			 this.getLog().debug(commands.toString());
+			 
+			// this.getLog().debug(commands.toString());
 			 try
 		        {
 		            executor.executeCommand( "ln", commands, project.getBasedir(), false );
+		            writeToPropertyFile(sourceFile.getPath(), new File(targetDir, e.getKey()).getPath());
 		        }
 		        catch ( ExecutionException ex )
 		        {
+		        	closePropertyFile();
+		        	cleanResourceDirectory();//Unable to link, just get rid of previous links
 		            throw new MojoExecutionException( "", ex );
 		        }
 		        
 		 }
+		 closePropertyFile();
+	}
+	
+	private void writeToPropertyFile(String key, String value) {
+		try {
+			outputReportStream.write( (key + " = " + value + "\r\n").getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void openPropertyFile() {
+		/*
+		File targetDir = new File(project.getBuild().getDirectory());
+		
+		if(!targetDir.exists()) {
+			targetDir.mkdir();
+		}
+		*/
+		File reslinkLog = new File(project.getBasedir(), "link.properties");
+		if(reslinkLog.exists()) {
+			reslinkLog.delete();
+		}
+		try {
+			outputReportStream = new FileOutputStream( reslinkLog );
+		} catch (FileNotFoundException e) {
+
+		}			
+	}
+	
+	private void closePropertyFile() {
+		try {
+			outputReportStream.close();
+		} catch (IOException e) {
+		}
 	}
 	
 	private void cleanResourceDirectory() throws MojoExecutionException {
