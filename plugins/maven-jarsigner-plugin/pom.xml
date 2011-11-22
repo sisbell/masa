@@ -14,14 +14,14 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-plugins</artifactId>
-		<version>1.3</version>
+		<version>1.4-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa.plugins</groupId>
 	<artifactId>maven-jarsigner-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-jarsigner-plugin</name>
-	<version>1.3</version>
+	<version>1.4-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
