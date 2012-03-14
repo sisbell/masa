@@ -1,6 +1,0 @@
-# masa header
-#
-msgctxt "all"
-msgid "aaa\n"
-"bbb"
-msgstr "123"

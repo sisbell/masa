@@ -53,7 +53,6 @@
 		<module>maven-platformtest-plugin</module>
 		<module>maven-toolchains-plugin</module>
 		<module>maven-jarsigner-plugin</module>
-		<module>maven-po-plugin</module>
 		<module>maven-reslinks-plugin</module>
 		<module>maven-proguard-plugin</module>
 		<module>maven-zipalign-plugin</module>
@@ -165,6 +164,30 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories> 
+  <repository>
+    <id>zapvine.snapshots</id>
+    <name>ZapVine SNAPSHOT Repository</name>
+    <url>http://zapvine.org/content/repositories/snapshots/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+</repository>
+<repository>
+    <id>zapvine.public</id>
+    <name>ZapVine Public Repository</name>
+    <url>http://zapvine.org/content/repositories/public/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+</repository>     
+</repositories>   
 	<distributionManagement>
 		<snapshotRepository>
 			<id>zapvine.snapshots</id>
