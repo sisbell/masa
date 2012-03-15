@@ -15,6 +15,7 @@
  */
 package org.jvending.masa.plugin.aapt;
 
+
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -168,6 +169,11 @@ public class AaptCompilerMojo
         // }
     }
     
+    private String getRelativePathOf(String path) {
+	     return new File(project.getBasedir().getAbsolutePath()).toURI()
+	    		 .relativize(new File(path).toURI()).getPath();
+    }
+    
     private void linkManifestFile() throws MojoExecutionException {
     	
     	 File defaultFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
@@ -183,9 +189,12 @@ public class AaptCompilerMojo
 		 List<String> commands = new ArrayList<String>();
 		 commands.add("-s");
 		 
-		 commands.add(manifestFile.getAbsolutePath());
-		 commands.add(project.getBasedir().getAbsolutePath());
+		 commands.add(getRelativePathOf(manifestFile.getPath()));
+		 commands.add(getRelativePathOf(project.getBasedir().getPath()));
 		 
+		// commands.add(manifestFile.getName());
+		// commands.add(project.getBasedir().getPath());
+		 getLog().info( "ln" + ":" + commands.toString() );
 		try {
 			executor.executeCommand("ln", commands, project.getBasedir(), false);
 		} catch (ExecutionException ex) {
