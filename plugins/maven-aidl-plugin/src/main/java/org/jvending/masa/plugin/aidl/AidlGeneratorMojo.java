@@ -87,13 +87,19 @@ public class AidlGeneratorMojo
             new File( project.getBuild().getDirectory() + File.separator + "generated-sources" + File.separator
                 + "aidl" );
         generatedSourcesDirectory.mkdirs();
-
+        
+        
         for ( String file : files )
         {
             List<String> commands = new ArrayList<String>();
+            String androidVersion = MasaUtil.getAndroidVersion( session, project);
             if ( System.getenv().get( "ANDROID_SDK" ) != null )
             {
-                commands.add( "-p" + System.getenv().get( "ANDROID_SDK" ) + "/tools/lib/framework.aidl" );
+                commands.add( "-p" + System.getenv().get( "ANDROID_SDK" ) + "/platforms/android-" 
+                		+ androidVersion + "/framework.aidl" );
+            } else {
+            	
+            	commands.add( "-p" + findAidlLibraryFor(androidVersion, MasaUtil.getToolpaths(session, project) )  );
             }
             File targetDirectory = new File( generatedSourcesDirectory, new File( file ).getParent() );
             targetDirectory.mkdirs();
@@ -116,5 +122,18 @@ public class AidlGeneratorMojo
 
         project.addCompileSourceRoot( generatedSourcesDirectory.getPath() );
 
+    }
+    
+    private File findAidlLibraryFor(String androidVersion, List<File> tools) {
+    	String frameworkFile = "platforms/android-" 
+    			+ androidVersion + "/framework.aidl";
+    	
+    	for( File toolPath : tools ) {
+    		File checkFile = new File(toolPath.getParent(), frameworkFile);
+    		if(checkFile.exists()) {
+    			return checkFile;
+    		}
+    	}
+    	return null;
     }
 }

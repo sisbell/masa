@@ -69,6 +69,11 @@ public class AaptCompilerMojo
      * @parameter
      */
     public File manifestFile; 
+    
+    /**
+     * @parameter
+     */
+    public String[] sourceRoots; 
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -149,6 +154,13 @@ public class AaptCompilerMojo
 
         project.addCompileSourceRoot( generatedSourceDirectoryName );
 
+        if(sourceRoots != null) 
+        {
+        	for(String src : sourceRoots) 
+        	{
+        		project.addCompileSourceRoot( src );
+        	}
+        }
         // if(System.getProperty("masa.debug") != null &&
         // platformUnitTestDirectory.exists())
         // {

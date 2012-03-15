@@ -75,26 +75,7 @@
                </integration-test>
             </phases>
          </configuration>
-      </component>
-      <component>
-         <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-         <role-hint>android:po</role-hint>
-         <implementation>
-            org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-         </implementation>                                                
-         <configuration>
-            <phases>
-               <process-resources>org.jvending.masa.plugins:maven-po-plugin:resources</process-resources>
-               <package>
-                  org.jvending.masa.plugins:maven-po-plugin:package
-               </package>
-               <install>
-                  org.apache.maven.plugins:maven-install-plugin:install
-               </install>
-               <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
-            </phases>
-         </configuration>
-      </component>      
+      </component>    
       <component>
          <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
          <role-hint>android:dex</role-hint>
@@ -113,14 +94,5 @@
             <type>android:apk</type>
          </configuration>
       </component>
-      <component>
-         <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-         <role-hint>android:po</role-hint>
-         <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-         <configuration>
-            <extension>pozip</extension>
-            <type>android:po</type>
-         </configuration>
-      </component>      
    </components>
 </component-set>

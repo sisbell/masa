@@ -141,6 +141,8 @@ public class ToolchainMojo
         pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
         session.getPluginContext( pluginDescriptor, project ).put( "toolchain", models.get( capabilityId ) );
+        session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", "15" );
+        
         System.out.println( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
 
     }

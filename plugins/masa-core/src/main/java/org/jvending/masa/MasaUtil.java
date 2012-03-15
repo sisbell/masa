@@ -1,6 +1,9 @@
 package org.jvending.masa;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -31,6 +34,17 @@ public class MasaUtil
         return new ApplicationRequirements( dom.getChild( "requirements" ) );
     }
 
+    public static String getAndroidVersion( MavenSession session, MavenProject project )
+    {   	
+        PluginDescriptor pluginDescriptor = new PluginDescriptor();
+        pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
+        pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
+
+        String version =
+            ( (String) session.getPluginContext( pluginDescriptor, project ).get( "androidVersion" ) );
+        return version;
+    }
+    
     public static String getToolnameWithPath( MavenSession session, MavenProject project, String toolname )
     {
         PluginDescriptor pluginDescriptor = new PluginDescriptor();
@@ -55,6 +69,32 @@ public class MasaUtil
             }
         }
         return command;
+    }
+    
+    public static List<File> getToolpaths( MavenSession session, MavenProject project)
+    {
+        PluginDescriptor pluginDescriptor = new PluginDescriptor();
+        pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
+        pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
+
+        ToolchainModel model =
+            ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project ).get( "toolchain" ) );
+        if ( model == null )
+        {
+            return Collections.EMPTY_LIST;
+        }
+        List<File> list = new ArrayList<File>();
+
+        Xpp3Dom dom = (Xpp3Dom) model.getConfiguration();
+        for ( Xpp3Dom d : dom.getChild( "toolPaths" ).getChildren() )
+        {
+        	File f = new File( d.getValue() ); 
+            if ( f.exists() )
+            {
+                list.add( f );
+            }
+        }
+        return list;
     }
 
     public static File getProguardJarFile( MavenProject project )
