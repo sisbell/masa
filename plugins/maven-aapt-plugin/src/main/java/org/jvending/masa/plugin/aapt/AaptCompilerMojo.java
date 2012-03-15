@@ -104,7 +104,7 @@ public class AaptCompilerMojo
                 + manifestFile.getAbsolutePath() );
         }
         
-        String generatedSourceDirectoryName = project.getBasedir() + File.separator + "gen";
+        String generatedSourceDirectoryName = project.getBuild().getDirectory() + File.separator + "gen-mvn";
         new File( generatedSourceDirectoryName ).mkdirs();
 
         File androidJar = MasaUtil.getAndroidJarFile( project );
