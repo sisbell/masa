@@ -21,7 +21,5 @@
 	<description>Maven Project for Android</description>
 	<modules>
 		<module>plugins</module>
-		<module>android-archetypes</module>
-		<module>masa-integration-testing</module>
 	</modules>
 </project>

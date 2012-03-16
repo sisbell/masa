@@ -36,12 +36,14 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
  * @goal dx
  * @phase process-classes
+ * @requiresDependencyResolution compile
  * @description
  */
 public class DxMojo
@@ -204,7 +206,9 @@ public class DxMojo
         
         // Unpackage all dependent and main classes into this directory
         File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
-        for ( Artifact artifact : (List<Artifact>) project.getCompileArtifacts() )
+        List<Artifact> artifacts = (List<Artifact>) project.getCompileArtifacts();
+        getLog().info("Found dependencies: count = " + artifacts.size());
+        for ( Artifact artifact : artifacts )
         {
             if ( artifact.getGroupId().equals( "com.android" ) )
             {
@@ -219,6 +223,7 @@ public class DxMojo
 
             try
             {
+            	getLog().info("Found dependency: " + artifact.getArtifactId());
                 unjar( new JarFile( artifact.getFile() ), classDirectory );
             }
             catch ( IOException e )
