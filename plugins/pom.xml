@@ -19,7 +19,7 @@
 	</parent>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-plugins</artifactId>
-	<version>1.4</version>
+	<version>1.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JVending Masa: masa-plugins</name>
 	<description>Maven Plugins Project for Android</description>
