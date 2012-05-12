@@ -16,6 +16,7 @@
 package org.jvending.masa.plugin.aapt;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -53,6 +54,11 @@ public final class AaptPackagerMojo
      * @parameter default-value="${project.build.directory}/processed-resources"
      */
     public File resourceDirectory;
+    
+    /**
+     * @parameter default-value="${project.build.directory}/processed-sources"
+     */
+    public File sourceDirectory;    
 
     /**
      * @parameter default-value="assets"
@@ -117,7 +123,7 @@ public final class AaptPackagerMojo
         commands.add( "-f" );
         commands.add( "-M" );
         commands.add( manifestFile.getAbsolutePath() );
-        
+       
     	commands.add( "-S" );
         if ( resourceDirectory.exists() )
         {
@@ -125,6 +131,12 @@ public final class AaptPackagerMojo
         } else {
         	commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
         }
+        
+        for(Resource res: (List<Resource>) project.getResources()) {
+        	commands.add( "-S" );
+        	commands.add(res.getDirectory());
+        }
+        
         if ( assetsDirectory.exists() )
         {
             commands.add( "-A" );

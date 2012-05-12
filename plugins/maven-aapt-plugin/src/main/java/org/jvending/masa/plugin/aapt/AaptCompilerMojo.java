@@ -25,6 +25,9 @@ import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
 
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Resource;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,12 +129,18 @@ public class AaptCompilerMojo
         commands.add( "-M" );
         commands.add( manifestFile.getAbsolutePath() );
         
-    	commands.add( "-S" );
-        if ( resourceDirectory.exists() )
-        {
-            commands.add( resourceDirectory.getAbsolutePath() );
-        } else {
-        	commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
+        
+        for(Resource res : (List<Resource>) project.getResources()) {
+       
+        	if ( resourceDirectory.exists() )
+            {        	
+               // commands.add( resourceDirectory.getAbsolutePath() );
+            } else {
+            	//commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
+            }
+            
+        	commands.add( "-S" );
+        	commands.add(res.getDirectory());
         }
         
         if ( assetsDirectory.exists() )
@@ -162,11 +171,9 @@ public class AaptCompilerMojo
         		project.addCompileSourceRoot( src );
         	}
         }
-        // if(System.getProperty("masa.debug") != null &&
-        // platformUnitTestDirectory.exists())
-        // {
-        // project.addCompileSourceRoot(platformUnitTestDirectory.getAbsolutePath());
-        // }
+        
+        //Add jar dependency
+
     }
     
     private String getRelativePathOf(String path) {

@@ -191,6 +191,7 @@ public class DxMojo
         throws MojoExecutionException, MojoFailureException
     {
 
+    //	com.android.dx.merge.DexMerger
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger( this.getLog() );
 
