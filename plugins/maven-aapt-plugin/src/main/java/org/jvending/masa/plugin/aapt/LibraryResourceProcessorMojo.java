@@ -48,23 +48,16 @@ public class LibraryResourceProcessorMojo extends AbstractMojo
     {
     	File outputDirectory = new File(project.getBuild().getDirectory());
     	
-    	char projectName= 'a';
-
-    	getLog().info("Attached artifacts found: " + project.getArtifactMap().toString());
-    	getLog().info("Attached dependeny artifacts found: " + project.getDependencyArtifacts().toString());
-    	
     	for(Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() ) {
     		getLog().info("Artifact: id = " + artifact.getArtifactId() +", " + artifact.getType() );
-    	//	unpackAndAddClasses();
-    		
-    		//if("android:lib".equals(artifact.getType()) ) {
     			File artifactParent = artifact.getFile().getParentFile();
     	     	File lib = new File(artifactParent, artifact.getFile().getName().replace(".jar", "-resources.jar"));
     			getLog().info("Found library dependency: id = " + artifact.getArtifactId() 
     					+ "," + lib.getAbsolutePath());
         		if(lib.exists()) {
             		try {
-            			File out = new File(outputDirectory, String.valueOf(projectName++) );
+            			String projectName = artifact.getGroupId() + "-" + artifact.getArtifactId() + "-res";
+            			File out = new File(outputDirectory, projectName);
             			if(!out.exists()) {
             				out.mkdirs();
             			}
@@ -77,7 +70,6 @@ public class LibraryResourceProcessorMojo extends AbstractMojo
         				e.printStackTrace();
         			}          			
         		}  			
-    		//}
     	} 	
     }
     
@@ -86,40 +78,7 @@ public class LibraryResourceProcessorMojo extends AbstractMojo
     	res.setDirectory( new File(out.getAbsolutePath(), "res").getAbsolutePath() );
     	project.addResource(res);     	
     }
-    /*
-    private void unpackAndAddClasses() throws MojoExecutionException {
-        File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
-        if(!classDirectory.exists()) {
-        	classDirectory.mkdirs();
-        }
-        List<Artifact> artifacts = (List<Artifact>) project.getCompileArtifacts();
-        getLog().info("Found dependencies: count = " + artifacts.size());
-        for ( Artifact artifact : artifacts )
-        {
-            if ( artifact.getGroupId().equals( "com.android" ) )
-            {
-                continue;
-            }
 
-            if ( artifact.getFile().isDirectory() )
-            {
-                throw new MojoExecutionException( "Dependent artifact is directory: Directory = "
-                    + artifact.getFile().getAbsolutePath() );
-            }
-
-            try
-            {
-            	getLog().info("Found dependency: " + artifact.getArtifactId());
-                unjar( new JarFile( artifact.getFile() ), classDirectory );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Unable to jar file: File = " + artifact.getFile().getAbsolutePath(),
-                                                  e );
-            }
-        }    
-    }
-*/
     private void unjar( JarFile jarFile, File outputDirectory )
             throws IOException
         {

@@ -138,7 +138,12 @@ public class AaptCompilerMojo
             } else {
             	//commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
             }
+        	File resDir = (new File(res.getDirectory()));
             
+        	if(!resDir.exists()) {
+            	resDir.mkdirs();
+            }
+        	
         	commands.add( "-S" );
         	commands.add(res.getDirectory());
         }
