@@ -90,6 +90,11 @@ public final class AaptPackagerMojo
      * @parameter
      */
     public String versionCode;   
+    
+    /**
+     * @parameter default-value="true"
+     */
+    public boolean autoAddOverlay; 
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -120,6 +125,10 @@ public final class AaptPackagerMojo
         List<String> commands = new ArrayList<String>();
         commands.add( "package" );
 
+        if(autoAddOverlay) {
+        	commands.add( "--auto-add-overlay" );
+        }
+        
         commands.add( "-f" );
         commands.add( "-M" );
         commands.add( manifestFile.getAbsolutePath() );

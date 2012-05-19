@@ -78,6 +78,11 @@ public class AaptCompilerMojo
      * @parameter
      */
     public String[] sourceRoots; 
+    
+    /**
+     * @parameter default-value="true"
+     */
+    public boolean autoAddOverlay; 
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -119,7 +124,11 @@ public class AaptCompilerMojo
         
         List<String> commands = new ArrayList<String>();
         commands.add( "package" );
-
+        
+        if(autoAddOverlay) {
+        	commands.add( "--auto-add-overlay" );
+        }
+        
         if ( createPackageDirectories )
         {
             commands.add( "-m" );
