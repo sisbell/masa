@@ -1,22 +1,24 @@
 /*
  * Copyright (C) 2007-2008 JVending Masa
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.jvending.masa.plugin.aapt;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -24,13 +26,6 @@ import org.apache.maven.project.MavenProject;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
-
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Resource;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @goal compile
@@ -72,17 +67,17 @@ public class AaptCompilerMojo
     /**
      * @parameter
      */
-    public File manifestFile; 
-    
+    public File manifestFile;
+
     /**
      * @parameter
      */
-    public String[] sourceRoots; 
-    
+    public String[] sourceRoots;
+
     /**
      * @parameter default-value="true"
      */
-    public boolean autoAddOverlay; 
+    public boolean autoAddOverlay;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -102,17 +97,17 @@ public class AaptCompilerMojo
 
         if ( manifestFile == null )
         {
-            manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
-        } 
-       
+            manifestFile = new File( project.getBasedir(), "AndroidManifest.xml" );
+        }
+
         linkManifestFile();
-        
+
         if ( !manifestFile.exists() )
         {
             throw new MojoExecutionException( "Android manifest file not found: File = "
                 + manifestFile.getAbsolutePath() );
         }
-        
+
         String generatedSourceDirectoryName = project.getBuild().getDirectory() + File.separator + "gen-mvn";
         new File( generatedSourceDirectoryName ).mkdirs();
 
@@ -121,14 +116,15 @@ public class AaptCompilerMojo
         {
             throw new MojoExecutionException( "Android jar file not found: File = " + androidJar.getAbsolutePath() );
         }
-        
+
         List<String> commands = new ArrayList<String>();
         commands.add( "package" );
-        
-        if(autoAddOverlay) {
-        	commands.add( "--auto-add-overlay" );
+
+        if ( autoAddOverlay )
+        {
+            commands.add( "--auto-add-overlay" );
         }
-        
+
         if ( createPackageDirectories )
         {
             commands.add( "-m" );
@@ -137,26 +133,29 @@ public class AaptCompilerMojo
         commands.add( generatedSourceDirectoryName );
         commands.add( "-M" );
         commands.add( manifestFile.getAbsolutePath() );
-        
-        
-        for(Resource res : (List<Resource>) project.getResources()) {
-       
-        	if ( resourceDirectory.exists() )
-            {        	
-               // commands.add( resourceDirectory.getAbsolutePath() );
-            } else {
-            	//commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
+
+        for ( Resource res : (List<Resource>) project.getResources() )
+        {
+
+            if ( resourceDirectory.exists() )
+            {
+                // commands.add( resourceDirectory.getAbsolutePath() );
             }
-        	File resDir = (new File(res.getDirectory()));
-            
-        	if(!resDir.exists()) {
-            	resDir.mkdirs();
+            else
+            {
+                //commands.add(  new File(  project.getBasedir(), "res" ).getAbsolutePath());
             }
-        	
-        	commands.add( "-S" );
-        	commands.add(res.getDirectory());
+            File resDir = ( new File( res.getDirectory() ) );
+
+            if ( !resDir.exists() )
+            {
+                resDir.mkdirs();
+            }
+
+            commands.add( "-S" );
+            commands.add( res.getDirectory() );
         }
-        
+
         if ( assetsDirectory.exists() )
         {
             commands.add( "-A" );
@@ -178,51 +177,58 @@ public class AaptCompilerMojo
 
         project.addCompileSourceRoot( generatedSourceDirectoryName );
 
-        if(sourceRoots != null) 
+        if ( sourceRoots != null )
         {
-        	for(String src : sourceRoots) 
-        	{
-        		project.addCompileSourceRoot( src );
-        	}
+            for ( String src : sourceRoots )
+            {
+                project.addCompileSourceRoot( src );
+            }
         }
-        
+
         //Add jar dependency
 
     }
-    
-    private String getRelativePathOf(String path) {
-	     return new File(project.getBasedir().getAbsolutePath()).toURI()
-	    		 .relativize(new File(path).toURI()).getPath();
+
+    private String getRelativePathOf( String path )
+    {
+        return new File( project.getBasedir().getAbsolutePath() ).toURI().relativize( new File( path ).toURI() )
+            .getPath();
     }
-    
-    private void linkManifestFile() throws MojoExecutionException {
-    	
-    	 File defaultFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
-    	 if(defaultFile.getAbsolutePath().equals(manifestFile.getAbsolutePath())) {
-    		 return; //nothing to link
-    	 }
-    	 
-    	 defaultFile.delete();
-    	 
-		 CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-	     executor.setLogger( getLog() );
-	     
-		 List<String> commands = new ArrayList<String>();
-		 commands.add("-s");
-		 
-		 commands.add(getRelativePathOf(manifestFile.getPath()));
-		 commands.add(getRelativePathOf(project.getBasedir().getPath()));
-		 
-		// commands.add(manifestFile.getName());
-		// commands.add(project.getBasedir().getPath());
-		 getLog().info( "ln" + ":" + commands.toString() );
-		try {
-			executor.executeCommand("ln", commands, project.getBasedir(), false);
-		} catch (ExecutionException ex) {
-			throw new MojoExecutionException("", ex);
-		}
-		
-//		manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
+
+    private void linkManifestFile()
+        throws MojoExecutionException
+    {
+
+        File defaultFile = new File( project.getBasedir(), "AndroidManifest.xml" );
+        if ( defaultFile.getAbsolutePath().equals( manifestFile.getAbsolutePath() ) )
+        {
+            return; //nothing to link
+        }
+
+        defaultFile.delete();
+
+        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        executor.setLogger( getLog() );
+
+        List<String> commands = new ArrayList<String>();
+        commands.add( "-s" );
+
+        commands.add( getRelativePathOf( manifestFile.getPath() ) );
+        commands.add( getRelativePathOf( project.getBasedir().getPath() ) );
+
+        // commands.add(manifestFile.getName());
+        // commands.add(project.getBasedir().getPath());
+        getLog().info( "ln" + ":" + commands.toString() );
+        try
+        {
+            executor.executeCommand( "ln", commands, project.getBasedir(), false );
+        }
+        catch ( ExecutionException ex )
+        {
+            throw new MojoExecutionException( "", ex );
+        }
+
+        //		manifestFile = new File(  project.getBasedir(), "AndroidManifest.xml" );
     }
 
 }

@@ -23,8 +23,8 @@ public class MasaUtil
         pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
 
-        ToolchainModel model =
-            ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project ).get( "toolchain" ) );
+        ToolchainModel model = ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project )
+            .get( "toolchain" ) );
         if ( model == null )
         {
             return null;
@@ -35,24 +35,23 @@ public class MasaUtil
     }
 
     public static String getAndroidVersion( MavenSession session, MavenProject project )
-    {   	
+    {
         PluginDescriptor pluginDescriptor = new PluginDescriptor();
         pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
 
-        String version =
-            ( (String) session.getPluginContext( pluginDescriptor, project ).get( "androidVersion" ) );
+        String version = ( (String) session.getPluginContext( pluginDescriptor, project ).get( "androidVersion" ) );
         return version;
     }
-    
+
     public static String getToolnameWithPath( MavenSession session, MavenProject project, String toolname )
     {
         PluginDescriptor pluginDescriptor = new PluginDescriptor();
         pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
 
-        ToolchainModel model =
-            ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project ).get( "toolchain" ) );
+        ToolchainModel model = ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project )
+            .get( "toolchain" ) );
         if ( model == null )
         {
             return toolname;
@@ -70,15 +69,15 @@ public class MasaUtil
         }
         return command;
     }
-    
-    public static List<File> getToolpaths( MavenSession session, MavenProject project)
+
+    public static List<File> getToolpaths( MavenSession session, MavenProject project )
     {
         PluginDescriptor pluginDescriptor = new PluginDescriptor();
         pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
         pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
 
-        ToolchainModel model =
-            ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project ).get( "toolchain" ) );
+        ToolchainModel model = ( (ToolchainModel) session.getPluginContext( pluginDescriptor, project )
+            .get( "toolchain" ) );
         if ( model == null )
         {
             return Collections.EMPTY_LIST;
@@ -88,7 +87,7 @@ public class MasaUtil
         Xpp3Dom dom = (Xpp3Dom) model.getConfiguration();
         for ( Xpp3Dom d : dom.getChild( "toolPaths" ).getChildren() )
         {
-        	File f = new File( d.getValue() ); 
+            File f = new File( d.getValue() );
             if ( f.exists() )
             {
                 list.add( f );
@@ -99,20 +98,20 @@ public class MasaUtil
 
     public static File getProguardJarFile( MavenProject project )
     {
-	    for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
-	    {
-	        if ( artifact.getGroupId().equals( "net.sf.proguard" ) && artifact.getArtifactId().equals( "proguard" ) )
-	        {
-	            return artifact.getFile();
-	        }
-	    }
-	    return null;
+        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
+        {
+            if ( artifact.getGroupId().equals( "net.sf.proguard" ) && artifact.getArtifactId().equals( "proguard" ) )
+            {
+                return artifact.getFile();
+            }
+        }
+        return null;
     }
-    
+
     public static File getAndroidJarFile( MavenProject project )
         throws MojoExecutionException
     {
-        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
+        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
         {
             if ( artifact.getGroupId().equals( "com.android" ) && artifact.getArtifactId().equals( "android" ) )
             {

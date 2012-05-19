@@ -35,18 +35,17 @@ public class ProguardMojo
      * @parameter expression="${session}"
      */
     public MavenSession session;
-    
 
     /**
      * @parameter default-value="${project.build.directory}/${project.build.finalName}-small.jar";
      */
     private File outjars;
-    
+
     /**
      * @parameter default-value="${project.basedir}/proguard.cfg";
      */
     private File configFile;
-    
+
     /**
      * @parameter
      */
@@ -55,78 +54,84 @@ public class ProguardMojo
     public void execute()
         throws MojoExecutionException
     {
-    	if(skip) {
-    		getLog().info("Plugin configured to skip proguard for this build");
-    		return;
-    	}
-    	
-    	if(isSkip()) {
-    		getLog().info("Property configured to skip proguard for this build");
-    		return;    		
-    	}
-    	
-        File inputFile =
-            new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
-      
-    	File proFile =   MasaUtil.getProguardJarFile(project);
-    	
-		if(proFile == null) {
-			getLog().info("Proguard not configured for this build");
-			return;
-		}
-		
-		File reportDirectory = new File(project.getBasedir(), "proguard");
-		if(!reportDirectory.exists()) {
-			reportDirectory.mkdirs();
-		}
-		
-		CommandExecutor executor = CommandExecutor.Factory
-				.createDefaultCommmandExecutor();
-		executor.setLogger(this.getLog());
-		
-		List<String> commands = new ArrayList<String>();
-		
-		//Run proguard jar
-		commands.add("-jar");
-		commands.add(proFile.getAbsolutePath());
+        if ( skip )
+        {
+            getLog().info( "Plugin configured to skip proguard for this build" );
+            return;
+        }
 
-		commands.add("-injars");
-		commands.add(inputFile.getAbsolutePath());
-		
-		commands.add("-outjars");
-		commands.add(outjars.getAbsolutePath());
+        if ( isSkip() )
+        {
+            getLog().info( "Property configured to skip proguard for this build" );
+            return;
+        }
 
-		commands.add("-include");
-		commands.add(configFile.getAbsolutePath());
-		
-		//Reporting		
-		commands.add("-printseeds");
-		commands.add(new File(reportDirectory, "seeds.txt").getAbsolutePath());
+        File inputFile = new File( project.getBuild().getDirectory() + File.separator
+            + project.getBuild().getFinalName() + ".jar" );
 
-		commands.add("-printmapping");
-		commands.add(new File(reportDirectory, "mapping.txt").getAbsolutePath());
-		
-		commands.add("-printusage");
-		commands.add(new File(reportDirectory, "usage.txt").getAbsolutePath());
-		
-		commands.add("-dump");
-		commands.add(new File(reportDirectory, "dump.txt").getAbsolutePath());
-		
-	    for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts())
-	    {
-	    	commands.add("-libraryjars");
-	    	commands.add(artifact.getFile().getAbsolutePath());
-	    }
-		
-		try {
-			executor.executeCommand("java", commands, project.getBasedir(),
-					false);
-		} catch (ExecutionException e) {
-			throw new MojoExecutionException("", e);
-		}
+        File proFile = MasaUtil.getProguardJarFile( project );
+
+        if ( proFile == null )
+        {
+            getLog().info( "Proguard not configured for this build" );
+            return;
+        }
+
+        File reportDirectory = new File( project.getBasedir(), "proguard" );
+        if ( !reportDirectory.exists() )
+        {
+            reportDirectory.mkdirs();
+        }
+
+        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        executor.setLogger( this.getLog() );
+
+        List<String> commands = new ArrayList<String>();
+
+        //Run proguard jar
+        commands.add( "-jar" );
+        commands.add( proFile.getAbsolutePath() );
+
+        commands.add( "-injars" );
+        commands.add( inputFile.getAbsolutePath() );
+
+        commands.add( "-outjars" );
+        commands.add( outjars.getAbsolutePath() );
+
+        commands.add( "-include" );
+        commands.add( configFile.getAbsolutePath() );
+
+        //Reporting		
+        commands.add( "-printseeds" );
+        commands.add( new File( reportDirectory, "seeds.txt" ).getAbsolutePath() );
+
+        commands.add( "-printmapping" );
+        commands.add( new File( reportDirectory, "mapping.txt" ).getAbsolutePath() );
+
+        commands.add( "-printusage" );
+        commands.add( new File( reportDirectory, "usage.txt" ).getAbsolutePath() );
+
+        commands.add( "-dump" );
+        commands.add( new File( reportDirectory, "dump.txt" ).getAbsolutePath() );
+
+        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
+        {
+            commands.add( "-libraryjars" );
+            commands.add( artifact.getFile().getAbsolutePath() );
+        }
+
+        try
+        {
+            executor.executeCommand( "java", commands, project.getBasedir(), false );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
     }
-    
-    private static boolean isSkip() {
-    	return Boolean.getBoolean("proguard.skip");
+
+    private static boolean isSkip()
+    {
+        return Boolean.getBoolean( "proguard.skip" );
     }
 }
