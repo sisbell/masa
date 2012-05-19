@@ -19,12 +19,12 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-plugins</artifactId>
-		<version>1.6-SNAPSHOT</version>
+		<version>4</version>
 	</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jvending.masa.plugins</groupId>
     <artifactId>maven-apkbuilder-plugin</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>4</version>
     <packaging>maven-plugin</packaging>
     <name>JVending Masa: maven-apkbuilder-plugin</name>
     <description>Maven Plugin for APK Builder</description>
