@@ -79,6 +79,13 @@ public class AaptCompilerMojo
      */
     public boolean autoAddOverlay;
 
+    /**
+     * Dependencies file
+     * 
+     * @parameter default-value="false"
+     */
+    public boolean generateDependencies;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -133,7 +140,7 @@ public class AaptCompilerMojo
         commands.add( generatedSourceDirectoryName );
         commands.add( "-M" );
         commands.add( manifestFile.getAbsolutePath() );
-
+       
         for ( Resource res : (List<Resource>) project.getResources() )
         {
 
@@ -164,6 +171,11 @@ public class AaptCompilerMojo
         commands.add( "-I" );
         commands.add( androidJar.getAbsolutePath() );
 
+        if ( generateDependencies )
+        {
+            commands.add( "--generate-dependencies" );
+        }
+        
         String apptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
         getLog().info( apptCommand + ":" + commands.toString() );
         try

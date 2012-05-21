@@ -1,19 +1,29 @@
 /*
  * Copyright (C) 2007-2008 JVending Masa
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package org.jvending.masa.plugin.dx;
+
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
@@ -26,19 +36,6 @@ import org.codehaus.plexus.util.IOUtil;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
-
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * @goal dx
@@ -74,7 +71,7 @@ public class DxMojo
      * @optional
      */
     private String[] jvmArguments;
-    
+
     /**
      * none, important, lines (debug info)
      * 
@@ -88,70 +85,69 @@ public class DxMojo
      * 
      * @parameter
      * @optional
-     */   
+     */
     private boolean debug;
-    
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean noOptimize;    
-    
+     */
+    private boolean noOptimize;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean statistics;    
-    
+     */
+    private boolean statistics;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean noLocales;   
-    
+     */
+    private boolean noLocales;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean verbose;    
-    
+     */
+    private boolean verbose;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean noStrict;     
-    
-    
+     */
+    private boolean noStrict;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean keepClasses;     
-    
+     */
+    private boolean keepClasses;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean noFiles;  
-    
+     */
+    private boolean noFiles;
+
     /**
      * @parameter
      * @optional
-     */   
-    private boolean coreLibrary;  
-    
+     */
+    private boolean coreLibrary;
+
     /**
      * @parameter
      * @optional
-     */   
-    private File dumpTo;        
-    
+     */
+    private File dumpTo;
+
     /**
      * @parameter
      * @optional
-     */   
-    private int dumpWidth;      
-    
+     */
+    private int dumpWidth;
+
     /**
      * New line separated file 
      * 
@@ -161,10 +157,9 @@ public class DxMojo
      * 
      * @parameter
      * @optional
-     */   
-    private File optimizeList;     
-   
-    
+     */
+    private File optimizeList;
+
     /**
      * New line separated file 
      * 
@@ -172,43 +167,44 @@ public class DxMojo
      * 
      * @parameter
      * @optional
-     */   
-    private File noOptimizeList; 
+     */
+    private File noOptimizeList;
 
     /**
      * @parameter
      * @optional
-     */   
+     */
     private int numThreads;
-    
+
     /**
      * @parameter
      * @optional
-     */   
-    private File classFile;   
-    
+     */
+    private File classFile;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
 
-    //	com.android.dx.merge.DexMerger
+        //	com.android.dx.merge.DexMerger
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger( this.getLog() );
 
         File outputFile = new File( project.getBuild().getDirectory() + File.separator + "classes.dex" );
-        
+
         //These classes files go from jar into temp output directory (android-classes)
-        File inputFile =
-            new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + "-small.jar" );
-        if(!inputFile.exists()) {//no proguard 
-        	inputFile =
-                new File( project.getBuild().getDirectory() + File.separator + project.getBuild().getFinalName() + ".jar" );
+        File inputFile = new File( project.getBuild().getDirectory() + File.separator
+            + project.getBuild().getFinalName() + "-small.jar" );
+        if ( !inputFile.exists() )
+        {//no proguard 
+            inputFile = new File( project.getBuild().getDirectory() + File.separator
+                + project.getBuild().getFinalName() + ".jar" );
         }
-        
+
         // Unpackage all dependent and main classes into this directory
         File classDirectory = new File( project.getBuild().getDirectory(), "android-classes" );
         List<Artifact> artifacts = (List<Artifact>) project.getCompileArtifacts();
-        getLog().info("Found dependencies: count = " + artifacts.size());
+        getLog().info( "Found dependencies: count = " + artifacts.size() );
         for ( Artifact artifact : artifacts )
         {
             if ( artifact.getGroupId().equals( "com.android" ) )
@@ -224,7 +220,7 @@ public class DxMojo
 
             try
             {
-            	getLog().info("Found dependency: " + artifact.getArtifactId());
+                getLog().info( "Found dependency: " + artifact.getArtifactId() );
                 unjar( new JarFile( artifact.getFile() ), classDirectory );
             }
             catch ( IOException e )
@@ -258,130 +254,135 @@ public class DxMojo
                 }
             }
         }
-		if (positions != null) 
-		{
-			if (positions.equals("none") || positions.equals("important")
-					|| positions.equals("lines")) 
-			{
-				commands.add( "--positions=" + positions);			
-			} 
-			else 
-			{
-				throw new MojoExecutionException(
-						"Unknown positions parameter (none, important, lines): Value = "
-								+ positions);
-			}
-		}
-		if(debug) 
-		{
-			commands.add( "--debug" );
-		}
-		
-		if(noOptimize) 
-		{
-			commands.add( "--no-optimize" );
-		}
+        if ( positions != null )
+        {
+            if ( positions.equals( "none" ) || positions.equals( "important" ) || positions.equals( "lines" ) )
+            {
+                commands.add( "--positions=" + positions );
+            }
+            else
+            {
+                throw new MojoExecutionException( "Unknown positions parameter (none, important, lines): Value = "
+                    + positions );
+            }
+        }
+        if ( debug )
+        {
+            commands.add( "--debug" );
+        }
 
-		if(statistics) 
-		{
-			commands.add( "--statistics" );
-		}
+        if ( noOptimize )
+        {
+            commands.add( "--no-optimize" );
+        }
 
-		if(noLocales) 
-		{
-			commands.add( "--no-locals" );
-		}
-		
-		if(noOptimize) 
-		{
-			commands.add( "--no-optimize" );
-		}
+        if ( statistics )
+        {
+            commands.add( "--statistics" );
+        }
 
-		if(verbose) 
-		{
-			commands.add( "--verbose" );
-		}
+        if ( noLocales )
+        {
+            commands.add( "--no-locals" );
+        }
 
-		if(noStrict) 
-		{
-			commands.add( "--no-strict" );
-		}
+        if ( noOptimize )
+        {
+            commands.add( "--no-optimize" );
+        }
 
-		if(keepClasses) 
-		{
-			commands.add( "--keep-classes" );
-		}
+        if ( verbose )
+        {
+            commands.add( "--verbose" );
+        }
 
-		if(noFiles) 
-		{
-			commands.add( "--no-files" );
-		}
+        if ( noStrict )
+        {
+            commands.add( "--no-strict" );
+        }
 
-		if(coreLibrary) 
-		{
-			commands.add( "--core-library" );
-		}
-		
-		if(dumpTo != null) 
-		{
-			if(!dumpTo.getParentFile().exists()) 
-			{
-				if(!dumpTo.getParentFile().mkdirs())
-				{
-					throw new MojoExecutionException( "Failed to create dump directory: Directory = "  
-							+ dumpTo.getParentFile().getAbsolutePath() );
-				} else {
-					commands.add( "--dump-to" );
-					commands.add( dumpTo.getAbsolutePath() );
-				}
-			}
-		}
-		
-		if( dumpWidth != 0 ) 
-		{
-			commands.add( "--dump-width" );
-			commands.add( String.valueOf( dumpWidth ) );
-		}
-		
-		if( optimizeList != null ) 
-		{
-			commands.add( "--optimize-list" );
-			commands.add( optimizeList.getAbsolutePath() );			
-		}
-		
-		if( noOptimizeList != null ) 
-		{
-			commands.add( "--no-optimize-list" );
-			commands.add( noOptimizeList.getAbsolutePath() );			
-		}	
-		
-		if(numThreads != 0) {
-			commands.add( "--num-threads" );
-			commands.add( String.valueOf( numThreads ) );			
-		}
-		
+        if ( keepClasses )
+        {
+            commands.add( "--keep-classes" );
+        }
+
+        if ( noFiles )
+        {
+            commands.add( "--no-files" );
+        }
+
+        if ( coreLibrary )
+        {
+            commands.add( "--core-library" );
+        }
+
+        if ( dumpTo != null )
+        {
+            if ( !dumpTo.getParentFile().exists() )
+            {
+                if ( !dumpTo.getParentFile().mkdirs() )
+                {
+                    throw new MojoExecutionException( "Failed to create dump directory: Directory = "
+                        + dumpTo.getParentFile().getAbsolutePath() );
+                }
+                else
+                {
+                    commands.add( "--dump-to" );
+                    commands.add( dumpTo.getAbsolutePath() );
+                }
+            }
+        }
+
+        if ( dumpWidth != 0 )
+        {
+            commands.add( "--dump-width" );
+            commands.add( String.valueOf( dumpWidth ) );
+        }
+
+        if ( optimizeList != null )
+        {
+            commands.add( "--optimize-list" );
+            commands.add( optimizeList.getAbsolutePath() );
+        }
+
+        if ( noOptimizeList != null )
+        {
+            commands.add( "--no-optimize-list" );
+            commands.add( noOptimizeList.getAbsolutePath() );
+        }
+
+        if ( numThreads != 0 )
+        {
+            commands.add( "--num-threads" );
+            commands.add( String.valueOf( numThreads ) );
+        }
+
         commands.add( "--dex" );
         commands.add( "--output=" + outputFile.getAbsolutePath() );//classes.dex
-        
-        if(classFile == null) 
+
+        if ( classFile == null )
         {
-        	commands.add( classDirectory.getAbsolutePath() );	
-        } 
-        else 
-        {
-        	if( !classFile.exists() )
-        	{
-        		throw new MojoExecutionException( "Class source directory not found: " + classFile.getAbsolutePath() ); 	     
-        	}
-        	String className = classFile.getName();
-        	if(classFile.isDirectory() || className.endsWith(".apk") || className.endsWith(".jar") || className.endsWith(".zip") ) 
-        	{
-        		commands.add( classFile.getAbsolutePath() );
-        	} else {
-        		throw new MojoExecutionException( "Unrecognized class source (apk, zip, jar): " + classFile.getAbsolutePath());
-        	}
+            commands.add( classDirectory.getAbsolutePath() );
         }
-        
+        else
+        {
+            if ( !classFile.exists() )
+            {
+                throw new MojoExecutionException( "Class source directory not found: " + classFile.getAbsolutePath() );
+            }
+            String className = classFile.getName();
+            if ( classFile.isDirectory() || className.endsWith( ".apk" ) || className.endsWith( ".jar" )
+                || className.endsWith( ".zip" ) )
+            {
+                commands.add( classFile.getAbsolutePath() );
+            }
+            else
+            {
+                throw new MojoExecutionException( "Unrecognized class source (apk, zip, jar): "
+                    + classFile.getAbsolutePath() );
+            }
+        }
+
         getLog().info( "dx " + commands.toString() );
         try
         {

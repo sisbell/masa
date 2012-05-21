@@ -72,6 +72,11 @@ public final class AaptPackagerMojo
      * @parameter
      */
     public String renameManifestPackage;
+    
+    /**
+     * @parameter
+     */
+    public String renameInstrumentatonTargetPackage;    
 
     /**
      * @parameter
@@ -92,6 +97,22 @@ public final class AaptPackagerMojo
      * @parameter default-value="true"
      */
     public boolean autoAddOverlay;
+
+    /**
+     * @parameter
+     */
+    public String configs;
+    
+    /**
+     * @parameter
+     */
+    public String preferredConfigurations;
+ 
+    /**
+     * @parameter default-value="false"
+     */
+    public boolean debugMode;
+    
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -164,6 +185,12 @@ public final class AaptPackagerMojo
             commands.add( renameManifestPackage );
         }
 
+        if ( renameInstrumentatonTargetPackage != null )
+        {
+            commands.add( "--rename-instrumentation-target-package" );
+            commands.add( renameInstrumentatonTargetPackage );
+        }
+        
         if ( versionName != null )
         {
             commands.add( "--version-name" );
@@ -174,6 +201,22 @@ public final class AaptPackagerMojo
         {
             commands.add( "--version-code" );
             commands.add( versionCode.replace( "-SNAPSHOT", "" ) );
+        }
+
+        if ( configs != null )
+        {
+            commands.add( "-c" );
+            commands.add( configs );
+        }
+  
+        if ( preferredConfigurations != null )
+        {
+            commands.add( "--preferred-configurations" );
+            commands.add( preferredConfigurations );
+        }
+        
+        if (debugMode) {
+            commands.add( "--debug-mode" );
         }
 
         String aaptCommand = MasaUtil.getToolnameWithPath( session, project, "aapt" );
