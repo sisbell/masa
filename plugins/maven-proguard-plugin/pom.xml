@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>masa-plugins</artifactId>
 		<groupId>org.jvending.masa</groupId>
-		<version>1.7-SNAPSHOT</version>
+		<version>1.7</version>
 	</parent>
 	<groupId>org.jvending.masa.plugins</groupId>
 	<artifactId>maven-proguard-plugin</artifactId>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.7</version>
 	<packaging>maven-plugin</packaging>
 	<name>maven-proguard-plugin Maven Plugin</name>
 	<dependencies>
