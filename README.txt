@@ -4,6 +4,10 @@ You will need to either add both of the following paths to your environment
 
     * ${android-sdk-path}/tools
     * ${android-sdk-path}/platform-tools
+    
+    and set environmental variable
+    
+    ANDROID_SDK=${android-sdk-path}
 
 OR
 
