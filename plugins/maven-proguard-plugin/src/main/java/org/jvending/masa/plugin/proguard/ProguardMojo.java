@@ -104,11 +104,12 @@ public class ProguardMojo
 
         if ( includeSdkProguardFile )
         {
-            File proguardFile = new File( MasaUtil.getToolnameWithPath( session, project, "proguard" + File.separator
-                + "proguard-android.txt" ) );
+            String path = "proguard" + File.separator + "proguard-android.txt";
+            
+            File proguardFile = new File( MasaUtil.getToolnameWithPath( session, project, path ) );
             if ( !proguardFile.exists() )
             {
-
+                proguardFile = new File(MasaUtil.getSdkPathFromEnvironment(), "tools" + File.separator + path);
             }
 
             if ( proguardFile.exists() )

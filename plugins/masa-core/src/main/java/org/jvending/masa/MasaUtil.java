@@ -16,7 +16,10 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 public class MasaUtil
 {
-
+    public static String getSdkPathFromEnvironment() {
+        return System.getenv().get( "ANDROID_SDK" ); 
+            
+    }
     public static boolean isSdkOnPath() {
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
      

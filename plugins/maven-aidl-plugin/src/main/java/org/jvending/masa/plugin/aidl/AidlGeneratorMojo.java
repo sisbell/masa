@@ -89,9 +89,9 @@ public class AidlGeneratorMojo
         {
             List<String> commands = new ArrayList<String>();
             String androidVersion = MasaUtil.getAndroidVersion( session, project );
-            if ( System.getenv().get( "ANDROID_SDK" ) != null )
+            if ( MasaUtil.getSdkPathFromEnvironment() != null )
             {
-                commands.add( "-p" + System.getenv().get( "ANDROID_SDK" ) + "/platforms/android-" + androidVersion
+                commands.add( "-p" + MasaUtil.getSdkPathFromEnvironment() + "/platforms/android-" + androidVersion
                     + "/framework.aidl" );
             }
             else
