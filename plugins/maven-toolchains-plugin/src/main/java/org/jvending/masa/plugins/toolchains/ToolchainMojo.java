@@ -14,12 +14,15 @@
 package org.jvending.masa.plugins.toolchains;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarFile;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,6 +40,7 @@ import org.jvending.masa.MasaUtil;
 /**
  * @goal toolchain
  * @phase validate
+ * @requiresDependencyResolution compile
  */
 public class ToolchainMojo
     extends AbstractMojo
@@ -66,19 +70,31 @@ public class ToolchainMojo
 
     private static final String sdkErrorMessage = "Android SDK not configured. Either place the android tools directory on classpath or configure toolchains.xml file";
 
+    private static final String versionErrorMessage = "Could not find android version. Check that pom dependency for 'com.android:android:' exists or configure toolchains.xml file";
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        PluginDescriptor pluginDescriptor = new PluginDescriptor();
+        pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
+        pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
+
+        String dependencyAndroidVersion = getAndroidVersionFromDependency();
+
         if ( toolchains == null )
         {
             if ( !MasaUtil.isSdkOnPath() )
             {
                 throw new MojoExecutionException( sdkErrorMessage );
             }
-            else
+
+            getLog().info( "No toolchains.xml configured for this build." );
+            if ( dependencyAndroidVersion == null )
             {
-                getLog().info( "No toolchains.xml configured for this build." );
+                throw new MojoExecutionException( versionErrorMessage );
             }
+            session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", dependencyAndroidVersion );
+
             return;
         }
 
@@ -101,10 +117,15 @@ public class ToolchainMojo
             {
                 throw new MojoExecutionException( sdkErrorMessage );
             }
-            else
+
+            getLog().info( "No toolchains.xml file found." );
+            if ( dependencyAndroidVersion == null )
             {
-                getLog().info( "No toolchains.xml file found." );
+                throw new MojoExecutionException( versionErrorMessage );
             }
+            session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", dependencyAndroidVersion );
+            return;
+
         }
 
         PersistedToolchains toolchainModels = null;
@@ -116,6 +137,12 @@ public class ToolchainMojo
         }
         catch ( Exception e )
         {
+            getLog().info( "Problem reading toolchains.xml. Could not process" );
+            if ( dependencyAndroidVersion == null )
+            {
+                throw new MojoExecutionException( versionErrorMessage );
+            }
+            session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", dependencyAndroidVersion );
             return;
         }
         finally
@@ -156,19 +183,29 @@ public class ToolchainMojo
             throw new MojoExecutionException( "Could not match capability to toolchain requirements" );
         }
 
-        PluginDescriptor pluginDescriptor = new PluginDescriptor();
-        pluginDescriptor.setGroupId( "org.jvending.masa.plugins" );
-        pluginDescriptor.setArtifactId( PluginDescriptor.getDefaultPluginArtifactId( "toolchains" ) );
         session.getPluginContext( pluginDescriptor, project ).put( "toolchain", models.get( capabilityId ) );
-        session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", "15" );
+        session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", getAndroidVersionFromToolchain() );
 
-        getLog().info( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
+        getLog().info( "ID = " + capabilityId + " : " + models.get( capabilityId ).getType() );
 
     }
 
-    private String getAndroidVersion()
+    private String getAndroidVersionFromToolchain()
     {
-        return "";
+        return "15";//TODO - remove hard-coded value
+    }
+
+    private String getAndroidVersionFromDependency()
+    {
+        List<Artifact> artifacts = (List<Artifact>) project.getCompileArtifacts();
+        for ( Artifact artifact : artifacts )
+        {
+            if ( artifact.getGroupId().equals( "com.android" ) && artifact.getArtifactId().equals( "android" ) )
+            {
+                return artifact.getVersion();
+            }
+        }
+        return null;
     }
 
 }
