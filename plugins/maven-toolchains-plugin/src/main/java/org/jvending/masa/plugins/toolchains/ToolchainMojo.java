@@ -186,13 +186,13 @@ public class ToolchainMojo
         session.getPluginContext( pluginDescriptor, project ).put( "toolchain", models.get( capabilityId ) );
         session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", getAndroidVersionFromToolchain() );
 
-        getLog().info( "ID = " + capabilityId + " : " + models.get( capabilityId ).getType() );
+        getLog().info( "ID = " + capabilityId + " : " + models.get( capabilityId ).getType() + " : " + getAndroidVersionFromToolchain()  );
 
     }
 
     private String getAndroidVersionFromToolchain()
     {
-        return "15";//TODO - remove hard-coded value
+        return toolchains.android.get( "version" );
     }
 
     private String getAndroidVersionFromDependency()
