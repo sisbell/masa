@@ -17,6 +17,20 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 public class MasaUtil
 {
 
+    public static boolean isSdkOnPath() {
+        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+     
+        try
+        {
+            executor.executeCommand( "aapt", new ArrayList<String>() );
+        }
+        catch ( ExecutionException e )
+        {
+           return executor.getStandardError().contains( "Android" );
+        }
+        return true;
+    }
+    
     public static ApplicationRequirements getApplicationRequirements( MavenSession session, MavenProject project )
     {
         PluginDescriptor pluginDescriptor = new PluginDescriptor();

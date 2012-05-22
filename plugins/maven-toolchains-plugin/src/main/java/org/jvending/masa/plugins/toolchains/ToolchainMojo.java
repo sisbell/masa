@@ -32,6 +32,7 @@ import org.apache.maven.toolchain.model.io.xpp3.MavenToolchainsXpp3Reader;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.jvending.masa.MasaUtil;
 
 /**
  * @goal toolchain
@@ -63,11 +64,21 @@ public class ToolchainMojo
      */
     private File toolchainsFile;
 
+    private static final String sdkErrorMessage = "Android SDK not configured. Either place the android tools directory on classpath or configure toolchains.xml file";
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
         if ( toolchains == null )
         {
+            if ( !MasaUtil.isSdkOnPath() )
+            {
+                throw new MojoExecutionException( sdkErrorMessage );
+            }
+            else
+            {
+                getLog().info( "No toolchains.xml configured for this build." );
+            }
             return;
         }
 
@@ -86,7 +97,14 @@ public class ToolchainMojo
 
         if ( !toolchainsFile.exists() )
         {
-            this.getLog().info( "Not toolchains.xml file found." );
+            if ( !MasaUtil.isSdkOnPath() )
+            {
+                throw new MojoExecutionException( sdkErrorMessage );
+            }
+            else
+            {
+                getLog().info( "No toolchains.xml file found." );
+            }
         }
 
         PersistedToolchains toolchainModels = null;
@@ -147,11 +165,10 @@ public class ToolchainMojo
         getLog().info( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
 
     }
-    
-    private String getAndroidVersion() {
-      return "";
+
+    private String getAndroidVersion()
+    {
+        return "";
     }
-    
-    
 
 }

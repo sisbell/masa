@@ -24,6 +24,11 @@
 	<version>1.8-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+        <dependency>
+            <groupId>org.jvending.masa</groupId>
+            <artifactId>masa-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>	    
 		<dependency>
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-utils</artifactId>

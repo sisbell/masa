@@ -181,11 +181,6 @@ public interface CommandExecutor
                             logger.debug( "ANDROID-040-000: Executed command: Commandline = " + commandline
                                 + ", Result = " + result );
                         }
-                        else
-                        {
-                            System.out.println( "ANDROID-040-000: Executed command: Commandline = " + commandline
-                                + ", Result = " + result );
-                        }
                         if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
                         {
                             throw new ExecutionException( "ANDROID-040-001: Could not execute: Command = "
@@ -235,10 +230,6 @@ public interface CommandExecutor
 
                     public ErrorStreamConsumer()
                     {
-                        if ( logger == null )
-                        {
-                            System.out.println( "ANDROID-040-003: Error Log not set: Will not output error logs" );
-                        }
                         error = false;
                     }
 

@@ -74,10 +74,10 @@ public class ProguardMojo
             + project.getBuild().getFinalName() + ".jar" );
 
         File proFile = MasaUtil.getProguardJarFile( project );
-
+        
         if ( proFile == null )
         {
-            getLog().info( "Proguard not configured for this build" );
+            getLog().info( "Proguard not configured for this build" );            
             return;
         }
 
