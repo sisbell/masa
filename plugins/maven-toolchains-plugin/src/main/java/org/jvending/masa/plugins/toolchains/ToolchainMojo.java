@@ -144,8 +144,14 @@ public class ToolchainMojo
         session.getPluginContext( pluginDescriptor, project ).put( "toolchain", models.get( capabilityId ) );
         session.getPluginContext( pluginDescriptor, project ).put( "androidVersion", "15" );
 
-        System.out.println( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
+        getLog().info( "ID=" + capabilityId + ":" + models.get( capabilityId ).getType() );
 
     }
+    
+    private String getAndroidVersion() {
+      return "";
+    }
+    
+    
 
 }

@@ -67,7 +67,7 @@ public class Matcher
         }
         throw new IllegalArgumentException( "capabilities: no id found" );
     }
-
+    
     private static boolean isMatch( List<Capability> cs, String name, String value )
     {
         for ( Capability c : cs )

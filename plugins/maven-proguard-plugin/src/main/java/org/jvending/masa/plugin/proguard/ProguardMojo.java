@@ -38,17 +38,22 @@ public class ProguardMojo
     /**
      * @parameter default-value="${project.build.directory}/${project.build.finalName}-small.jar";
      */
-    private File outjars;
+    public File outjars;
 
     /**
      * @parameter default-value="${project.basedir}/proguard.cfg";
      */
-    private File configFile;
+    public File configFile;
 
     /**
      * @parameter
      */
-    private boolean skip;
+    public boolean skip;
+
+    /**
+     * @parameter default-value="true"
+     */
+    public boolean includeSdkProguardFile;
 
     public void execute()
         throws MojoExecutionException
@@ -96,6 +101,24 @@ public class ProguardMojo
 
         commands.add( "-outjars" );
         commands.add( outjars.getAbsolutePath() );
+
+        if ( includeSdkProguardFile )
+        {
+            File proguardFile = new File( MasaUtil.getToolnameWithPath( session, project, "proguard" + File.separator
+                + "proguard-android.txt" ) );
+            if ( !proguardFile.exists() )
+            {
+
+            }
+
+            if ( proguardFile.exists() )
+            {
+                getLog()
+                    .info( "Detected sdk proguard file and including in build. To disable, set includeSdkProguardFile parameter to false." );
+                commands.add( "-include" );
+                commands.add( proguardFile.getAbsolutePath() );
+            }
+        }
 
         commands.add( "-include" );
         commands.add( configFile.getAbsolutePath() );
