@@ -11,11 +11,11 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-parent</artifactId>
-		<version>1.7</version>
+		<version>1.8-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-plugins</artifactId>
-	<version>1.7</version>
+	<version>1.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>JVending Masa: masa-plugins</name>
 	<description>Maven Plugins Project for Android</description>
