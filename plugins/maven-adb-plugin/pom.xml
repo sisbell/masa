@@ -19,12 +19,12 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-plugins</artifactId>
-		<version>1.9-SNAPSHOT</version>
+		<version>1.9</version>
 	</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jvending.masa.plugins</groupId>
     <artifactId>maven-adb-plugin</artifactId>
-    <version>1.9-SNAPSHOT</version>
+    <version>1.9</version>
     <packaging>maven-plugin</packaging>
     <name>JVending Masa: maven-adb-plugin</name>
     <description>Maven Plugin for Android ADB</description>

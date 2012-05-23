@@ -14,7 +14,7 @@
 	<parent>
 		<artifactId>masa-plugins</artifactId>
 		<groupId>org.jvending.masa</groupId>
-		<version>1.9-SNAPSHOT</version>
+		<version>1.9</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa.plugins</groupId>
@@ -22,7 +22,7 @@
 	</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-localization-plugin</name>
-	<version>1.9-SNAPSHOT</version>
+	<version>1.9</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
