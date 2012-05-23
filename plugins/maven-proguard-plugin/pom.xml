@@ -10,7 +10,7 @@
 	<artifactId>maven-proguard-plugin</artifactId>
 	<version>1.9-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
-	<name>maven-proguard-plugin Maven Plugin</name>
+	<name>JVending Masa: maven-proguard-plugin</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>

@@ -16,7 +16,7 @@ configure the environment through [Toolchains](https://github.com/sisbell/masa/w
 ### Packaging
 The packaging type should be specified as below:
 
-    <project>
+    <project>				
       ....
       <packaging>android:apk</packaging>
       ....
