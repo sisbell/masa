@@ -15,12 +15,12 @@
 	<parent>
 		<groupId>org.jvending.masa</groupId>
 		<artifactId>masa-plugins</artifactId>
-		<version>1.9</version>
+		<version>1.10-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jvending.masa</groupId>
 	<artifactId>masa-core</artifactId>
-	<version>1.9</version>
+	<version>1.10-SNAPSHOT</version>
 	<name>JVending Masa: masa-core</name>
 	<dependencies>
 		<dependency>

@@ -4,11 +4,11 @@
   <parent>
     <artifactId>masa-plugins</artifactId>
     <groupId>org.jvending.masa</groupId>
-    <version>1.9</version>
+    <version>1.10-SNAPSHOT</version>
   </parent>
   <groupId>org.jvending.masa.plugins</groupId>
   <artifactId>maven-lint-plugin</artifactId>
-  <version>1.9</version>
+  <version>1.10-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>JVending Masa: maven-lint-plugin</name>
   <url>http://maven.apache.org</url>
