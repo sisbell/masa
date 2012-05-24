@@ -38,7 +38,7 @@ public class ApkVerifierMojo
         String apk = null;
         for ( Artifact a : (List<Artifact>) project.getAttachedArtifacts() )
         {
-            if ( a.getType().equals( "apk" ) )
+            if ( a.getType().equals( "apk" ) && "signed-aligned".equals(a.getClassifier()))
             {
                 apk = a.getFile().getAbsolutePath();
                 break;
