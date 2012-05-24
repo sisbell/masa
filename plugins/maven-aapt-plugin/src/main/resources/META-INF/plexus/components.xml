@@ -43,7 +43,10 @@
 					</package>
 					<integration-test>org.jvending.masa.plugins:maven-adb-plugin:install
 					</integration-test>
-					<verify>org.jvending.masa.plugins:maven-lint-plugin:verify</verify>
+					<verify>
+					    org.jvending.masa.plugins:maven-apkbuilder-plugin:verify,
+						org.jvending.masa.plugins:maven-lint-plugin:verify
+					</verify>
 					<install>
 						org.apache.maven.plugins:maven-install-plugin:install
 					</install>
