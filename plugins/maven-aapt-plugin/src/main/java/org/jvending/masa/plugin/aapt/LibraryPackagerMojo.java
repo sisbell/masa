@@ -100,11 +100,6 @@ public final class LibraryPackagerMojo
         commands.add( new File( project.getBasedir(), "res" ).getName() );
         // }
 
-        if ( assetsDirectory.exists() )
-        {
-            commands.add( assetsDirectory.getName() );
-        }
-
         String command = MasaUtil.getToolnameWithPath( session, project, "jar" );
         getLog().info( command + " " + commands.toString() );
         try
