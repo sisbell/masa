@@ -77,6 +77,8 @@ public class ZipAlignMojo
         commands.add( "-f" );
 
         commands.add( String.valueOf( align ) );
+
+        boolean hasArtifact = false;
         for ( Artifact artifact : attachedArtifacts )
         {
             if ( "signed".equals( artifact.getClassifier() ) )
@@ -85,9 +87,16 @@ public class ZipAlignMojo
                 //Output file
 
                 commands.add( alignedOutputFile.getAbsolutePath() );
+                hasArtifact = true;
                 break;
             }
         }
+
+        if ( !hasArtifact )
+        {
+            throw new MojoExecutionException("Unable to find signed artifact");
+        }
+
         getLog().info( "Zipalign: " + commands.toString() );
         try
         {
