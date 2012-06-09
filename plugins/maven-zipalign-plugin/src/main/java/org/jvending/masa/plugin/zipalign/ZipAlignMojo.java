@@ -81,7 +81,7 @@ public class ZipAlignMojo
         boolean hasArtifact = false;
         for ( Artifact artifact : attachedArtifacts )
         {
-            if ( "signed".equals( artifact.getClassifier() ) )
+            if ( "signed".equals( artifact.getClassifier() ) || "signed-debug".equals( artifact.getClassifier() ))
             {
                 commands.add( artifact.getFile().getAbsolutePath() );
                 //Output file
