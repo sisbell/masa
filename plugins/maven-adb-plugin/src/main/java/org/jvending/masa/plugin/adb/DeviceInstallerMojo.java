@@ -50,11 +50,6 @@ public final class DeviceInstallerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if ( System.getProperty( "masa.debug" ) == null )
-        {
-            getLog().info( "Debug flag not set. Skipping emulator install" );
-            return;
-        }
         CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         executor.setLogger( this.getLog() );
         File inputFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed.apk" );

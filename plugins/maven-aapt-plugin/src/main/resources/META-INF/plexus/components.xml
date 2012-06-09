@@ -41,8 +41,6 @@
 						org.jvending.masa.plugins:maven-apkbuilder-plugin:build,
 						org.jvending.masa.plugins:maven-zipalign-plugin:align
 					</package>
-					<integration-test>org.jvending.masa.plugins:maven-adb-plugin:install
-					</integration-test>
 					<verify>
 					    org.jvending.masa.plugins:maven-apkbuilder-plugin:verify,
 						org.jvending.masa.plugins:maven-lint-plugin:verify
@@ -55,6 +53,54 @@
 				</phases>
 			</configuration>
 		</component>
+		<component>
+			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+			<role-hint>android:apk-test</role-hint>
+			<implementation>
+				org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+			</implementation>
+			<configuration>
+				<phases>
+					<validate>
+						org.jvending.masa.plugins:maven-toolchains-plugin:toolchain
+					</validate>
+					<generate-sources>
+						org.jvending.masa.plugins:maven-reslinks-plugin:link,
+						org.jvending.masa.plugins:maven-aidl-plugin:generate
+					</generate-sources>
+					<process-resources>
+						org.jvending.masa.plugins:maven-aapt-plugin:unpack,
+						org.apache.maven.plugins:maven-resources-plugin:resources
+					</process-resources>
+					<compile>
+						org.jvending.masa.plugins:maven-aapt-plugin:compile,
+						org.apache.maven.plugins:maven-compiler-plugin:compile
+					</compile>
+					<process-classes>
+						org.apache.maven.plugins:maven-jar-plugin:jar,
+						org.jvending.masa.plugins:maven-dx-plugin:dx
+					</process-classes>
+					<process-test-resources>
+						org.apache.maven.plugins:maven-resources-plugin:testResources
+					</process-test-resources>
+					<package>
+						org.jvending.masa.plugins:maven-aapt-plugin:package,
+						org.jvending.masa.plugins:maven-apkbuilder-plugin:build,
+						org.jvending.masa.plugins:maven-zipalign-plugin:align
+					</package>
+					<integration-test>org.jvending.masa.plugins:maven-adb-plugin:install
+					</integration-test>
+					<verify>
+					    org.jvending.masa.plugins:maven-apkbuilder-plugin:verify
+					</verify>
+					<install>
+						org.apache.maven.plugins:maven-install-plugin:install
+					</install>
+					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy
+					</deploy>
+				</phases>
+			</configuration>
+		</component>		
 		<component>
 			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
 			<role-hint>android:lib</role-hint>
