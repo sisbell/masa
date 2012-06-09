@@ -25,6 +25,5 @@
 	<modules>
 		<module>android-archetype-quickstart
 		</module>
-		<module>android-archetype-po</module>
 	</modules>
 </project>
