@@ -81,7 +81,7 @@ public class ZipAlignMojo
         boolean hasArtifact = false;
         for ( Artifact artifact : attachedArtifacts )
         {
-            if ( "signed".equals( artifact.getClassifier() ) || "signed-debug".equals( artifact.getClassifier() ))
+            if ( "signed".equals( artifact.getClassifier() ) || "signed-debug".equals( artifact.getClassifier() ) )
             {
                 commands.add( artifact.getFile().getAbsolutePath() );
                 //Output file
@@ -94,7 +94,7 @@ public class ZipAlignMojo
 
         if ( !hasArtifact )
         {
-            throw new MojoExecutionException("Unable to find signed artifact");
+            throw new MojoExecutionException( "Unable to find signed artifact" );
         }
 
         getLog().info( "Zipalign: " + commands.toString() );

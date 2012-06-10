@@ -17,11 +17,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.jvending.masa.ApkInstaller;
 import org.jvending.masa.CommandExecutor;
 import org.jvending.masa.ExecutionException;
 import org.jvending.masa.MasaUtil;
@@ -50,22 +52,16 @@ public final class DeviceInstallerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        CommandExecutor executor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        executor.setLogger( this.getLog() );
         File inputFile = new File( project.getBuild().getDirectory(), project.getBuild().getFinalName() + "-signed.apk" );
 
-        List<String> commands = new ArrayList<String>();
-        commands.add( "install" );
-        commands.add( "-r" );
-        commands.add( inputFile.getAbsolutePath() );
-        String c = MasaUtil.getToolnameWithPath( session, project, "adb" );
-        getLog().info( c + ":" + commands.toString() );
+        String adb = MasaUtil.getToolnameWithPath( session, project, "adb" );
         try
         {
-            executor.executeCommand( c, commands );
+            ApkInstaller.install(inputFile, adb, getLog());
         }
         catch ( ExecutionException e )
         {
+            throw new MojoExecutionException("Failed to execute apk install", e);
         }
     }
 }

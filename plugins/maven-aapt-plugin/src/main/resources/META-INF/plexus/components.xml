@@ -65,7 +65,6 @@
 						org.jvending.masa.plugins:maven-toolchains-plugin:toolchain
 					</validate>
 					<generate-sources>
-						org.jvending.masa.plugins:maven-reslinks-plugin:link,
 						org.jvending.masa.plugins:maven-aidl-plugin:generate
 					</generate-sources>
 					<process-resources>
@@ -80,24 +79,17 @@
 						org.apache.maven.plugins:maven-jar-plugin:jar,
 						org.jvending.masa.plugins:maven-dx-plugin:dx
 					</process-classes>
-					<process-test-resources>
-						org.apache.maven.plugins:maven-resources-plugin:testResources
-					</process-test-resources>
+					<test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile
+					</test-compile>
 					<package>
 						org.jvending.masa.plugins:maven-aapt-plugin:package,
 						org.jvending.masa.plugins:maven-apkbuilder-plugin:build,
 						org.jvending.masa.plugins:maven-zipalign-plugin:align
 					</package>
-					<integration-test>org.jvending.masa.plugins:maven-adb-plugin:install
+					<integration-test>
+						org.jvending.masa.plugins:maven-platformtest-plugin:install,
+						org.apache.maven.plugins:maven-surefire-plugin:test
 					</integration-test>
-					<verify>
-					    org.jvending.masa.plugins:maven-apkbuilder-plugin:verify
-					</verify>
-					<install>
-						org.apache.maven.plugins:maven-install-plugin:install
-					</install>
-					<deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy
-					</deploy>
 				</phases>
 			</configuration>
 		</component>		
@@ -187,6 +179,16 @@
 				<type>android:apk</type>
 			</configuration>
 		</component>
+		<component>
+			<role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+			<role-hint>android:apk-test</role-hint>
+			<implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler
+			</implementation>
+			<configuration>
+				<extension>apk</extension>
+				<type>android:apk-test</type>
+			</configuration>
+		</component>				
 		<component>
 			<role>org.apache.maven.artifact.handler.ArtifactHandler</role>
 			<role-hint>android:lib</role-hint>

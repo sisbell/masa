@@ -5,7 +5,7 @@
 	<artifactId>masa-integration-testing
 	</artifactId>
 	<name>JVending Masa: masa-integration-testing</name>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.11-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

@@ -162,13 +162,13 @@ public class ApkBuilderMojo
                     }
                     getLog().info( "Signing with debug key: " + keyStorePath );
                     File signedDebugOutputFile = new File( project.getBuild().getDirectory(), project.getBuild()
-                        .getFinalName() + "-signed-debug.apk" );
+                        .getFinalName() + "-signed.apk" );
 
                     signedBuilder = new ApkBuilder( signedDebugOutputFile.getAbsolutePath(),
                                                     packagedResourceFile.getAbsolutePath(), dexFile.getAbsolutePath(),
                                                     keyStorePath, printStream );
                     build( signedBuilder );
-                    projectHelper.attachArtifact( project, "apk", "signed-debug", signedDebugOutputFile );
+                    projectHelper.attachArtifact( project, "apk", "signed", signedDebugOutputFile );
                     break;
                 case SIGN_AOSP:
                     getLog().info( "Signing with aosp key" );

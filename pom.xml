@@ -47,6 +47,7 @@
 	</developers>
 	<modules>
 		<module>plugins</module>
+		<module>masa-integration-testing</module>
 	</modules>
 	<build>
 		<pluginManagement>
