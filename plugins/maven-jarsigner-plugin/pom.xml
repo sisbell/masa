@@ -21,7 +21,6 @@
 	<artifactId>maven-jarsigner-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-jarsigner-plugin</name>
-	<version>1.11-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>

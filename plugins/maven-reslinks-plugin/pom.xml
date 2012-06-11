@@ -8,7 +8,6 @@
   </parent>
   <groupId>org.jvending.masa.plugins</groupId>
   <artifactId>maven-reslinks-plugin</artifactId>
-  <version>1.11-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>JVending Masa: maven-reslinks-plugin</name>
   <url>http://maven.apache.org</url>

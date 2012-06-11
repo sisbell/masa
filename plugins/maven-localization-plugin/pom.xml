@@ -22,7 +22,6 @@
 	</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-localization-plugin</name>
-	<version>1.11-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>

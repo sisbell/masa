@@ -24,7 +24,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jvending.masa.plugins</groupId>
     <artifactId>maven-platformtest-plugin</artifactId>
-    <version>1.11-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>JVending Masa: maven-platformtest-plugin</name>
     <description>Maven Plugin for Testing Unit Tests on Target Platform</description>
@@ -45,12 +44,10 @@
         <dependency>
             <groupId>org.sonatype.aether</groupId>
             <artifactId>aether-api</artifactId>
-            <version>1.12</version>
         </dependency>
         <dependency>
             <groupId>org.sonatype.aether</groupId>
             <artifactId>aether-util</artifactId>
-            <version>1.12</version>
         </dependency>	        
     </dependencies>
 </project>

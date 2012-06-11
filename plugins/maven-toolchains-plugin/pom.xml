@@ -21,7 +21,6 @@
 	<artifactId>maven-toolchains-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>JVending Masa: maven-toolchains-plugin</name>
-	<version>1.11-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
         <dependency>
@@ -32,15 +31,6 @@
 		<dependency>
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-utils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-descriptor
-			</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-toolchain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>

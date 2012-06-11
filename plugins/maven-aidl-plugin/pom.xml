@@ -24,7 +24,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jvending.masa.plugins</groupId>
     <artifactId>maven-aidl-plugin</artifactId>
-    <version>1.11-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>JVending Masa: maven-aidl-plugin</name>
     <description>JVending Masa: Maven Plugin for AIDL Generation</description>
@@ -32,7 +31,7 @@
         <dependency>
             <groupId>org.jvending.masa</groupId>
             <artifactId>masa-core</artifactId>
-            <version>1.11-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
@@ -45,6 +44,6 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-        </dependency>
+        </dependency>      
     </dependencies>
 </project>
