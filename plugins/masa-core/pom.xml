@@ -38,6 +38,10 @@
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-container-default</artifactId>
 		</dependency>
-
+        <dependency>
+            <groupId>com.android.ddmlib</groupId>
+            <artifactId>ddmlib</artifactId>
+            <version>r16</version>
+        </dependency>
 	</dependencies>
 </project>
