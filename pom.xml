@@ -48,6 +48,7 @@
 	<modules>
 		<module>plugins</module>
 		<module>masa-integration-testing</module>
+		<module>surefire-android-provider</module>
 	</modules>
 	<build>
 		<pluginManagement>
