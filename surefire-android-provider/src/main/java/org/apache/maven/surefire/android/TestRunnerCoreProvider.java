@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.maven.plugin.surefire.StartupReportConfiguration;
+import org.apache.maven.plugin.surefire.report.AndroidReportConfiguration;
+import org.apache.maven.plugin.surefire.report.FileReporterFactory;
 import org.apache.maven.surefire.android.reporting.AndroidReportEntry;
 import org.apache.maven.surefire.providerapi.AbstractProvider;
 import org.apache.maven.surefire.providerapi.ProviderParameters;
@@ -44,11 +47,7 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 
 	public RunResult invoke(Object forkTestSet) throws TestSetFailedException,
 			ReporterException {
-		final ReporterFactory reporterFactory = providerParameters
-				.getReporterFactory();
-		
-        final RunListener reporter = reporterFactory.createReporter();      
-        final ConsoleOutputReceiver console = (ConsoleOutputReceiver) reporter;      
+     
 
         AdbConnector conn = new AdbConnector();       
         IDevice device = null;
@@ -63,6 +62,12 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+
+        StartupReportConfiguration rconfig = AndroidReportConfiguration.defaultValue(device);
+        
+		final ReporterFactory reporterFactory = new FileReporterFactory(rconfig);
+        final RunListener reporter = reporterFactory.createReporter();      
+        final ConsoleOutputReceiver console = (ConsoleOutputReceiver) reporter; 
         
         Properties config = providerParameters.getProviderProperties();
         String testRunner = config.getProperty("testRunner", "android.test.InstrumentationTestRunner");
