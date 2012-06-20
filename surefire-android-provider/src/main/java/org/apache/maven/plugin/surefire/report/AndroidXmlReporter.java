@@ -114,15 +114,15 @@ public class AndroidXmlReporter extends XMLReporter {
 		Xpp3Dom testSuite = createTestSuiteElement(report, runTime);
 
 		showProperties(testSuite);
+//TODO:
+//		testSuite.setAttribute("tests", String.valueOf(this.getNumTests()));
 
-		testSuite.setAttribute("tests", String.valueOf(this.getNumTests()));
+//		testSuite.setAttribute("errors", String.valueOf(this.getNumErrors()));
 
-		testSuite.setAttribute("errors", String.valueOf(this.getNumErrors()));
+//		testSuite.setAttribute("skipped", String.valueOf(this.getNumSkipped()));
 
-		testSuite.setAttribute("skipped", String.valueOf(this.getNumSkipped()));
-
-		testSuite.setAttribute("failures",
-				String.valueOf(this.getNumFailures()));
+//		testSuite.setAttribute("failures",
+//				String.valueOf(this.getNumFailures()));
 
 		for (Object result : results) {
 			Xpp3Dom testcase = (Xpp3Dom) result;
@@ -143,8 +143,8 @@ public class AndroidXmlReporter extends XMLReporter {
 					new FileOutputStream(reportFile), "UTF-8")));
 
 			writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + LS);
-
-			Xpp3DomWriter.write((XMLWriter) new PrettyPrintXMLWriter(writer), testSuite);
+			Xpp3DomWriter.write(writer, testSuite);
+			//Xpp3DomWriter.write((XMLWriter) new PrettyPrintXMLWriter(writer), testSuite);
 		} catch (UnsupportedEncodingException e) {
 			throw new ReporterException("Unable to use UTF-8 encoding", e);
 		} catch (FileNotFoundException e) {
@@ -174,7 +174,8 @@ public class AndroidXmlReporter extends XMLReporter {
 	public void testSucceeded(ReportEntry report) {
 		super.testSucceeded(report);
 
-		long runTime = getActualRunTime(report);
+		//TODO
+		long runTime = 0;//getActualRunTime(report);
 
 		Xpp3Dom testCase = createTestElement(report, runTime);
 
@@ -196,7 +197,9 @@ public class AndroidXmlReporter extends XMLReporter {
 				testCase.setAttribute("classname", report.getSourceName());
 			}
 		}
-		testCase.setAttribute("time", elapsedTimeAsString(runTime));
+		testCase.setAttribute("time", "0");//TODO:
+		
+		//testCase.setAttribute("time", elapsedTimeAsString(runTime));
 		return testCase;
 	}
 
@@ -212,7 +215,8 @@ public class AndroidXmlReporter extends XMLReporter {
 		if (report.getGroup() != null) {
 			testCase.setAttribute("group", report.getGroup());
 		}
-		testCase.setAttribute("time", elapsedTimeAsString(runTime));
+		//TODO:
+//		testCase.setAttribute("time", elapsedTimeAsString(runTime));
 		return testCase;
 	}
 
@@ -235,13 +239,14 @@ public class AndroidXmlReporter extends XMLReporter {
 
 	private void writeTestProblems(ReportEntry report, String stdOut,
 			String stdErr, String name) {
-		long runTime = getActualRunTime(report);
+		long runTime = 0;;//TODO: getActualRunTime(report);
 
 		Xpp3Dom testCase = createTestElement(report, runTime);
 
 		Xpp3Dom element = createElement(testCase, name);
 
-		String stackTrace = getStackTrace(report);
+		//TODO:
+		String stackTrace = "";//getStackTrace(report);
 
 		if (report.getMessage() != null && report.getMessage().length() > 0) {
 			element.setAttribute("message", report.getMessage());

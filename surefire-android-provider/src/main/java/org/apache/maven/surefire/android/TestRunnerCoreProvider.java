@@ -47,14 +47,12 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 
 	public RunResult invoke(Object forkTestSet) throws TestSetFailedException,
 			ReporterException {
-     
 
-        AdbConnector conn = new AdbConnector();       
-        IDevice device = null;
-        try {
+		AdbConnector conn = new AdbConnector();
+		IDevice device = null;
+		try {
 			conn.connectToDevice();
 			device = conn.getFirstAttachedDevice();
-			
 		} catch (ConnectionException e) {
 			e.printStackTrace();
 		} catch (ShellCommandUnresponsiveException e) {
@@ -63,62 +61,93 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 			e.printStackTrace();
 		}
 
-        StartupReportConfiguration rconfig = AndroidReportConfiguration.defaultValue(device);
-        
+		StartupReportConfiguration rconfig = AndroidReportConfiguration
+				.defaultValue(device);
+
 		final ReporterFactory reporterFactory = new FileReporterFactory(rconfig);
-        final RunListener reporter = reporterFactory.createReporter();      
-        final ConsoleOutputReceiver console = (ConsoleOutputReceiver) reporter; 
-        
-        Properties config = providerParameters.getProviderProperties();
-        String testRunner = config.getProperty("testRunner", "android.test.InstrumentationTestRunner");
-        String targetPackage = config.getProperty("targetPackage", "org.jvending.masa.test");
-        
-        RemoteAndroidTestRunner runner =
-                new RemoteAndroidTestRunner(targetPackage, 
-                		testRunner, device);
-        runner.setTestPackageName("org.jvending.masa.test");
-        
-        try {
+		
+		final RunListener reporter = reporterFactory.createReporter();
+		// final ReporterFactory reporterFactory =
+		// providerParameters.getReporterFactory();
+		// final RunListener reporter = reporterFactory.createReporter();
+		final ConsoleOutputReceiver console = (ConsoleOutputReceiver) reporter;
+
+		Properties config = providerParameters.getProviderProperties();
+		String testRunner = config.getProperty("testRunner",
+				"android.test.InstrumentationTestRunner");
+		String targetPackage = config.getProperty("targetPackage",
+				"org.jvending.masa.test");
+
+		RemoteAndroidTestRunner runner = new RemoteAndroidTestRunner(
+				targetPackage, testRunner, device);
+		runner.setTestPackageName("org.jvending.masa.test");
+
+		try {
 			runner.run(new ITestRunListener() {
 
 				private AndroidReportEntry entry;
-							
-				public void testRunStarted(String runName, int testCount) {	
-	
+
+				private AndroidReportEntry runEntry;
+
+				private boolean hasError;
+
+				public void testRunStarted(String runName, int testCount) {
+					runEntry = new AndroidReportEntry(runName, runName);
+					reporter.testSetStarting(runEntry);
 				}
 
 				public void testStarted(TestIdentifier test) {
-				   entry = new AndroidReportEntry(test.getClassName());     			
-				   reporter.testSetStarting(entry);		   
+					if ("testAndroidTestCaseSetupProperly".equals(test
+							.getTestName())) {
+						return;
+					}
+					hasError = false;
+					entry = new AndroidReportEntry(test.getClassName(), test
+							.getTestName());
+
+					reporter.testStarting(entry);
 				}
 
 				public void testFailed(TestFailure status, TestIdentifier test,
 						String trace) {
-					if(trace != null) {
-						console.writeTestOutput(trace.getBytes(), 0, trace.length() - 1, true);
+					if ("testAndroidTestCaseSetupProperly".equals(test
+							.getTestName())) {
+						return;
+					}
+					hasError = true;
+					if (trace != null) {
+						console.writeTestOutput(trace.getBytes(), 0,
+								trace.length() - 1, true);
 						entry.setMessage(trace);
-					}								
-					reporter.testFailed(entry);					
+					}
+					reporter.testFailed(entry);
 				}
 
 				public void testEnded(TestIdentifier test,
 						Map<String, String> testMetrics) {
-					System.out.println("testEnded: ");
-					//reporter.testSucceeded(entry);
+					if ("testAndroidTestCaseSetupProperly".equals(test
+							.getTestName())) {
+						return;
+					}
+;
+					if (!hasError) {
+						reporter.testSucceeded(entry);
+					}
+					hasError = false;
 				}
 
-				public void testRunFailed(String errorMessage) {				
+				public void testRunFailed(String errorMessage) {
 				}
 
 				public void testRunStopped(long elapsedTime) {
-					reporter.testSetCompleted(entry);
+					reporter.testSetCompleted(runEntry);
 				}
 
 				public void testRunEnded(long elapsedTime,
 						Map<String, String> runMetrics) {
-					reporter.testSetCompleted(entry);
+					reporter.testSetCompleted(runEntry);
 				}
-				
+
 			});
 		} catch (TimeoutException e) {
 			e.printStackTrace();
@@ -134,28 +163,6 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 
 	}
 
-    public void startTestSuite( RunListener reporter)
-    {
-        ReportEntry report = new SimpleReportEntry( "Reporter", "AndroidTestSuite", "Starting test" );
-
-        try
-        {
-            reporter.testSetStarting( report );
-        }
-        catch ( ReporterException e )
-        {
-            // TODO: remove this exception from the report manager
-        }
-    }
-
-    public void finishTestSuite( RunListener reporterManager )
-        throws ReporterException
-    {
-        ReportEntry report = new SimpleReportEntry(  "Reporter", "AndroidTestSuite", "finishing test" );
-
-        reporterManager.testSetCompleted( report );
-    }
-	
 	private TestsToRun scanClassPath() {
 		ClassLoader testClassLoader = providerParameters.getTestClassLoader();
 		DirectoryScanner directoryScanner = providerParameters
@@ -163,11 +170,8 @@ public class TestRunnerCoreProvider extends AbstractProvider {
 
 		final TestsToRun scanned = directoryScanner.locateTestClasses(
 				testClassLoader, null);
-		System.out.println("Tests: " + scanned.size());
-		
 		return scanned;
-		//return runOrderCalculator.orderTestClasses(scanned);
+		// return runOrderCalculator.orderTestClasses(scanned);
 	}
-	
 
 }
